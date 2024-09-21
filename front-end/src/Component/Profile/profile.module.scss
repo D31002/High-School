@@ -1,0 +1,71 @@
+.wrapper {
+    display: flex;
+    column-gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    .image {
+        img {
+            width: 200px;
+            border: 1px solid #ccc;
+        }
+
+        .import {
+            label {
+                display: flex;
+                justify-content: center;
+                padding: 7px 10px;
+                background-color: #3498db;
+                color: var(--white-color);
+                border-radius: 4px;
+
+                &:hover {
+                    background-color: #128ad9;
+                }
+            }
+            .upload {
+                display: none;
+            }
+        }
+    }
+    h2 {
+        font-weight: 900;
+        font-size: 2.3rem;
+        line-height: 4rem;
+    }
+    .inputs {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 20px;
+
+        .input {
+            flex: 1;
+            flex-basis: 300px;
+            .gender {
+                display: flex;
+                align-items: center;
+                column-gap: 20px;
+
+                span {
+                    margin-left: 4px;
+                }
+            }
+        }
+
+        h3 {
+            display: block;
+        }
+    }
+    .address {
+        margin: 10px 0;
+        .address-detail {
+            display: flex;
+            flex-direction: column;
+            row-gap: 20px;
+        }
+    }
+    .submit {
+        margin: 40px 0;
+        text-align: center;
+    }
+}

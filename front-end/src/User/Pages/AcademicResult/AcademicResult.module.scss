@@ -1,0 +1,27 @@
+.wrapper {
+    width: 1200px;
+    max-width: 100%;
+    margin: 20px auto;
+
+    .body {
+        width: 100%;
+        display: flex;
+        column-gap: 20px;
+        .head {
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .table-result {
+            flex-grow: 1;
+            flex-basis: 300;
+        }
+        .table-scores {
+            flex-grow: 4;
+            flex-basis: 900px;
+        }
+        .datarow {
+            font-size: 1.6rem;
+        }
+    }
+}

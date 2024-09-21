@@ -1,0 +1,54 @@
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 9px 12px;
+    border-radius: 4px;
+
+    + .wrapper {
+        margin-left: 4px;
+    }
+}
+
+//control hoc sinh
+.control {
+    background-color: #ed1c24;
+    color: var(--white-color);
+    border: none;
+    font-size: 2rem;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    &:hover {
+        background-color: #c0392b;
+        cursor: pointer;
+    }
+}
+
+.MenuItemLink {
+    color: #fff;
+}
+
+.a {
+    color: red;
+}
+
+.btn {
+    margin-top: 10px;
+    font-size: 1.6rem;
+    padding: 10px;
+    background-color: #3498db;
+    color: var(--white-color);
+    border-radius: 10px;
+    cursor: pointer;
+    + .btn {
+        margin-left: 12px;
+    }
+    &:hover {
+        background-color: #128ad9;
+    }
+}

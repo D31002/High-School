@@ -1,0 +1,25 @@
+.wrapper {
+    height: 100%;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .datarow {
+        font-size: 1.2rem;
+    }
+
+    .table-wrapper {
+        margin: 20px 0;
+
+        .ClassRoom {
+            font-size: 2.5rem;
+            font-weight: 900;
+        }
+    }
+    .duplicate {
+        background-color: red;
+        color: white;
+    }
+}

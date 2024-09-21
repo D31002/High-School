@@ -1,0 +1,90 @@
+.wrapper {
+    min-width: 200px;
+    position: relative;
+    border: 1px solid #cfcfcf;
+    border-radius: 7px;
+
+    .select-btn {
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 11px 10px;
+        border-radius: 7px;
+        background-color: white;
+
+        .icon {
+            font-size: 1.6rem;
+        }
+    }
+
+    .content {
+        padding: 10px;
+        border-radius: 7px;
+        background-color: white;
+        width: 100%;
+        top: 100%;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+
+        .seach {
+            position: relative;
+
+            .icon {
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #999;
+                font-size: 1.4rem;
+                position: absolute;
+            }
+
+            input {
+                width: 100%;
+                font-size: 1.6rem;
+                padding: 4px 6px 4px 43px;
+                border: 1px solid #b3b3b3;
+                border-radius: 7px;
+
+                &::placeholder {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+        .options {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow: hidden;
+            overflow-y: auto;
+
+            li {
+                font-size: 1.6rem;
+                padding: 10px 6px;
+                border-radius: 7px;
+                cursor: pointer;
+                &:hover {
+                    background-color: #f2f2f2;
+                }
+            }
+            .no-data-message {
+                color: red;
+                cursor: default;
+                &:hover {
+                    background-color: white;
+                }
+            }
+        }
+    }
+    &:hover .content {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+.w400 {
+    min-width: 400px;
+}

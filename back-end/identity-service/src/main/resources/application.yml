@@ -1,0 +1,23 @@
+server:
+  port: 8070
+  servlet:
+    context-path: /identity
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/LVTN_Identity-service?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 12345
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: false
+
+jwt:
+  signerKey: Dgspf8Xc8cMjo0ze3fALLLM3/z0xDPrf0MTPNPQO2xOtOOBaaNqefLDBO/ATh2+i
+  valid-duration: 3600
+  refreshable-duration: 36000

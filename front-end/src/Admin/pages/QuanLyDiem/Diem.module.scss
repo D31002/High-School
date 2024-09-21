@@ -1,0 +1,51 @@
+.wrapper {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .select-option {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .action {
+            display: flex;
+            align-items: center;
+        }
+        .add {
+            font-size: 1.6rem;
+            margin-left: 6px;
+            color: #3498db;
+            border: 1px solid #3498db;
+            padding: 4px 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    }
+
+    .modal {
+        .student {
+            .student-name {
+                font-weight: 900;
+            }
+            .item-score {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+                .score-name {
+                    width: 40%;
+                }
+                input {
+                    width: 15%;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    padding: 2px;
+
+                    &:focus {
+                        border: 1px solid #333;
+                    }
+                }
+            }
+        }
+    }
+}

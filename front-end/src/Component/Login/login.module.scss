@@ -1,0 +1,127 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        max-width: 100%;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+
+        .left {
+            width: 50%;
+            margin-right: 20px;
+            background-color: #007bff;
+            border-radius: 20px;
+            text-align: center;
+            img {
+                width: 100%;
+            }
+            h1 {
+                font-size: 2rem;
+                line-height: 3rem;
+                margin: 40px 0;
+                text-align: center;
+                font-weight: 900;
+                background: linear-gradient(90deg, white, #f7c2ec);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        .right {
+            width: 50%;
+            margin-left: 20px;
+            .title {
+                h1 {
+                    font-size: 2.8rem;
+                    font-weight: 700;
+                    margin-bottom: 10px;
+                }
+                h3 {
+                    font-weight: 600;
+                    font-size: 2rem;
+                }
+            }
+
+            .content {
+                margin-top: 50px;
+                width: 100%;
+                .form {
+                    display: flex;
+                    flex-direction: column;
+                    .inputlogin {
+                        padding: 12px;
+                        margin-bottom: 20px;
+                        display: block;
+                        width: 100%;
+                        border: 1px solid #ccc;
+                        background-color: #ebe8e8cc;
+                        border-radius: 5px;
+                        font-size: 1.8rem;
+
+                        &::placeholder {
+                            font-size: 1.6rem;
+                        }
+                    }
+                }
+                .sup {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .remember {
+                        display: flex;
+                        align-items: center;
+                        input {
+                            margin-right: 4px;
+                        }
+                        span {
+                            font-size: 1.6rem;
+                        }
+                    }
+                    .forget-password {
+                        font-size: 1.6rem;
+                    }
+                }
+                button {
+                    margin: 40px 0;
+                    width: 100%;
+                    background-color: #007bff;
+                    color: #fff;
+                    padding: 10px;
+                    cursor: pointer;
+                    border: none;
+                    border-radius: 5px;
+                }
+                button:hover {
+                    background-color: #0056b3;
+                }
+
+                .social {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.6rem;
+                    margin-bottom: 40px;
+                    img {
+                        width: 20px;
+                        margin-right: 4px;
+                    }
+                }
+
+                .navigate {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 1.6rem;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.formInput {
+    position: relative;
+    margin-bottom: 30px;
+    input {
+        padding: 9px;
+        display: block;
+        width: 100%;
+        border: 1px solid #ccc;
+        background-color: #ebe8e8cc;
+        border-radius: 5px;
+        font-size: 1.8rem;
+
+        &::placeholder {
+            font-size: 1.5rem;
+        }
+
+        &:focus {
+            border: 1px solid rgba(0, 0, 0, 0.6);
+            caret-color: red;
+        }
+        &:invalid[focused='true'] ~ .error {
+            display: block;
+        }
+        &:valid[focused='true'] ~ .success {
+            display: block;
+        }
+    }
+    .error {
+        position: absolute;
+        font-size: 1.5rem;
+        color: red;
+        display: none;
+        top: 100%;
+        margin-top: 4px;
+    }
+    .success {
+        position: absolute;
+        display: none;
+        top: 100%;
+        left: 0;
+        .icon {
+            font-size: 1.5rem;
+            color: green;
+        }
+        span {
+            font-size: 1.5rem;
+            color: green;
+            margin-left: 6px;
+        }
+    }
+}

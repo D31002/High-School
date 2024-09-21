@@ -1,0 +1,55 @@
+.wrapper {
+    h4 {
+        color: var(--white-color);
+        font-size: 3rem;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    img {
+        margin-top: 16px;
+        width: 50%;
+    }
+}
+.btn-information {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+
+    .btn-information-item {
+        background-color: transparent;
+        color: var(--white-color);
+
+        .item-content {
+            display: inline-block;
+            font-size: 1.8rem;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            transition: color 400ms, background-color 400ms;
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+                color: #5bbbff;
+            }
+            .item-icon {
+                width: 20px;
+                margin-right: 8px;
+            }
+            span {
+                flex: 1;
+            }
+        }
+    }
+}
+
+.btn-socical {
+    .btn-socical-item {
+        color: var(--white-color);
+        font-size: 3rem;
+        padding: 4px;
+        margin-right: 24px;
+        transition: color 400ms, background-color 400ms;
+        &:hover {
+            color: #5bbbff;
+        }
+    }
+}

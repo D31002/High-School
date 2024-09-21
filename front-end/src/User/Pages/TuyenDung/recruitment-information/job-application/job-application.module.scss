@@ -1,0 +1,26 @@
+.wrapper {
+    margin-top: 100px;
+    h1 {
+        margin-bottom: 100px;
+    }
+    .working-process {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+
+        .item {
+            width: calc(25% - 10px);
+            position: relative;
+            img {
+                width: 50%;
+                margin-bottom: 20px;
+            }
+            p {
+                color: #000;
+                + p {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+.wrapper {
+    width: 1200px;
+    max-width: 100%;
+    margin: 40px auto;
+    .content {
+        display: flex;
+        margin-left: -20px;
+        margin-right: -20px;
+        .left {
+            flex: 1;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .right {
+            width: 30%;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+}

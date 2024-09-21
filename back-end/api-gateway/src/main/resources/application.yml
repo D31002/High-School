@@ -1,0 +1,84 @@
+server:
+  port: 8888
+
+app:
+  api-prefix: /api/v1
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity_service
+          uri: http://localhost:8070
+          predicates:
+            - Path=${app.api-prefix}/identity/pl/**
+          filters:
+            - StripPrefix=2
+        - id: profile_service
+          uri: http://localhost:8071
+          predicates:
+            - Path=${app.api-prefix}/profile/pl/**
+          filters:
+            - StripPrefix=2
+        - id: teacher_service
+          uri: http://localhost:8072
+          predicates:
+            - Path=${app.api-prefix}/teacher/pl/**
+          filters:
+            - StripPrefix=2
+        - id: schoolYear_service
+          uri: http://localhost:8073
+          predicates:
+            - Path=${app.api-prefix}/year&semester/pl/**
+          filters:
+            - StripPrefix=2
+        - id: classRoom_service
+          uri: http://localhost:8074
+          predicates:
+            - Path=${app.api-prefix}/classRoom/pl/**
+          filters:
+            - StripPrefix=2
+        - id: relationship_service
+          uri: http://localhost:8075
+          predicates:
+            - Path=${app.api-prefix}/relationship/pl/**
+          filters:
+            - StripPrefix=2
+        - id: subject_service
+          uri: http://localhost:8076
+          predicates:
+            - Path=${app.api-prefix}/subject/pl/**
+          filters:
+            - StripPrefix=2
+        - id: schedule_service
+          uri: http://localhost:8077
+          predicates:
+            - Path=${app.api-prefix}/schedule/pl/**
+          filters:
+            - StripPrefix=2
+        - id: student_service
+          uri: http://localhost:8078
+          predicates:
+            - Path=${app.api-prefix}/student/pl/**
+          filters:
+            - StripPrefix=2
+        - id: academicResult_service
+          uri: http://localhost:8079
+          predicates:
+            - Path=${app.api-prefix}/academicResult/pl/**
+          filters:
+            - StripPrefix=2
+        - id: attendance_service
+          uri: http://localhost:8080
+          predicates:
+            - Path=${app.api-prefix}/attendance/pl/**
+          filters:
+            - StripPrefix=2
+        - id: parent_service
+          uri: http://localhost:8081
+          predicates:
+            - Path=${app.api-prefix}/parent/pl/**
+          filters:
+            - StripPrefix=2

@@ -1,0 +1,19 @@
+.gototop {
+    position: fixed;
+    z-index: 999;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ed1c24;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .icon {
+        color: var(--white-color);
+    }
+    span {
+        display: block;
+        font-size: 1.4rem;
+        color: var(--white-color);
+    }
+}

@@ -1,0 +1,30 @@
+.wrapper {
+    background-color: var(--white-color);
+}
+
+@keyframes moveAcrossScreen {
+    to {
+        transform: translateX(-50%);
+    }
+    from {
+        transform: translateX(100%);
+    }
+}
+.title {
+    padding: 6px 0;
+    background-color: #fdf644;
+    overflow: hidden;
+    p {
+        padding: 2px 0;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ed1c24;
+        animation: moveAcrossScreen 50s linear infinite;
+    }
+}
+
+.content {
+    width: 1350px;
+    max-width: 100%;
+    margin: 20px auto;
+}

@@ -1,0 +1,55 @@
+.wrapper {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .select-option {
+            margin-bottom: 10px;
+        }
+        .action {
+            display: flex;
+            align-items: center;
+            .import,
+            .export {
+                color: rgb(3, 98, 3);
+                background-color: rgb(39, 236, 39);
+
+                border: 1px solid #ccc;
+                font-size: 1.6rem;
+                font-weight: bold;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            .import {
+                label {
+                    padding: 4px 10px;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                input {
+                    display: none;
+                }
+            }
+            .export {
+                padding: 4px 10px;
+            }
+            .add {
+                font-size: 1.6rem;
+                margin-left: 6px;
+                color: #3498db;
+                border: 1px solid #3498db;
+                padding: 4px 10px;
+                font-weight: bold;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .gender {
+        display: flex;
+        align-items: center;
+        column-gap: 20px;
+    }
+}

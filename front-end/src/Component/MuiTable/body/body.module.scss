@@ -1,0 +1,24 @@
+.TableBody {
+    .no-data-message {
+        font-size: 2rem;
+        color: red;
+    }
+    .datarow {
+        font-size: 1.6rem;
+    }
+    .actions {
+        display: flex;
+        align-items: center;
+        .edit {
+            cursor: pointer;
+            margin-right: 10px;
+            padding: 0 2px;
+            color: rgb(7, 149, 71);
+        }
+        .delete {
+            cursor: pointer;
+            padding: 0 2px;
+            color: rgb(251, 69, 69);
+        }
+    }
+}

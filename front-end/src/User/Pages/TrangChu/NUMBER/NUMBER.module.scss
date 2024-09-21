@@ -1,0 +1,53 @@
+.wrapper {
+    padding: 30px;
+    position: relative;
+    min-height: auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    .img {
+        position: absolute;
+        background-image: url('../../../Component/Assets/Img/background.png');
+        padding-top: 50%;
+        background-repeat: no-repeat;
+        background-position: 0% 100%;
+        background-size: cover;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+        margin: 0;
+
+        .fill {
+            background-color: rgba(0, 74, 76, 0.866);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    .content {
+        position: relative;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 200px;
+        .heading {
+            color: var(--white-color);
+
+            h3 {
+                font-size: 2rem;
+                margin-bottom: 12px;
+            }
+            h1 {
+                margin: 24px 0;
+                font-size: 3.5rem;
+                font-weight: 700;
+            }
+        }
+    }
+}

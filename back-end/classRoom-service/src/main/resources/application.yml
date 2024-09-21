@@ -1,0 +1,27 @@
+server:
+  port: 8074
+  servlet:
+    context-path: /classRoom
+
+
+app:
+  services:
+    teacher: http://localhost:8072/teacher
+    year&semester: http://localhost:8073/year&semester
+    subject: http://localhost:8076/subject
+    schedule: http://localhost:8077/schedule
+    relationship: http://localhost:8075/relationship
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/LVTN_ClassRoom-service?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 12345
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: false

@@ -1,0 +1,84 @@
+.header-top {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.socical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .link {
+        .icon {
+            margin: 0 0;
+            font-size: 1.5rem;
+            color: var(--white-color);
+            border-radius: 50%;
+            padding: 5px;
+            background-color: #108588;
+        }
+    }
+}
+
+.contact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--white-color);
+    font-size: 1.7rem;
+    .icon {
+        color: var(--white-color);
+        margin-right: 8px;
+    }
+
+    .mail {
+        padding-right: 10px;
+        border-right: 1px solid var(--white-color);
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .user_logged {
+        cursor: pointer;
+        span {
+            margin-left: 20px;
+        }
+        .logout {
+            .icon {
+                font-size: 1.6rem;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .header-right {
+            margin-right: 40px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            img {
+                width: 30px;
+                border-radius: 100%;
+            }
+
+            h4 {
+                text-shadow: 1px 1px #11101d;
+                font-weight: 600;
+                font-size: 1.5rem;
+                padding-left: 8px;
+            }
+        }
+    }
+
+    .admin {
+        .admin-login {
+            border-radius: 10px;
+            padding: 4px 10px;
+            color: var(--white-color);
+        }
+    }
+}

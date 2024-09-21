@@ -1,0 +1,36 @@
+.wrapper {
+    width: 1200px;
+    max-width: 100%;
+    margin: 40px auto;
+    .heading {
+        span {
+            font-size: 2.5rem;
+            color: #1269b5;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            line-height: 3.5rem;
+        }
+        p {
+            text-align: center;
+            font-size: 1.6rem;
+        }
+    }
+
+    .introduce {
+        margin: 20px 0;
+        .img {
+            text-align: center;
+            img {
+                width: 20%;
+            }
+        }
+    }
+    p {
+        margin: 10px;
+        line-height: 2.5rem;
+    }
+}

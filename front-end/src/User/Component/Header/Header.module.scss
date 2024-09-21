@@ -1,0 +1,14 @@
+.wrapper {
+    --header-height: 120px;
+    --header-height-top: 40px;
+
+    height: var(--header-height);
+    .header {
+        height: var(--header-height-top);
+        background-color: #36b8c2;
+    }
+    .container {
+        height: calc(var(--header-height) - var(--header-height-top));
+        background-color: var(--white-color);
+    }
+}

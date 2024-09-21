@@ -1,0 +1,31 @@
+.menu-items {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+
+    .menu-item {
+        width: 100%;
+        font-size: 1.6rem;
+        display: flex;
+        justify-content: flex-start;
+        padding: 10px;
+        font-weight: 500;
+        font-size: 1.5rem;
+
+        &:hover {
+            background-color: rgba(25, 25, 25, 0.15);
+            cursor: pointer;
+        }
+        .icon {
+            text-align: center;
+            width: 24px;
+        }
+        p {
+            margin-left: 4px;
+        }
+    }
+}
+.crud {
+    width: 150px;
+}

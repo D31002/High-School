@@ -1,0 +1,22 @@
+.TableHead {
+    .titleCell {
+        font-size: 2.6rem;
+        font-weight: 600;
+        line-height: 3.5rem;
+        .titleContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 2.6rem;
+            font-weight: 600;
+            line-height: 3.5rem;
+            .icon {
+                font-size: 3rem;
+                color: rgb(252, 71, 71);
+            }
+        }
+    }
+    .label {
+        font-size: 2rem;
+    }
+}

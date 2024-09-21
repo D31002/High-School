@@ -1,0 +1,25 @@
+.banner {
+    background-color: rgb(54, 184, 194);
+
+    .heading {
+        max-width: 1200px;
+        margin: 0 auto;
+        color: var(--white-color);
+        padding: 24px 0;
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+        h3 {
+            font-size: 1.8rem;
+        }
+    }
+}
+
+.content {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+}

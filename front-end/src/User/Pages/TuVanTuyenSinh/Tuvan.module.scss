@@ -1,0 +1,257 @@
+.wrapper {
+    .header {
+        position: relative;
+        background-color: rgb(54, 184, 194);
+        padding-top: 10%;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .heading {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--white-color);
+            z-index: 2;
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+        }
+    }
+    .container {
+        width: 60%;
+        margin: 20px auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            text-align: center;
+            font-weight: 700;
+            line-height: 3rem;
+        }
+
+        p {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 1.6rem;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 1.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .submit-btn {
+            background-color: #ffa500;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .submit-btn:hover {
+            background-color: #ff7f00;
+        }
+    }
+
+    // .content {
+    //     position: relative;
+    //     margin-top: 40px;
+    //     background-image: url(https://hoalac-school.fpt.edu.vn/wp-content/uploads/FPTSchool-0069-1-scaled.jpg);
+    //     background-repeat: no-repeat;
+    //     background-position: center;
+    //     background-size: cover;
+    //     padding-top: 50%;
+    //     &::after {
+    //         content: '';
+    //         position: absolute;
+    //         top: 0;
+    //         left: 0;
+    //         right: 0;
+    //         bottom: 0;
+    //         background-color: rgba(160, 64, 0, 0.4);
+    //         z-index: 1;
+    //     }
+
+    //     .container {
+    //         position: absolute;
+    //         z-index: 2;
+    //         color: var(--white-color);
+    //         top: 0;
+    //         bottom: 0;
+    //         left: 0;
+    //         right: 0;
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         width: 1150px;
+    //         max-width: 100%;
+    //         margin: 0 auto;
+
+    //         .left {
+    //             width: 50%;
+    //             animation: left 1s linear;
+
+    //             .question {
+    //                 display: block;
+    //                 color: var(--white-color);
+    //                 margin: 12px 0;
+    //                 span {
+    //                     margin-left: 8px;
+    //                     line-height: 2rem;
+    //                     padding-bottom: 4px;
+    //                     border-bottom: 1px solid var(--white-color);
+    //                 }
+    //             }
+    //         }
+
+    //         @keyframes left {
+    //             from {
+    //                 margin-left: -200px;
+    //             }
+    //             to {
+    //                 margin-right: 0;
+    //             }
+    //         }
+    //         .right {
+    //             width: 50%;
+    //             animation: right 1s linear;
+    //             .form {
+    //                 width: 88%;
+    //                 background-color: #f36f21;
+    //                 padding: 15px 25px;
+    //                 border-radius: 10px;
+    //                 font-size: 1.6rem;
+
+    //                 .heading {
+    //                     margin-top: 0;
+    //                     text-align: center;
+    //                     font-size: 2.5rem;
+    //                     font-weight: 700;
+    //                 }
+    //                 .form-input {
+    //                     display: flex;
+    //                     width: 100%;
+
+    //                     input {
+    //                         width: 100%;
+    //                         padding: 10px;
+    //                         border-radius: 4px;
+    //                         margin: 12px 0;
+    //                     }
+    //                 }
+    //                 .form-input-2 {
+    //                     display: flex;
+    //                     input {
+    //                         width: 50%;
+    //                         margin: 10px 0 10px 0;
+    //                         padding: 10px;
+    //                         border-radius: 4px;
+    //                         + input {
+    //                             margin-left: 10px;
+    //                         }
+    //                     }
+    //                 }
+    //                 .check-box {
+    //                     font-size: 1.6rem;
+    //                     margin: 12px 0;
+
+    //                     .list-checkbox {
+    //                         display: flex;
+    //                         justify-content: space-between;
+    //                         margin: 20px 0;
+
+    //                         .item-checkbox {
+    //                             display: flex;
+    //                             align-items: center;
+
+    //                             input {
+    //                                 margin-right: 4px;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //                 .text {
+    //                     span {
+    //                         display: block;
+    //                         color: #212121;
+    //                         margin-bottom: 10px;
+    //                         font-size: 1.8rem;
+    //                         font-weight: 700;
+    //                     }
+    //                     textarea {
+    //                         padding: 10px;
+    //                         width: 100%;
+    //                         height: 160px;
+    //                         border-radius: 4px;
+    //                         outline: none;
+    //                         border: none;
+    //                         resize: none;
+    //                     }
+    //                 }
+    //                 .btn-submit {
+    //                     text-align: center;
+    //                     .submit {
+    //                         display: inline-block;
+    //                         margin-top: 20px;
+    //                         padding: 10px 12px;
+    //                         color: #f36f21;
+    //                         font-weight: 700;
+    //                         background-color: var(--white-color);
+    //                         border-radius: 20px;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         @keyframes right {
+    //             from {
+    //                 margin-right: -200px;
+    //                 margin-left: 200px;
+    //             }
+    //             to {
+    //                 margin-right: 0;
+    //             }
+    //         }
+    //     }
+    // }
+}

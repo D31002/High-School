@@ -1,0 +1,25 @@
+server:
+  port: 8071
+  servlet:
+    context-path: /profile
+
+app:
+  services:
+    teacher: http://localhost:8072/teacher
+    student: http://localhost:8078/student
+    parent: http://localhost:8081/parent
+    identity: http://localhost:8070/identity
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/LVTN_Profile-service?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 12345
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: false
