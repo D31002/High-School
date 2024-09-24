@@ -139,10 +139,8 @@ public class AuthenticationService{
         invalidatedTokenRepository.save(invalidatedToken);
 
         var username = signJWT.getJWTClaimsSet().getSubject();
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new AppException(ErrorCode.USER_NOT_EXISTED);
-        }
+        User user = userRepository.findById(Integer.valueOf(username))
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         String tokenNew = generateToken(user);
 

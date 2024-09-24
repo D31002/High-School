@@ -39,6 +39,7 @@ public class ApplicationInitConfig {
                 academicPerformanceRepository.save(AcademicPerformance.builder().name("Khá").build());
                 academicPerformanceRepository.save(AcademicPerformance.builder().name("Trung bình").build());
                 academicPerformanceRepository.save(AcademicPerformance.builder().name("Yếu").build());
+                academicPerformanceRepository.save(AcademicPerformance.builder().name("Kém").build());
             }
             if(!categoryRepository.existsById(1)){
                 categoryRepository.save(Category.builder().name("Điểm miệng").factor(1).build());

@@ -8,7 +8,7 @@ import Modal from '../../../../Component/Modal/Index';
 import Loading from '../../../../Component/Loading/Index';
 import { useHandleDispatch } from '../../../../services/useHandleDispatch';
 import Button from '../../../../Component/button/Button';
-import { showErrorMessage, showSuccessMessage, showWarningMessage } from '../../../../Component/Notification/Index';
+import { showErrorMessage, showSuccessMessage } from '../../../../Component/Notification/Index';
 import SelectOption from '../../../../Component/SelectOption/Index';
 
 const cx = classNames.bind(Styles);
@@ -30,6 +30,7 @@ function Index({ onclose, classRoom }) {
         getsemesterNow,
         getallAcademicPerformance,
         assessmentacademicResults,
+        calculateMeanScoreOfSubject,
     } = useHandleDispatch();
     const token = useSelector(userToken);
     const conducts = useSelector(Conduct);
@@ -62,32 +63,61 @@ function Index({ onclose, classRoom }) {
     }, []);
     useEffect(() => {
         if (academicOfstudents.length > 0) {
-            const updatedStudents = academicOfstudents.map((student) => {
+            const updatedStudents = academicOfstudents.map(async (student) => {
+                const scores = [];
+                const subjectPromises = classRoom?.combination?.subjects?.map(async (subject) => {
+                    let meanScore = null;
+
+                    if (student && student?.id !== 0) {
+                        meanScore = await calculateMeanScoreOfSubject(
+                            token,
+                            student?.studentId,
+                            classRoom?.id,
+                            semesterNow?.id,
+                            subject?.id,
+                        );
+                    }
+
+                    if (subject?.id !== 10) {
+                        scores.push({
+                            subjectId: subject?.id,
+                            meanScore: meanScore?.result.meanScore,
+                        });
+                    }
+                });
+                await Promise.all(subjectPromises);
                 if (student.meanScore != null && student.conduct) {
                     let academicPerformance;
-
-                    if (student.meanScore >= 8) {
+                    if (
+                        student.meanScore >= 8 &&
+                        scores?.every((score) => parseFloat(score.meanScore) >= 6.5) &&
+                        student?.conduct?.id === 1
+                    ) {
                         academicPerformance = academicPerformances?.find((p) => p.id === 1);
-                    } else if (student.meanScore >= 6.5) {
+                    } else if (
+                        student.meanScore >= 6.5 &&
+                        student.meanScore < 8 &&
+                        scores?.every((score) => parseFloat(score.meanScore) >= 5) &&
+                        (student?.conduct?.id === 1 || student?.conduct?.id === 2)
+                    ) {
                         academicPerformance = academicPerformances?.find((p) => p.id === 2);
-                    } else if (student.meanScore >= 5) {
+                    } else if (
+                        student.meanScore >= 5 &&
+                        student.meanScore < 6.5 &&
+                        scores?.every((score) => parseFloat(score.meanScore) >= 3.5) &&
+                        (student?.conduct?.id === 1 || student?.conduct?.id === 2 || student?.conduct?.id === 3)
+                    ) {
                         academicPerformance = academicPerformances?.find((p) => p.id === 3);
-                    } else {
+                    } else if (
+                        student.meanScore >= 3.5 &&
+                        student.meanScore < 5 &&
+                        scores?.some((score) => parseFloat(score.meanScore) < 3.5) &&
+                        (student?.conduct?.id === 1 || student?.conduct?.id === 2 || student?.conduct?.id === 3)
+                    ) {
                         academicPerformance = academicPerformances?.find((p) => p.id === 4);
+                    } else {
+                        academicPerformance = academicPerformances?.find((p) => p.id === 5);
                     }
-
-                    if (student.conduct.id === 1) {
-                        if (academicPerformance === academicPerformances?.find((p) => p.id === 3)) {
-                            academicPerformance = academicPerformances?.find((p) => p.id === 2);
-                        } else if (academicPerformance === academicPerformances?.find((p) => p.id === 4)) {
-                            academicPerformance = academicPerformances?.find((p) => p.id === 3);
-                        }
-                    } else if (student.conduct.id === 4) {
-                        if (academicPerformance === academicPerformances?.find((p) => p.id === 1)) {
-                            academicPerformance = academicPerformances?.find((p) => p.id === 2);
-                        }
-                    }
-
                     return {
                         ...student,
                         academicPerformance,
@@ -96,10 +126,13 @@ function Index({ onclose, classRoom }) {
                 return student;
             });
 
-            if (JSON.stringify(updatedStudents) !== JSON.stringify(academicOfstudents)) {
-                setAcademicOfstudents(updatedStudents);
-            }
+            Promise.all(updatedStudents).then((result) => {
+                if (JSON.stringify(result) !== JSON.stringify(academicOfstudents)) {
+                    setAcademicOfstudents(result);
+                }
+            });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [academicOfstudents]);
 
     useEffect(() => {
@@ -192,8 +225,8 @@ function Index({ onclose, classRoom }) {
         );
         if (isvalid) {
             const sortedStudents = academicOfstudents.sort((a, b) => {
-                if (a.conduct?.id !== b.conduct?.id) {
-                    return a.conduct?.id - b.conduct?.id;
+                if (a.academicPerformance?.id !== b.academicPerformance?.id) {
+                    return a.academicPerformance?.id - b.academicPerformance?.id;
                 }
                 return b.meanScore - a.meanScore;
             });

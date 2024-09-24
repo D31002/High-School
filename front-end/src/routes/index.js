@@ -13,6 +13,7 @@ import QuanLyHocSinh from '../Admin/pages/QuanLyHocSinh/Hocsinh';
 import QuanLyGiaoVien from '../Admin/pages/QuanLyGiaoVien/Index';
 import DanhSachLopHocTheoKhoi from '../Admin/pages/QuanLyLopHoc/DanhSachLopTheoKhoi/Index';
 import DanhSachLopHocTheoNam from '../Admin/pages/QuanLyLopHoc/DanhSachLopHocMoiNam/Index';
+import ThongKe from '../Admin/pages/ThongKe/Index';
 
 //USER
 import HearderAndFooter from '../User/Layout/HeaderAndFooter/Index';
@@ -83,6 +84,7 @@ const pageRoutes = [
     { path: '/admin/xep-lich-Giang-Day', Component: XepGiangDay, layout: Headeronly, requireAuth: true },
     { path: '/admin/xem-lich-Giang-Day', Component: XemGiangDay, layout: Headeronly, requireAuth: true },
     { path: '/admin/diem-danh', Component: Diemdanh, layout: Headeronly, requireAuth: true },
+    { path: '/admin/thong-ke', Component: ThongKe, layout: Headeronly, requireAuth: true },
 ];
 
 export { pageRoutes };

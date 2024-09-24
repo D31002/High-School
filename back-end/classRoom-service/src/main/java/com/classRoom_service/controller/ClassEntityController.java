@@ -65,9 +65,10 @@ public class ClassEntityController {
 	}
 
 	@GetMapping("/getAllBySchoolYearAndGrade")
-	ApiResponse<List<ClassEntityResponse>> getAllBySchoolYearAndGrade(@RequestParam Integer schoolYearId,
-															  @RequestParam(required = false) Integer gradeId,
-															  @RequestParam(required = false) String keyword) {
+	ApiResponse<List<ClassEntityResponse>> getAllBySchoolYearAndGrade(
+			@RequestParam Integer schoolYearId,
+			@RequestParam(required = false) Integer gradeId,
+			@RequestParam(required = false) String keyword) {
 		List<ClassEntityResponse> result = classEntityService.getAllBySchoolYearAndGrade(schoolYearId,gradeId,keyword);
 		return ApiResponse.<List<ClassEntityResponse>>builder()
 				.result(result)

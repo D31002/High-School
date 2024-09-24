@@ -230,17 +230,17 @@ public class TeacherService {
             List<ArrSubjectResponse> arrSubjectResponseList =
                     teacherSubjectClient.getSubjectIdByTeacherId(teacherId).getResult();
 
-            boolean hasOtherSubject = arrSubjectResponseList.stream()
-                            .anyMatch(a -> a.getSubjectId() != subjectId);
+//            boolean hasOtherSubject = arrSubjectResponseList.stream()
+//                            .anyMatch(a -> a.getSubjectId() != subjectId);
 
 
-            if(hasOtherSubject){
+//            if(hasOtherSubject){
                 teacherSubjectClient.deleteTeacherIdInSubjectId(teacherId, subjectId);
-            }else{
-                profileClient.deleteProfile(teacher.getProfileId());
-                teacherSubjectClient.deleteTeacherIdInSubjectId(teacherId, subjectId);
-                teacherRepository.delete(teacher);
-            }
+//            }else{
+//                profileClient.deleteProfile(teacher.getProfileId());
+//                teacherSubjectClient.deleteTeacherIdInSubjectId(teacherId, subjectId);
+//                teacherRepository.delete(teacher);
+//            }
         }
     }
 

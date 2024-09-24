@@ -1,0 +1,48 @@
+.wrapper {
+    margin: 40px 0;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        .select-option {
+            display: flex;
+            margin-bottom: 10px;
+        }
+    }
+    .information {
+        // text-align: center;
+        margin: 10px 0;
+        h2 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            line-height: 3rem;
+        }
+        .rate {
+            line-height: 3rem;
+        }
+    }
+
+    .chart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        column-gap: 100px;
+        .bar-chart,
+        .pie-chart {
+            width: 40%;
+        }
+        .pie-chart {
+            width: 30%;
+        }
+        h2 {
+            text-align: center;
+            font-weight: 700;
+        }
+    }
+    p {
+        font-style: italic;
+        font-size: 1.6rem;
+    }
+}

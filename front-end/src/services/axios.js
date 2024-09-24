@@ -431,6 +431,18 @@ export const getAllLessons = (token) => {
 };
 
 //ACADEMICRESULT-SERVICE
+
+export const getAllAcademicResults = (token, classRoomId, semesterId) => {
+    return axios.get(
+        API_BASE_URL + `/academicResult/pl/getAll?classRoomId=${classRoomId || ''}&semesterId=${semesterId || ''}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+};
+
 export const getAllAcademicOfStudentOfClassRoom = (
     token,
     classRoomId,

@@ -76,6 +76,7 @@ import {
     calculateMeanScoreSemester,
     calculateMeanScoreSubject,
     assessmentAcademicResults,
+    getAllAcademicResults,
     //Attendance
     getAllAttendanceStatus,
     getAllSession,
@@ -644,6 +645,18 @@ export const useHandleDispatch = () => {
     };
 
     //Academic
+
+    const getallAcademicResults = async (token, classRoomId, semesterId) => {
+        try {
+            const response = await getAllAcademicResults(token, classRoomId, semesterId);
+            if (response.data.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
+        }
+    };
+
     const getallAcademicOfStudentOfClassRoom = async (
         token,
         classRoomId,
@@ -926,6 +939,7 @@ export const useHandleDispatch = () => {
         calculateMeanScoreOfSubject,
         calculateMeanScoreOfSemester,
         assessmentacademicResults,
+        getallAcademicResults,
 
         //attendance
         getallAttendanceStatus,

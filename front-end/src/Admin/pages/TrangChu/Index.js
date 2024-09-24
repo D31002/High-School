@@ -52,6 +52,13 @@ function Index() {
                         alt="iconClass"
                     />
                 </Button>
+                <Button className={cx('item')} to="/admin/thong-ke">
+                    <div className={cx('title')}>Thống kê điểm số</div>
+                    <img
+                        src="https://res.cloudinary.com/danrswhe6/image/upload/v1727070822/thong-ke_dx0jge.png"
+                        alt="iconClass"
+                    />
+                </Button>
             </div>
         </div>
     );

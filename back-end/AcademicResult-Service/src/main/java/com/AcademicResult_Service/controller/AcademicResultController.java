@@ -23,6 +23,16 @@ public class AcademicResultController {
     AcademicResultService academicResultService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @GetMapping("/getAll")
+    ApiResponse<List<AcademicResultResponse>> getAll(
+            @RequestParam(required = false) Integer classRoomId,
+            @RequestParam(required = false) Integer semesterId
+    ){
+        List<AcademicResultResponse> result = academicResultService.getAll(classRoomId,semesterId);
+        return ApiResponse.<List<AcademicResultResponse>>builder().result(result).build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     @GetMapping("/getAllAcademicOfStudentOfClassRoom")
     ApiResponse<PageResponse<AcademicResultResponse>> getAllAcademicOfStudentOfClassRoom(
             @RequestParam int classRoomId,

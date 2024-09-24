@@ -22,6 +22,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -43,6 +44,7 @@ public class AcademicResultService {
     ClassRoomClient classRoomClient;
     AcademicPerformanceMapper academicPerformanceMapper;
     ConductMapper conductMapper;
+    AcademicResultMapper academicResultMapper;
 
 
     public void createScoresOfStudent(int teacherId, List<AcademicCreationRequest> requests) {
@@ -142,6 +144,11 @@ public class AcademicResultService {
 
         }
         return academicResultResponse;
+    }
+
+    public List<AcademicResultResponse> getAll( Integer classRoomId, Integer semesterId) {
+        return academicResultRepository.findByClassRoomIdAndSemesterId(classRoomId,semesterId)
+                .stream().map(academicResultMapper::toAcademicResultResponse).toList();
     }
 
     public PageResponse<AcademicResultResponse> getAllAcademicOfStudentOfClassRoom(int classRoomId, int semesterId, int subjectId, int page, int pageSize, String keyword) {
@@ -290,6 +297,7 @@ public class AcademicResultService {
         ClassEntityResponse classRoom = classRoomClient.getById(classRoomId).getResult();
 
         List<SubjectMeanScoreResponse> listSubjectMeanScore = classRoom.getCombination().getSubjects().stream()
+                .filter(subjectResponse -> subjectResponse.getId() != 10)
                 .map(subjectResponse -> calculateMeanScoreSubject(studentId,classRoomId,semesterId,subjectResponse.getId())).toList();
 
         if(listSubjectMeanScore.stream().anyMatch(subjectMeanScoreResponse -> subjectMeanScoreResponse.getMeanScore() == null)){
@@ -317,6 +325,8 @@ public class AcademicResultService {
                     AcademicResult academicResult =
                             academicResultRepository.findById(request.getId())
                                     .orElseThrow((() -> new AppException(ErrorCode.ACADEMIC_RESULT_NOT_EXISTED) ));
+                    academicResult.setStudentRank(request.getStudentRank());
+                    academicResult.setMeanScore(request.getMeanScore());
                     try{
                         AcademicPerformance academicPerformance =
                                 academicPerformanceMapper.toAcademicPerformance(request.getAcademicPerformance());
@@ -336,4 +346,6 @@ public class AcademicResultService {
 
         academicResultRepository.saveAll(academicResultList);
     }
+
+
 }
