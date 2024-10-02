@@ -82,3 +82,119 @@ spring:
             - Path=${app.api-prefix}/parent/pl/**
           filters:
             - StripPrefix=2
+        - id: notification_service
+          uri: http://localhost:8082
+          predicates:
+            - Path=${app.api-prefix}/notification/**
+          filters:
+            - StripPrefix=2
+
+
+#    #Swagger
+#        - id: swagger_service
+#          uri: http://localhost:8070
+#          predicates:
+#            - Path=/identity/swagger-ui/**
+#        - id: swagger_service_api_docs_identity
+#          uri: http://localhost:8070
+#          predicates:
+#            - Path=/identity/v3/api-docs/**
+#
+#        - id: swagger_service_profile
+#          uri: http://localhost:8071
+#          predicates:
+#            - Path=/profile/swagger-ui/**
+#        - id: swagger_service_api_docs_profile
+#          uri: http://localhost:8071
+#          predicates:
+#            - Path=/profile/v3/api-docs/**
+#
+#        - id: swagger_service_teacher
+#          uri: http://localhost:8072
+#          predicates:
+#            - Path=/teacher/swagger-ui/**
+#        - id: swagger_service_api_docs_teacher
+#          uri: http://localhost:8072
+#          predicates:
+#            - Path=/teacher/v3/api-docs/**
+#
+#        - id: swagger_service_schoolYear
+#          uri: http://localhost:8073
+#          predicates:
+#            - Path=/year&semester/swagger-ui/**
+#        - id: swagger_service_api_docs_schoolYear
+#          uri: http://localhost:8073
+#          predicates:
+#            - Path=/year&semester/v3/api-docs/**
+#
+#        - id: swagger_service_classRoom
+#          uri: http://localhost:8074
+#          predicates:
+#            - Path=/classRoom/swagger-ui/**
+#        - id: swagger_service_api_docs_classRoom
+#          uri: http://localhost:8074
+#          predicates:
+#            - Path=/classRoom/v3/api-docs/**
+#
+#        - id: swagger_service_relationship
+#          uri: http://localhost:8075
+#          predicates:
+#            - Path=/relationship/swagger-ui/**
+#        - id: swagger_service_api_docs_relationship
+#          uri: http://localhost:8075
+#          predicates:
+#            - Path=/relationship/v3/api-docs/**
+#
+#        - id: swagger_service_subject
+#          uri: http://localhost:8076
+#          predicates:
+#            - Path=/subject/swagger-ui/**
+#        - id: swagger_service_api_docs_subject
+#          uri: http://localhost:8076
+#          predicates:
+#            - Path=/subject/v3/api-docs/**
+#
+#        - id: swagger_service_schedule
+#          uri: http://localhost:8077
+#          predicates:
+#            - Path=/schedule/swagger-ui/**
+#        - id: swagger_service_api_docs_schedule
+#          uri: http://localhost:8077
+#          predicates:
+#            - Path=/schedule/v3/api-docs/**
+#
+#        - id: swagger_service_student
+#          uri: http://localhost:8078
+#          predicates:
+#            - Path=/student/swagger-ui/**
+#        - id: swagger_service_api_docs_student
+#          uri: http://localhost:8078
+#          predicates:
+#            - Path=/student/v3/api-docs/**
+#
+#        - id: swagger_service_academicResult
+#          uri: http://localhost:8079
+#          predicates:
+#            - Path=/academicResult/swagger-ui/**
+#        - id: swagger_service_api_docs_academicResult
+#          uri: http://localhost:8079
+#          predicates:
+#            - Path=/academicResult/v3/api-docs/**
+#
+#        - id: swagger_service_attendance
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/attendance/swagger-ui/**
+#        - id: swagger_service_api_docs_attendance
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/attendance/v3/api-docs/**
+#
+#        - id: swagger_service_parent
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/parent/swagger-ui/**
+#        - id: swagger_service_api_docs_parent
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/parent/v3/api-docs/**

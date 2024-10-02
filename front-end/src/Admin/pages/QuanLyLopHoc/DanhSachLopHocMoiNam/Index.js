@@ -82,7 +82,7 @@ function Index() {
     }, [keyWord, currentPage, pageSize, yearId]);
 
     useEffect(() => {
-        getallschoolyear(keyWordSchoolYear, token);
+        getallschoolyear(keyWordSchoolYear);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyWordSchoolYear]);
 

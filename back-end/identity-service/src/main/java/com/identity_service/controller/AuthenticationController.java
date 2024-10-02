@@ -10,6 +10,8 @@ import com.identity_service.dto.response.IntrospectResponse;
 import com.identity_service.dto.response.RefreshResponse;
 import com.identity_service.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,29 +23,31 @@ import java.text.ParseException;
 @RequestMapping("/pl/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Tag(name = "Authentication-Controller")
 public class AuthenticationController {
 
     AuthenticationService authenticationService;
 
+    @Operation(summary = "Login")
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         AuthenticationResponse result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
-
+    @Operation(summary = "Introspect")
     @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
+    ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request)
             throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder().result(result).build();
     }
-
+    @Operation(summary = "Logout")
     @PostMapping("/logout")
     ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder().build();
     }
-
+    @Operation(summary = "Refresh Token")
     @PostMapping("/refresh")
     ApiResponse<RefreshResponse> refresh(@RequestBody RefreshRequest request)
             throws ParseException, JOSEException {

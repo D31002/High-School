@@ -1,0 +1,11 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /news
+
+spring:
+  application:
+    name: news-service
+  data:
+    mongodb:
+      uri: mongodb://root:12345@localhost:27017/LVTN_news-service?authSource=admin

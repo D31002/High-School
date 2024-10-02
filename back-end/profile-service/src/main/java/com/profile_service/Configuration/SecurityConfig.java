@@ -22,7 +22,10 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
-
+            "/internal/getProfileById/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html"
     };
     @Autowired
     private CustomJwtDecoder customJwtDecoder;

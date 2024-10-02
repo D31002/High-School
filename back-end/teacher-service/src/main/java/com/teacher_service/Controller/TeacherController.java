@@ -22,7 +22,6 @@ public class TeacherController {
 
     TeacherService teacherService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     @GetMapping("/getTeacherById/{id}")
     ApiResponse<TeacherResponse> getTeacherById(@PathVariable int id){
         TeacherResponse result = teacherService.getTeacherById(id);

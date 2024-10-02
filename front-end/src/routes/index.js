@@ -45,7 +45,7 @@ const pageRoutes = [
     { path: '/tuyensinh/gioithieutuyensinh', Component: GioiThieuTS, layout: HearderAndFooter },
     { path: '/tuvan/nghenghiep', Component: TuVanTuyenSinh, layout: HearderAndFooter },
     { path: '/thongtinlophoc', Component: thongtinlophoc, layout: HearderAndFooter },
-    { path: '/thongtinlophoc/:name', Component: thongtinLop, layout: HearderAndFooter },
+    { path: '/thongtinlophoc/:id', Component: thongtinLop, layout: HearderAndFooter },
     {
         path: '/ket-qua-hoc-tap',
         Component: AcademicResult,

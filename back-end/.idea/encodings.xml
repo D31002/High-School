@@ -7,10 +7,10 @@
     <file url="file://$PROJECT_DIR$/attendance-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/classRoom-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/identity-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/notification-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/parent-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/profile-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/reporting-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/schedule-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/schoolYear_Semester-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/student-service/src/main/java" charset="UTF-8" />

@@ -30,6 +30,13 @@ public class ClassEntityController {
 				.result(result)
 				.build();
 	}
+	@GetMapping("/getAllByNow")
+	ApiResponse<List<ClassEntityResponse>> getAllByNow(@RequestParam int schoolYearId) {
+		List<ClassEntityResponse> result = classEntityService.getAllByNow(schoolYearId);
+		return ApiResponse.<List<ClassEntityResponse>>builder()
+				.result(result)
+				.build();
+	}
 	@PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
 	@GetMapping("/getClassRoomByClassTeacher")
 	ApiResponse<ClassEntityResponse> getClassRoomByClassTeacher(

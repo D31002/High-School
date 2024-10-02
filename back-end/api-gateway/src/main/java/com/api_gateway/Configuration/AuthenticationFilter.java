@@ -36,7 +36,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     @NonFinal
     private String[] PUBLIC_ENDPOINT = {
-            "/identity/pl/auth/.*"
+            "/relationship/pl/studentClassRoom/getStudentIdByClassRoomId",
+            "/year&semester/pl/schoolYear/getAll",
+            "/classRoom/pl/getAllByNow",
+            "/identity/pl/auth/.*",
+            "/.*/swagger-ui/.*",
+            "/.*/v3/api-docs/.*",
     };
 
     @NonFinal
@@ -73,7 +78,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     private boolean isPublicEndpoint(ServerHttpRequest request){
         return Arrays.stream(PUBLIC_ENDPOINT)
-                .anyMatch(s -> request.getURI().getPath().matches(apiPrefix + s));
+                .anyMatch(s -> request.getURI().getPath().matches(apiPrefix + s)
+                        || request.getURI().getPath().matches(s));
     }
 
 

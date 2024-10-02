@@ -53,9 +53,11 @@ public class UserProfileService {
     public UserProfileResponse getProfileById(Integer id) {
         UserProfile userProfile = userProfileRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.PROFILE_NOT_EXISTED));
-        UserResponse userResponse = null;
-        if(userProfile.getUserId() != null){
+        UserResponse userResponse;
+        try{
             userResponse = identityClient.getUserById(userProfile.getUserId()).getResult(); 
+        }catch (Exception e){
+            userResponse = null;
         }
         UserProfileResponse userProfileResponse =userProfileMapper.toUserProfileResponse(userProfile);
         userProfileResponse.setUserResponse(userResponse);

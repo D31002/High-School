@@ -1,0 +1,16 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /notification
+
+app:
+  services:
+    identity: http://localhost:8070/identity
+    profile: http://localhost:8071/profile
+
+spring:
+  application:
+    name: news-service
+  data:
+    mongodb:
+      uri: mongodb://root:12345@localhost:27017/LVTN_notification-service?authSource=admin

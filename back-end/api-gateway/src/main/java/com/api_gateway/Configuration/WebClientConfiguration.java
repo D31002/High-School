@@ -41,6 +41,4 @@ public class WebClientConfiguration {
 
         return httpServiceProxyFactory.createClient(IdentityClient.class);
     }
-
-
 }

@@ -40,7 +40,7 @@ function Index() {
 
     useEffect(() => {
         getallCategory(token);
-        getallschoolyear('', token);
+        getallschoolyear();
         getallsemester(token);
         getallAttendanceStatus(token);
         // eslint-disable-next-line react-hooks/exhaustive-deps

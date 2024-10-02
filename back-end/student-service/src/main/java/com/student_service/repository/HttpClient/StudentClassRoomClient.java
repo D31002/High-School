@@ -16,7 +16,7 @@ import java.util.Set;
         configuration = {AuthenticationRequestInterceptor.class})
 public interface StudentClassRoomClient {
 
-      @GetMapping("/internal/studentClassRoom/getStudentIdByClassRoomId")
+      @GetMapping("/pl/studentClassRoom/getStudentIdByClassRoomId")
       ApiResponse<List<StudentClassRoomResponse>> getStudentIdByClassRoomId(@RequestParam int classRoomId);
 
       @GetMapping("/internal/studentClassRoom/getAllStudentId")

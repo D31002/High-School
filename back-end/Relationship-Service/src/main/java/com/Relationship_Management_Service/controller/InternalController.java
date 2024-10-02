@@ -57,14 +57,6 @@ public class InternalController {
 
 
     //STUDENT
-    @GetMapping("/studentClassRoom/getStudentIdByClassRoomId")
-    ApiResponse<List<StudentClassRoomResponse>> getStudentIdByClassRoomId(@RequestParam int classRoomId){
-        List<StudentClassRoomResponse> result = studentClassRoomService.getStudentIdByClassRoomId(classRoomId);
-        return ApiResponse.<List<StudentClassRoomResponse>>builder()
-                .result(result)
-                .build();
-    }
-
     @GetMapping("/studentClassRoom/getClassRoomIdByStudentId")
     ApiResponse<List<ArrClassRoomResponse>> getClassRoomIdByStudentId(@RequestParam int studentId){
         List<ArrClassRoomResponse> result = studentClassRoomService.getClassRoomIdByStudentId(studentId);

@@ -44,8 +44,8 @@ public class ClassEntityService{
 		}catch (Exception e){
 			classEntityResponse.setClassTeacher(null);
 		}
-		classEntityResponse.setSchoolYear(schoolYearSemesterClient.getSchoolYearBySchoolYearId(classEntity.getSchoolYearId()).getResult());
 		classEntityResponse.setCombination(subjectClient.getById(classEntity.getCombinationId()).getResult());
+		classEntityResponse.setSchoolYear(schoolYearSemesterClient.getSchoolYearBySchoolYearId(classEntity.getSchoolYearId()).getResult());
 		return classEntityResponse;
 	}
 
@@ -54,7 +54,11 @@ public class ClassEntityService{
 				.orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_EXISTED));
 		return mapToClassEntityResponse(classEntity);
 	}
-
+	public List<ClassEntityResponse> getAllByNow(int schoolYearId) {
+		return classEntityRepository.findBySchoolYearId(schoolYearId).stream()
+				.sorted(Comparator.comparing(ClassEntity::getName))
+				.map(this::mapToClassEntityResponse).toList();
+	}
 	public ClassEntityResponse getClassRoomByClassTeacher(int classTeacherId, int schoolYearId) {
 		ClassEntity classEntity =
 				classEntityRepository.findByClassTeacherIdAndSchoolYearId(classTeacherId,schoolYearId);
@@ -238,6 +242,8 @@ public class ClassEntityService{
 		}
 		classEntityRepository.saveAll(newClassEntities);
 	}
+
+
 
 	//internal
 }

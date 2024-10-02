@@ -30,12 +30,8 @@ export const editProfile = (token, formData) => {
 };
 
 //SCHOOLYEAR_SEMESTER-SERVICE
-export const getAllSchoolYear = (keyword, token) => {
-    return axios.get(API_BASE_URL + `/year&semester/pl/schoolYear/getAll?keyword=${keyword}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+export const getAllSchoolYear = (keyword) => {
+    return axios.get(API_BASE_URL + `/year&semester/pl/schoolYear/getAll?keyword=${keyword}`);
 };
 
 export const getAllSemester = (token) => {
@@ -61,6 +57,9 @@ export const getClassRoomById = (token, classRoomId) => {
             Authorization: `Bearer ${token}`,
         },
     });
+};
+export const getAllByNow = (schoolYearId) => {
+    return axios.get(API_BASE_URL + `/classRoom/pl/getAllByNow?schoolYearId=${schoolYearId}`);
 };
 
 export const getClassRoomByClassTeacher = (token, classTeacherId, schoolYearId) => {
@@ -577,7 +576,7 @@ export const createAttendance = (token, classRoomId, semesterId, data) => {
         },
     );
 };
-//PARENT-SERvice
+//PARENT-SERVICE
 export const getAllParentOfStudent = (token, studentId) => {
     return axios.get(API_BASE_URL + `/parent/pl/getAllParentOfStudent?studentId=${studentId}`, {
         headers: {
@@ -586,6 +585,12 @@ export const getAllParentOfStudent = (token, studentId) => {
     });
 };
 
+//RELATIONSHIP-SERVICE
+export const getStudentIdByClassRoomId = (classRoomId) => {
+    return axios.get(
+        API_BASE_URL + `/relationship/pl/studentClassRoom/getStudentIdByClassRoomId?classRoomId=${classRoomId}`,
+    );
+};
 //outside
 export const getDiaGioiHanhChinhVN = () => {
     return axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');

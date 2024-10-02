@@ -24,6 +24,7 @@ import {
     editClass,
     cpyData,
     deleteClass,
+    getAllByNow,
     getAllClassesByYearAndGrade,
     getClassRoomById,
     getAllClassRoomOfTeacher,
@@ -85,6 +86,9 @@ import {
 
     //Parent
     getAllParentOfStudent,
+
+    //relationship
+    getStudentIdByClassRoomId,
 
     //outside
     getDiaGioiHanhChinhVN,
@@ -382,10 +386,10 @@ export const useHandleDispatch = () => {
     };
 
     //SCHOOLYEAR-SERVICE
-    const getallschoolyear = async (keyWord = '', token) => {
+    const getallschoolyear = async (keyWord = '') => {
         try {
             dispatch(schoolSlice.actions.FETCH_ALL_SchoolYears_REQUEST());
-            const response = await getAllSchoolYear(keyWord, token);
+            const response = await getAllSchoolYear(keyWord);
             if (response.data.code === 1000) {
                 dispatch(schoolSlice.actions.FETCH_ALL_SchoolYears_SUCCESS(response.data.result));
             }
@@ -420,6 +424,17 @@ export const useHandleDispatch = () => {
         try {
             dispatch(classesSlice.actions.FETCH_ALL_CLASSES_REQUEST());
             const response = await getClassRoomById(token, classRoomId);
+            if (response.data.code === 1000) {
+                dispatch(classesSlice.actions.FETCH_ALL_CLASSES_NOT_PAGINATION_SUCCESS(response.data.result));
+            }
+        } catch (error) {
+            dispatch(classesSlice.actions.FETCH_ALL_CLASSES_FAILURE(error.response.data.message));
+        }
+    };
+    const getallByNow = async (schoolYearId) => {
+        try {
+            dispatch(classesSlice.actions.FETCH_ALL_CLASSES_REQUEST());
+            const response = await getAllByNow(schoolYearId);
             if (response.data.code === 1000) {
                 dispatch(classesSlice.actions.FETCH_ALL_CLASSES_NOT_PAGINATION_SUCCESS(response.data.result));
             }
@@ -857,6 +872,18 @@ export const useHandleDispatch = () => {
         }
     };
 
+    //relationship
+    const getstudentIdByClassRoomId = async (classRoomId) => {
+        try {
+            const response = await getStudentIdByClassRoomId(classRoomId);
+            if (response?.data?.code === 1000) {
+                return response?.data;
+            }
+        } catch (error) {
+            return error?.response?.data;
+        }
+    };
+
     //outside
     const getdiaGioiHanhChinhVN = async () => {
         try {
@@ -901,6 +928,7 @@ export const useHandleDispatch = () => {
 
         //ClassEntity
         getclassroombyid,
+        getallByNow,
         getclassRoomNOWofStudent,
         getallclassesbyyear,
         getallclassesbyyearandgrade,
@@ -949,6 +977,9 @@ export const useHandleDispatch = () => {
 
         //parent
         getallParentOfStudent,
+
+        //relationship
+        getstudentIdByClassRoomId,
 
         //out
         getdiaGioiHanhChinhVN,

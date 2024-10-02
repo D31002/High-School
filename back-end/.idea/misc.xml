@@ -20,6 +20,7 @@
         <option value="$PROJECT_DIR$/Relationship-Service/pom.xml" />
         <option value="$PROJECT_DIR$/AcademicResult-Service/pom.xml" />
         <option value="$PROJECT_DIR$/schoolYear_Semester-service/pom.xml" />
+        <option value="$PROJECT_DIR$/news-service/pom.xml" />
       </list>
     </option>
   </component>

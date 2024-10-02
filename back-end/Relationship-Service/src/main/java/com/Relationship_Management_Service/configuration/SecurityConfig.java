@@ -19,7 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
-
+            "/pl/studentClassRoom/getStudentIdByClassRoomId",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html"
     };
     @Autowired
     private CustomJwtDecoder customJwtDecoder;

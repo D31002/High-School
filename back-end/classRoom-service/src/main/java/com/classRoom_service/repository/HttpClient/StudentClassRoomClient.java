@@ -17,6 +17,6 @@ public interface StudentClassRoomClient {
     @GetMapping("/internal/studentClassRoom/getClassRoomIdByStudentId")
     ApiResponse<List<ArrClassRoomResponse>> getClassRoomIdByStudentId(@RequestParam int studentId);
 
-    @GetMapping("/internal/studentClassRoom/getStudentIdByClassRoomId")
+    @GetMapping("/pl/studentClassRoom/getStudentIdByClassRoomId")
     ApiResponse<List<StudentClassRoomResponse>> getStudentIdByClassRoomId(@RequestParam int classRoomId);
 }
