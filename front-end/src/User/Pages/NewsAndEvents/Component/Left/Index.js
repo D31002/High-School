@@ -1,39 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames/bind';
 import Styles from './left.module.scss';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 import Paginate from '../../../../../Component/paginate/paginate';
+import Button from '../../../../../Component/button/Button';
 
 const cx = classNames.bind(Styles);
 
-function Index({ data }) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const postsPerPage = 6;
-
-    const startIndex = (currentPage - 1) * postsPerPage;
-    const endIndex = postsPerPage + startIndex;
-    const newdatas = data.slice(startIndex, endIndex);
-    const totalPage = data.length;
-
+function Index({ data, currentPage, setCurrentPage, totalPages }) {
     return (
-        <div className={cx('wrapper')}>
-            {newdatas.map((item, index) => (
-                <div className={cx('item')} key={index}>
-                    <div className={cx('content')}>
-                        <img src={item.img} alt="anh" />
-                        <div className={cx('description')}>
-                            <h1>{item.title}</h1>
-                            <p>{item.description}</p>
+        <>
+            <div className={cx('wrapper')}>
+                {data.map((item, index) => (
+                    <Button className={cx('item')} key={index} to={`/tin-tuc/${item.id}`}>
+                        <div className={cx('content')}>
+                            <img src={item.imageMainUrl} alt="anh" />
+                            <div className={cx('description')}>
+                                <p>
+                                    <DateRangeIcon />
+                                    {item.createdAt}
+                                </p>
+                                <h1>{item.title}</h1>
+                                <p>{item.content}</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            ))}
-            <Paginate
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                postsPerPage={postsPerPage}
-                totalPage={totalPage}
-            />
-        </div>
+                    </Button>
+                ))}
+            </div>
+            <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+        </>
     );
 }
 

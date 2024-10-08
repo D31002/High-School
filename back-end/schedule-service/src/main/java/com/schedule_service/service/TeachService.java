@@ -40,7 +40,7 @@ public class TeachService {
 	SchoolYearSemesterClient schoolYearSemesterClient;
 
 
-	public List<TeachResponse> generateSchedules(int schoolYearId) {
+	public TeachResponse generateSchedules(int schoolYearId) {
 
 		// Lấy danh sách lớp học
 		List<ClassEntityResponse> classRoomList =
@@ -60,8 +60,6 @@ public class TeachService {
 		List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values())
 				.filter(day -> day != DayOfWeek.SUNDAY)
 				.toList();
-
-		List<TeachResponse> teachResponses = new ArrayList<>();
 
 		List<AssignedLesson> assignedLessons = new ArrayList<>();
 		// Duyệt từng lớp học
@@ -138,12 +136,14 @@ public class TeachService {
 			}
 		}
 
-
+		List<TeachDetailsResponse> teachDetailsResponseList = new ArrayList<>();
 		for (int i = 0; i < assignedLessons.size(); i++) {
 			AssignedLesson entry = assignedLessons.get(i);
-			teachResponses.add(createTeachResponse(entry, schoolYearId, i));
+			teachDetailsResponseList.add(createTeachResponse(entry, schoolYearId, i));
 		}
-		return teachResponses;
+		return TeachResponse.builder().schoolYearResponse(
+				schoolYearSemesterClient.getSchoolYearBySchoolYearId(schoolYearId).getResult())
+				.teachDetails(teachDetailsResponseList).build();
 	}
 
 	private Lesson getNextLesson(List<Lesson> availableLessons, int nextLessonNumber) {
@@ -210,7 +210,7 @@ public class TeachService {
 						al.getDayOfWeek().equals(dayOfWeek)
 		);
 	}
-	private TeachResponse createTeachResponse(AssignedLesson entry, int schoolYearId, int index) {
+	private TeachDetailsResponse createTeachResponse(AssignedLesson entry, int schoolYearId, int index) {
 		Teach teach = Teach.builder()
 				.id(index + 1)
 				.dayOfWeek(entry.getDayOfWeek())
@@ -221,19 +221,25 @@ public class TeachService {
 				.lesson(entry.getLesson())
 				.build();
 
-		return mapToTeachResponse(teach);
+		return mapToTeachDetailsResponse(teach);
 	}
-	public List<TeachResponse> getSchedulesBySchoolYearId(int schoolYearId) {
+	public TeachResponse getSchedulesBySchoolYearId(int schoolYearId) {
 		List<Teach> teachList = teachRepository.findBySchoolYearId(schoolYearId);
-		return teachList.stream()
-				.map(this::mapToTeachResponse)
-				.sorted(Comparator.comparing(TeachResponse::getClassEntityResponse,
-						Comparator.comparing(ClassEntityResponse::getName)))
-				.collect(Collectors.toList());
+
+		List<TeachDetailsResponse> teachDetailsResponseList =
+				teachList.stream()
+						.map(this::mapToTeachDetailsResponse)
+						.sorted(Comparator.comparing(TeachDetailsResponse::getClassEntityResponse,
+								Comparator.comparing(ClassEntityResponse::getName)))
+						.toList();
+
+		return TeachResponse.builder().schoolYearResponse(
+				schoolYearSemesterClient.getSchoolYearBySchoolYearId(schoolYearId).getResult())
+				.teachDetails(teachDetailsResponseList).build();
 	}
 
-	private TeachResponse mapToTeachResponse(Teach teach) {
-		TeachResponse response = teachMapper.toTeachResponse(teach);
+	private TeachDetailsResponse mapToTeachDetailsResponse(Teach teach) {
+		TeachDetailsResponse response = teachMapper.toTeachDetailsResponse(teach);
 		response.setLesson(lessonMapper.toLessonResponse(teach.getLesson()));
 		try{
 			response.setTeacherResponse(teacherClient.getTeacherById(teach.getTeacherId()).getResult());
@@ -242,13 +248,12 @@ public class TeachService {
 		}
 		response.setSubjectResponse(subjectClient.getById(teach.getSubjectId()).getResult());
 		response.setClassEntityResponse(classRoomClient.getById(teach.getClassRoomId()).getResult());
-		response.setSchoolYearResponse(schoolYearSemesterClient.getSchoolYearBySchoolYearId(teach.getSchoolYearId()).getResult());
 		return response;
 	}
 
 
-	public List<TeachResponse> saveSchedules(List<DataSaveSchedulesRequest> request) {
-		List<TeachResponse> teachResponseList = new ArrayList<>();
+	public List<TeachDetailsResponse> saveSchedules(List<DataSaveSchedulesRequest> request) {
+		List<TeachDetailsResponse> teachResponseList = new ArrayList<>();
 		for (DataSaveSchedulesRequest entry : request) {
 			Teach teach = Teach.builder()
 					.dayOfWeek(DayOfWeek.valueOf(entry.getDayOfWeek()))
@@ -256,10 +261,10 @@ public class TeachService {
 					.subjectId(entry.getSubjectId())
 					.classRoomId(entry.getClassRoomId())
 					.schoolYearId(entry.getSchoolYearId())
-					.lesson(lessonRepository.findById(entry.getLessonId()).get())
+					.lesson(lessonRepository.findById(entry.getLessonId()).orElse(null))
 					.build();
 
-			teachResponseList.add(teachMapper.toTeachResponse(teach));
+			teachResponseList.add(teachMapper.toTeachDetailsResponse(teach));
 			teachRepository.save(teach);
 		}
 		return teachResponseList;
@@ -267,11 +272,11 @@ public class TeachService {
 
 
 
-	public TeachResponse EditSchedules(DataEditRequest request) {
+	public TeachDetailsResponse EditSchedules(DataEditRequest request) {
 		Teach teach = teachRepository.findById(request.getTeachId())
 				.orElseThrow(() ->  new AppException(ErrorCode.TEACH_NOT_EXISTED));
 		teach.setTeacherId(request.getTeacherId());
-		return teachMapper.toTeachResponse(teachRepository.save(teach));
+		return teachMapper.toTeachDetailsResponse(teachRepository.save(teach));
 	}
 
 	public void deleteSchedulesBySchoolYearId(int schoolYearId) {
@@ -282,16 +287,16 @@ public class TeachService {
 	}
 
 
-    public List<TeachResponse> getSchedulesOfTeacherBySchoolYearId(int teacherId, int schoolYearId) {
+    public List<TeachDetailsResponse> getSchedulesOfTeacherBySchoolYearId(int teacherId, int schoolYearId) {
 
 		List<Teach> teachList = teachRepository.findByTeacherIdAndSchoolYearId(teacherId,schoolYearId);
 
 		return teachList.stream().map(teach -> {
-			TeachResponse response = teachMapper.toTeachResponse(teach);
+			TeachDetailsResponse response = teachMapper.toTeachDetailsResponse(teach);
 			response.setLesson(lessonMapper.toLessonResponse(teach.getLesson()));
 			response.setSubjectResponse(subjectClient.getById(teach.getSubjectId()).getResult());
 			response.setClassEntityResponse(classRoomClient.getById(teach.getClassRoomId()).getResult());
-			response.setSchoolYearResponse(schoolYearSemesterClient.getSchoolYearBySchoolYearId(teach.getSchoolYearId()).getResult());
+//			response.setSchoolYearResponse(schoolYearSemesterClient.getSchoolYearBySchoolYearId(teach.getSchoolYearId()).getResult());
 			return response;
 		}).toList();
     }

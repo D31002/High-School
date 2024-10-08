@@ -13,28 +13,28 @@ function Index() {
                     <div className={cx('title')}>Quản Lý Lớp Học</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960219/Icon-SchoolClassroom_ebpyp1.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
                 <Button className={cx('item')} to="/admin/quan-ly-giao-vien">
                     <div className={cx('title')}>Quản lý giáo viên</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960196/Icon-User_t8r0ip.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
                 <Button className={cx('item')} to="/admin/xep-lich-Giang-Day">
                     <div className={cx('title')}>Xếp lịch giảng dạy</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960218/Icon-KeHoach_ugb632.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
                 <Button className={cx('item')} to="/admin/classRoom">
                     <div className={cx('title')}>Quản Lý Học Sinh</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960196/Icon-User_t8r0ip.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
 
@@ -42,21 +42,28 @@ function Index() {
                     <div className={cx('title')}>Lịch Giảng Dạy</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960218/Icon-KeHoach_ugb632.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
                 <Button className={cx('item')} to="/admin/diem-danh">
                     <div className={cx('title')}>Điểm danh</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960218/Icon-KeHoach_ugb632.png"
-                        alt="iconClass"
+                        alt="icon"
                     />
                 </Button>
                 <Button className={cx('item')} to="/admin/thong-ke">
                     <div className={cx('title')}>Thống kê điểm số</div>
                     <img
                         src="https://res.cloudinary.com/danrswhe6/image/upload/v1727070822/thong-ke_dx0jge.png"
-                        alt="iconClass"
+                        alt="icon"
+                    />
+                </Button>
+                <Button className={cx('item')} to="/admin/quan-ly-news">
+                    <div className={cx('title')}>Quàn lý tin tức sự kiện</div>
+                    <img
+                        src="https://res.cloudinary.com/danrswhe6/image/upload/v1728004973/news_v6imib.png"
+                        alt="icon news"
                     />
                 </Button>
             </div>

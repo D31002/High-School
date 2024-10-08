@@ -4,6 +4,7 @@ import com.schedule_service.dto.request.DataEditRequest;
 import com.schedule_service.dto.request.DataSaveSchedulesRequest;
 import com.schedule_service.dto.response.ApiResponse;
 import com.schedule_service.dto.response.SubjectResponse;
+import com.schedule_service.dto.response.TeachDetailsResponse;
 import com.schedule_service.dto.response.TeachResponse;
 import com.schedule_service.service.TeachService;
 import lombok.AccessLevel;
@@ -24,18 +25,18 @@ public class TeachController {
 	TeachService teachService;
 
     @GetMapping("/teach/getSchedulesBySchoolYearId/{schoolYearId}")
-    ApiResponse<List<TeachResponse>> getSchedulesBySchoolYearId(@PathVariable int schoolYearId){
-        List<TeachResponse> result = teachService.getSchedulesBySchoolYearId(schoolYearId);
-        return ApiResponse.<List<TeachResponse>>builder().result(result).build();
+    ApiResponse<TeachResponse> getSchedulesBySchoolYearId(@PathVariable int schoolYearId){
+        TeachResponse result = teachService.getSchedulesBySchoolYearId(schoolYearId);
+        return ApiResponse.<TeachResponse>builder().result(result).build();
     }
 
     @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/teach/getSchedulesOfTeacherBySchoolYearId")
-    ApiResponse<List<TeachResponse>> getSchedulesOfTeacherBySchoolYearId(@RequestParam int teacherId,
+    ApiResponse<List<TeachDetailsResponse>> getSchedulesOfTeacherBySchoolYearId(@RequestParam int teacherId,
                                                                          @RequestParam int schoolYearId){
-        List<TeachResponse> result =
+        List<TeachDetailsResponse> result =
                 teachService.getSchedulesOfTeacherBySchoolYearId(teacherId,schoolYearId);
-        return ApiResponse.<List<TeachResponse>>builder().result(result).build();
+        return ApiResponse.<List<TeachDetailsResponse>>builder().result(result).build();
     }
 
     @PreAuthorize("hasRole('TEACHER')")
@@ -49,21 +50,21 @@ public class TeachController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/teach/generateSchedules")
-    ApiResponse<List<TeachResponse>> generateSchedules(@RequestParam int schoolYearId){
-        List<TeachResponse> result = teachService.generateSchedules(schoolYearId);
-        return ApiResponse.<List<TeachResponse>>builder().result(result).build();
+    ApiResponse<TeachResponse> generateSchedules(@RequestParam int schoolYearId){
+        TeachResponse result = teachService.generateSchedules(schoolYearId);
+        return ApiResponse.<TeachResponse>builder().result(result).build();
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/teach/saveSchedules")
-    ApiResponse<List<TeachResponse>> saveSchedules(@RequestBody List<DataSaveSchedulesRequest> request){
-        List<TeachResponse> result = teachService.saveSchedules(request);
-        return ApiResponse.<List<TeachResponse>>builder().result(result).build();
+    ApiResponse<List<TeachDetailsResponse>> saveSchedules(@RequestBody List<DataSaveSchedulesRequest> request){
+        List<TeachDetailsResponse> result = teachService.saveSchedules(request);
+        return ApiResponse.<List<TeachDetailsResponse>>builder().result(result).build();
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/teach/EditSchedules")
-    ApiResponse<TeachResponse> EditSchedules(@RequestBody DataEditRequest request){
-        TeachResponse result = teachService.EditSchedules(request);
-        return ApiResponse.<TeachResponse>builder().result(result).build();
+    ApiResponse<TeachDetailsResponse> EditSchedules(@RequestBody DataEditRequest request){
+        TeachDetailsResponse result = teachService.EditSchedules(request);
+        return ApiResponse.<TeachDetailsResponse>builder().result(result).build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

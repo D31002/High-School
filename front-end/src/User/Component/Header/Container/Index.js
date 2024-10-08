@@ -47,12 +47,12 @@ function Index() {
                 <NavLink className={cx('btn-link', { active: location.pathname === '/tuyendung' })} to="/tuyendung">
                     Tuyển Dụng
                 </NavLink>
-                <NavLink className={cx('btn-link', { active: location.pathname === '/tintuc' })} to="/tintuc">
+                <NavLink className={cx('btn-link', { active: location.pathname.includes('/tin-tuc') })} to="/tin-tuc">
                     Tin Tức
                 </NavLink>
-                <NavLink className={cx('btn-link', { active: location.pathname === '/sukien' })} to="/sukien">
+                {/* <NavLink className={cx('btn-link', { active: location.pathname === '/sukien' })} to="/sukien">
                     Sự Kiện
-                </NavLink>
+                </NavLink> */}
                 <NavLink className={cx('btn-link', { active: location.pathname === '/lienhe' })} to="/lienhe">
                     Liên Hệ
                 </NavLink>

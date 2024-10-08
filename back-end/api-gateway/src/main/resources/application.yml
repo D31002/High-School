@@ -88,6 +88,12 @@ spring:
             - Path=${app.api-prefix}/notification/**
           filters:
             - StripPrefix=2
+        - id: news_service
+          uri: http://localhost:8083
+          predicates:
+            - Path=${app.api-prefix}/news/pl/**
+          filters:
+            - StripPrefix=2
 
 
 #    #Swagger

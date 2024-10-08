@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,21 +14,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeachResponse {
-
-	int id;
-
-	DayOfWeek dayOfWeek;
-
-	LessonResponse lesson;
-
-	ClassEntityResponse classEntityResponse;
-
-	TeacherResponse teacherResponse;
-
-	SubjectResponse subjectResponse;
-
 	SchoolYearResponse schoolYearResponse;
 
-
-
+	List<TeachDetailsResponse> teachDetails;
 }

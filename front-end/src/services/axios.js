@@ -591,6 +591,15 @@ export const getStudentIdByClassRoomId = (classRoomId) => {
         API_BASE_URL + `/relationship/pl/studentClassRoom/getStudentIdByClassRoomId?classRoomId=${classRoomId}`,
     );
 };
+
+//NEWS-SERVICE
+export const getAllNews = (page, pageSize) => {
+    return axios.get(API_BASE_URL + `/news/pl/news?page=${page}&pageSize=${pageSize}`);
+};
+export const getNewsById = (id) => {
+    return axios.get(API_BASE_URL + `/news/pl/news/${id}`);
+};
+
 //outside
 export const getDiaGioiHanhChinhVN = () => {
     return axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');

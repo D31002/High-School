@@ -116,7 +116,7 @@ function XepGiangDay() {
         }
     };
     const handleDeleteTKB = async () => {
-        if (YearId && teachs.length > 0) {
+        if (YearId && teachs?.teachDetails?.length > 0) {
             showBeforeDelete(`Bạn muốn xóa :)`).then(async (result) => {
                 if (result.isConfirmed) {
                     await deleteschedulesbySchoolYearId(token, YearId);
@@ -194,7 +194,7 @@ function XepGiangDay() {
         return Object.values(classSchedules).sort((a, b) => a.className.localeCompare(b.className));
     };
 
-    const scheduleData = processData(teachs.length > 0 ? teachs : dataGenerate || []);
+    const scheduleData = processData(teachs?.teachDetails?.length > 0 ? teachs.teachDetails : dataGenerate || []);
 
     const oncloseModal = () => {
         setShowModal(false);
@@ -204,10 +204,10 @@ function XepGiangDay() {
         if (id) {
             setShowModal(true);
             let teach;
-            if (teachs.length <= 0) {
+            if (teachs.teachDetails?.length <= 0) {
                 teach = dataGenerate.find((item) => item.id === id);
             } else {
-                teach = teachs.find((item) => item.id === id);
+                teach = teachs.teachDetails.find((item) => item.id === id);
             }
             await getallteacherbysubjectInNotpagination(token, teach?.subjectResponse?.id);
             setDataEdit({ ...dataEdit, teachId: teach?.id, teacherId: teach?.teacherResponse?.id });
@@ -222,7 +222,7 @@ function XepGiangDay() {
             const response = await getteacherbyid(token, dataEdit.teacherId);
             if (response.code === 1000) {
                 let index;
-                if (teachs.length <= 0) {
+                if (teachs.teachDetails?.length <= 0) {
                     index = dataGenerate.findIndex((item) => item.id === dataEdit.teachId);
                     if (index !== -1) {
                         const newData = dataGenerate.map((item) =>
@@ -262,12 +262,12 @@ function XepGiangDay() {
                     />
                 </div>
                 <div>
-                    {teachs.length > 0 && (
+                    {teachs.teachDetails?.length > 0 && (
                         <Button onClick={handleDeleteTKB} btn>
                             Xóa thời khóa biểu
                         </Button>
                     )}
-                    {teachs.length <= 0 && (
+                    {teachs.teachDetails?.length <= 0 && (
                         <Button onClick={handleGenerateTKB} btn>
                             Tạo thời khóa biểu
                         </Button>

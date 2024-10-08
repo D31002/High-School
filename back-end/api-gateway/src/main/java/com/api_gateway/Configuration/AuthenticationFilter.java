@@ -42,6 +42,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             "/identity/pl/auth/.*",
             "/.*/swagger-ui/.*",
             "/.*/v3/api-docs/.*",
+            "/news/pl/.*"
     };
 
     @NonFinal
@@ -54,7 +55,6 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
         List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
-
         if(CollectionUtils.isEmpty(authHeader)){
             return unauthenticated(exchange.getResponse());
         }

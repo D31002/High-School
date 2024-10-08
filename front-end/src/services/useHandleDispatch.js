@@ -90,6 +90,10 @@ import {
     //relationship
     getStudentIdByClassRoomId,
 
+    //news
+    getAllNews,
+    getNewsById,
+
     //outside
     getDiaGioiHanhChinhVN,
 } from './axios';
@@ -103,6 +107,7 @@ import schoolSlice from '../ReducerSlice/schoolYear';
 import gradeSlice from '../ReducerSlice/gradeSlice';
 import academicResultSlice from '../ReducerSlice/academicResultSlice';
 import attendanceSlice from '../ReducerSlice/attendanceSlice';
+import newsSlice from '../ReducerSlice/newsSlice';
 
 export const useHandleDispatch = () => {
     const dispatch = useDispatch();
@@ -883,6 +888,28 @@ export const useHandleDispatch = () => {
             return error?.response?.data;
         }
     };
+    //news
+    const getallnews = async (currentPage, pagesize) => {
+        try {
+            dispatch(newsSlice.actions.FETCH_ALL_NEWS_REQUEST());
+            const response = await getAllNews(currentPage, pagesize);
+            if (response?.data?.code === 1000) {
+                dispatch(newsSlice.actions.FETCH_ALL_NEWS_SUCCESS(response.data.result));
+            }
+        } catch (error) {
+            dispatch(newsSlice.actions.FETCH_ALL_NEWS_FAILURE(error.response.data.message));
+        }
+    };
+    const getnewsById = async (id) => {
+        try {
+            const response = await getNewsById(id);
+            if (response?.data?.code === 1000) {
+                return response?.data;
+            }
+        } catch (error) {
+            return error?.response?.data;
+        }
+    };
 
     //outside
     const getdiaGioiHanhChinhVN = async () => {
@@ -980,6 +1007,10 @@ export const useHandleDispatch = () => {
 
         //relationship
         getstudentIdByClassRoomId,
+
+        //news
+        getallnews,
+        getnewsById,
 
         //out
         getdiaGioiHanhChinhVN,

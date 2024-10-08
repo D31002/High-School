@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Styles from './Tuvan.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import Button from '../../../Component/button/Button';
 
 const cx = classNames.bind(Styles);
 

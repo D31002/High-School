@@ -37,6 +37,7 @@ function Index({ onclose, classRoom }) {
     const academicPerformances = useSelector(AcademicPerformance);
     const totalPages = useSelector(totalPagesStudent);
     const [keyWord, setKeyWord] = useState('');
+    console.log(setKeyWord);
     const [loading, setLoading] = useState(false);
     const [showSelectConduct, setShowSelectConduct] = useState(false);
     const [semesterNow, setSemesterNow] = useState();

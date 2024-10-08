@@ -23,6 +23,7 @@ function Index({ classRoom }) {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
+    const [hasLoaded, setHasLoaded] = useState(false);
     const navigate = useNavigate();
     const messageListRef = useRef();
 
@@ -46,18 +47,20 @@ function Index({ classRoom }) {
                 const newMessages = (data?.result?.data).reverse();
                 return Array.isArray(newMessages) ? [...newMessages, ...prevMessages] : prevMessages;
             });
+            setHasLoaded(true);
         } catch (error) {
             showErrorMessage('Lỗi khi tải tin nhắn');
         }
     };
 
     useEffect(() => {
-        // Fetch messages only when the conversation is shown
         if (showConvo && token && id) {
-            fetchMessages(page);
+            if (!hasLoaded) {
+                fetchMessages(page);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showConvo, id, token, page]);
+    }, [showConvo, id, token]);
 
     const connectWebSocket = () => {
         if (token && id) {
@@ -76,7 +79,6 @@ function Index({ classRoom }) {
                     }
                 },
                 (error) => {
-                    console.error('WebSocket connection error:', error);
                     showErrorMessage('Lỗi khi kết nối');
                     navigate('/login');
                 },
@@ -115,7 +117,11 @@ function Index({ classRoom }) {
     const handleScroll = () => {
         const { scrollTop } = messageListRef.current;
         if (scrollTop === 0 && hasMore) {
-            setPage((prevPage) => prevPage + 1);
+            setPage((prevPage) => {
+                const nextPage = prevPage + 1;
+                fetchMessages(nextPage);
+                return nextPage;
+            });
         }
     };
 

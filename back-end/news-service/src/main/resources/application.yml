@@ -9,3 +9,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:12345@localhost:27017/LVTN_news-service?authSource=admin
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

@@ -6,7 +6,7 @@ import MuiTable from '../../../Component/MuiTable/Index';
 import Loading from '../../../Component/Loading/Index';
 
 function Index() {
-    const { getschedulesofteacherbySchoolYearId, getallschoolyear } = useHandleDispatch();
+    const { getschedulesofteacherbySchoolYearId } = useHandleDispatch();
     const token = useSelector(userToken);
     const user = useSelector(authUser);
     const teachs = useSelector(Teachs);

@@ -45,3 +45,8 @@ export const Lessons = (state) => state.teach.lessons;
 //ATTENDANCE
 export const AttendanceStatus = (state) => state.attendance.attendanceStatus;
 export const Session = (state) => state.attendance.session;
+
+//news
+export const News = (state) => state.news.news;
+export const NewsTotalPages = (state) => state.news.totalPages;
+export const NewsTotalElements = (state) => state.news.totalElements;

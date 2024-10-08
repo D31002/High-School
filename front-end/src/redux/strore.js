@@ -10,6 +10,7 @@ import teachSlice from '../ReducerSlice/teachSlice';
 import schoolSlice from '../ReducerSlice/schoolYear';
 import academicResultSlice from '../ReducerSlice/academicResultSlice';
 import attendanceSlice from '../ReducerSlice/attendanceSlice';
+import newsSlice from '../ReducerSlice/newsSlice';
 
 const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
         schoolYear: schoolSlice.reducer,
         academicResult: academicResultSlice.reducer,
         attendance: attendanceSlice.reducer,
+        news: newsSlice.reducer,
     },
 });
 
