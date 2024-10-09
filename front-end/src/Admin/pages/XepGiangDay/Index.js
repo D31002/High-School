@@ -59,17 +59,24 @@ function XepGiangDay() {
         nameOption: `${teacher.teacherCode} - ${teacher.userProfileResponse.fullName}`,
     }));
     useEffect(() => {
-        getallschoolyear(keyWordSchoolYear);
+        if (SchoolYears && SchoolYears.length <= 0) {
+            getallschoolyear(keyWordSchoolYear);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [keyWordSchoolYear]);
+    }, []);
 
     useEffect(() => {
-        setYearId(SchoolYears[0]?.id);
+        if (SchoolYears && SchoolYears[0]?.id) {
+            if (teachs?.length <= 0) {
+                getschedulesbySchoolYearId(token, SchoolYears[0]?.id);
+            }
+            setYearId(SchoolYears[0]?.id);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [SchoolYears]);
 
     useEffect(() => {
-        if (YearId) {
+        if (YearId && YearId !== teachs?.schoolYearResponse?.id) {
             getschedulesbySchoolYearId(token, YearId);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

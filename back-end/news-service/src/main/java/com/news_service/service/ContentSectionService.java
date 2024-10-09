@@ -67,7 +67,7 @@ public class ContentSectionService {
     }
 
     public ContentSectionResponse editContentSection(
-            String sectionId, String titleSection, String contentSection, List<MultipartFile> images) {
+            String sectionId, String titleSection, String contentSection, List<MultipartFile> images) throws IOException {
 
         ContentSection c = contentSectionRepository.findById(sectionId)
                 .orElseThrow(() -> new AppException(ErrorCode.SECTION_NOT_EXISTED));
@@ -75,7 +75,21 @@ public class ContentSectionService {
         c.setSectionTitle(titleSection);
         c.setSectionContent(contentSection);
 
-        ContentSectionResponse contentSectionResponse = contentSectionMapper.toContentSectionResponse(c);
+        ContentSectionResponse contentSectionResponse = contentSectionMapper
+                .toContentSectionResponse(contentSectionRepository.save(c));
+
+        if(images != null){
+            imageService.editImages(sectionId,images);
+        }
         return contentSectionResponse;
+    }
+
+    public void deleteById(String sectionId) {
+        ContentSection contentSection = contentSectionRepository.findById(sectionId)
+                .orElseThrow(() -> new AppException(ErrorCode.SECTION_NOT_EXISTED));
+
+        contentSectionRepository.delete(contentSection);
+
+        imageService.deleteImageOfSection(sectionId);
     }
 }

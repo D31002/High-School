@@ -7,10 +7,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,7 +23,7 @@ public class ContentSectionController {
     ContentSectionService contentSectionService;
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ApiResponse<ContentSectionResponse> createContentSection(
             @RequestPart(value = "sectionId",required = false) String sectionId,
@@ -36,4 +34,12 @@ public class ContentSectionController {
         ContentSectionResponse result = contentSectionService.createContentSection(sectionId,newsId,titleSection,contentSection,images);
         return ApiResponse.<ContentSectionResponse>builder().result(result).build();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/deleteById/{sectionId}")
+    ApiResponse<String> deleteById(@PathVariable String sectionId){
+        contentSectionService.deleteById(sectionId);
+        return ApiResponse.<String>builder().result("Xóa thành công").build();
+    }
+
 }

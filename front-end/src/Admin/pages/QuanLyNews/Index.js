@@ -11,18 +11,21 @@ import {
 } from '../../../Component/Notification/Index';
 import Loading from '../../../Component/Loading/Index';
 import { useHandleDispatch } from '../../../services/useHandleDispatch';
-import { News, NewsTotalElements } from '../../../redux/selectors';
+import { News, NewsTotalElements, userToken } from '../../../redux/selectors';
 import { useSelector } from 'react-redux';
 import Table from '../../../Component/MuiTable/Index';
+import AddIcon from '@mui/icons-material/Add';
 
 const cx = classNames.bind(styles);
 
 const Index = () => {
+    const token = useSelector(userToken);
     const news = useSelector(News);
     const totalElements = useSelector(NewsTotalElements);
-    const { getallnews } = useHandleDispatch();
+    const { getallnews, deletenews, deletesection } = useHandleDispatch();
 
     const [loading, setLoading] = useState(false);
+    const [editting, setEditting] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
     const [currentPage, setCrrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(7);
@@ -72,7 +75,15 @@ const Index = () => {
             setSections(updatedSections);
             setEditIndex(null);
         } else {
-            setSections((prev) => [...prev, sectionInput]);
+            if (
+                sectionInput.titleSection !== '' ||
+                sectionInput.contentSection !== '' ||
+                sectionInput.images.length > 0
+            ) {
+                setSections((prev) => [...prev, sectionInput]);
+            } else {
+                showErrorMessage('không có gì để thêm');
+            }
         }
         setSectionInput({ titleSection: '', contentSection: '', images: [] });
     };
@@ -89,6 +100,9 @@ const Index = () => {
 
             const response = await fetch('http://localhost:8888/api/v1/news/pl/news/create', {
                 method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
                 body: formData,
             });
             const responseData = await response.json();
@@ -110,14 +124,19 @@ const Index = () => {
 
                     await fetch('http://localhost:8888/api/v1/news/pl/contentSection/create', {
                         method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                         body: sectionFormData,
                     });
                 }
                 showSuccessMessage('Thành công');
-                setLatestNews({ title: '', content: '', mainImage: null });
-                setSections([]);
+                if (!editting) {
+                    setLatestNews({ title: '', content: '', mainImage: null });
+                    setSections([]);
+                }
             } else {
-                console.error('Không thể lưu news');
+                showErrorMessage('Không thể lưu news');
             }
             getallnews(currentPage, pageSize);
             setLoading(false);
@@ -125,16 +144,40 @@ const Index = () => {
             showWarningMessage('Tiêu đề, nội dung, hình ảnh chính không được để trống');
         }
     };
-    const handleDeleteSection = (indexToDelete) => {
-        setSections((prevSections) => prevSections.filter((_, index) => index !== indexToDelete));
+    const handleDeleteSection = (e, indexToDelete) => {
+        e.stopPropagation();
+        if (editting && sections[indexToDelete]?.sectionId) {
+            showBeforeDelete('Bạn chắc muốn xóa đoạn này chứ?').then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await deletesection(token, sections[indexToDelete]?.sectionId);
+                    if (response.code === 1000) {
+                        showSuccessMessage(response.result);
+                        setSections((prevSections) => prevSections.filter((_, index) => index !== indexToDelete));
+                        getallnews(currentPage, pageSize);
+                    } else {
+                        showErrorMessage(response.message);
+                    }
+                } else {
+                    showErrorMessage('Bạn đừng phân vân nữa:)');
+                }
+            });
+        } else {
+            setSections((prevSections) => prevSections.filter((_, index) => index !== indexToDelete));
+        }
     };
 
-    const handleDelete = async (dataDel) => {
-        showBeforeDelete(`Bạn muốn xóa :)`).then(async (result) => {
+    const handleDelete = async (e, dataDel) => {
+        e.preventDefault();
+        e.stopPropagation();
+        showBeforeDelete(`Bạn chắc muốn xóa tin tức này chứ ?`).then(async (result) => {
             if (result.isConfirmed) {
-                setLoading(true);
-                console.log(dataDel);
-                setLoading(false);
+                const response = await deletenews(token, dataDel);
+                if (response.code === 1000) {
+                    showSuccessMessage(response.result);
+                    getallnews(currentPage, pageSize);
+                } else {
+                    showErrorMessage(response.message);
+                }
             } else {
                 showErrorMessage('Bạn đừng phân vân nữa:)');
             }
@@ -144,6 +187,7 @@ const Index = () => {
     const handleShowEdit = async (e, row) => {
         e.preventDefault();
         e.stopPropagation();
+        setEditting(true);
         setLatestNews({
             newsId: row.id,
             title: row.title || '',
@@ -169,6 +213,7 @@ const Index = () => {
             <div className={cx('wrapper')}>
                 <div className={cx('content')}>
                     <div className={cx('content-main')}>
+                        <h2>NỘI DUNG CHÍNH</h2>
                         <Input
                             type="text"
                             name="title"
@@ -190,32 +235,58 @@ const Index = () => {
                     </div>
 
                     <div className={cx('content-section')}>
-                        <h2>CÁC ĐOẠN TIN TỨC</h2>
-                        <Input
-                            type="text"
-                            name="titleSection"
-                            placeholder="Nhập tiêu đề"
-                            // errorMessage="Không được để trống"
-                            handleChange={handleChangeSectionInput}
-                            value={sectionInput.titleSection}
-                            // required
-                        />
-                        <textarea
-                            name="contentSection"
-                            className={cx('content-area')}
-                            placeholder="Nhập nội dung ở đây"
-                            value={sectionInput.contentSection}
-                            onChange={handleChangeSectionInput}
-                            rows={8}
-                        />
-                        <input type="file" multiple accept="image/*" onChange={handleImageChange} />
+                        <div className={cx('content')}>
+                            <h2>CÁC ĐOẠN TIN TỨC</h2>
+                            <Input
+                                type="text"
+                                name="titleSection"
+                                placeholder="Nhập tiêu đề"
+                                handleChange={handleChangeSectionInput}
+                                value={sectionInput.titleSection}
+                            />
+                            <textarea
+                                name="contentSection"
+                                className={cx('content-area')}
+                                placeholder="Nhập nội dung ở đây"
+                                value={sectionInput.contentSection}
+                                onChange={handleChangeSectionInput}
+                                rows={15}
+                            />
+                            <div className={cx('input-image')}>
+                                <input type="file" multiple accept="image/*" onChange={handleImageChange} />
+                                <div className={cx('images')}>
+                                    {sectionInput?.images?.map((image, imgIndex) => (
+                                        <img
+                                            key={imgIndex}
+                                            src={image instanceof File ? URL.createObjectURL(image) : image}
+                                            alt={`anh`}
+                                            className={cx('image-preview')}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
                         <Button btn onClick={handleAddSection}>
-                            Add đoạn
+                            <AddIcon />
                         </Button>
                     </div>
                     <Button btn onClick={handleSubmit}>
                         Lưu tin tức
                     </Button>
+                    {editting && (
+                        <Button
+                            btn
+                            onClick={() => {
+                                setLatestNews({ title: '', content: '', mainImage: null });
+                                setSections([]);
+                                setSectionInput({ titleSection: '', contentSection: '', images: [] });
+                                setEditting(false);
+                            }}
+                        >
+                            Thoát chế độ chỉnh sửa
+                        </Button>
+                    )}
                 </div>
                 <div className={cx('demo')}>
                     <div className={cx('demo-title')}>{latestNews.title}</div>
@@ -235,11 +306,8 @@ const Index = () => {
                     )}
                     <div className={cx('sections-display')}>
                         {sections?.map((section, index) => (
-                            <div key={index} className={cx('section-item')}>
-                                <button className={cx('edit-btn')} onClick={() => handleEditSection(index)}>
-                                    Sửa
-                                </button>
-                                <button className={cx('delete-btn')} onClick={() => handleDeleteSection(index)}>
+                            <div key={index} className={cx('section-item')} onClick={() => handleEditSection(index)}>
+                                <button className={cx('delete-btn')} onClick={(e) => handleDeleteSection(e, index)}>
                                     x
                                 </button>
                                 <div className={cx('demo-title-section')}>{section.titleSection}</div>

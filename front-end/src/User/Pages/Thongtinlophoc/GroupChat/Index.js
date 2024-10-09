@@ -184,42 +184,70 @@ function Index({ classRoom }) {
                             </div>
                         ) : (
                             <List>
-                                {messages?.map((msg, index) => (
-                                    <ListItem key={index}>
-                                        {msg?.userProfileResponse?.id === user?.userProfileResponse?.id ? (
-                                            <div className={cx('message-right')}>
-                                                <ListItemText
-                                                    secondary={
-                                                        <Typography className={cx('message')}>
-                                                            {msg?.content}
-                                                        </Typography>
-                                                    }
-                                                />
-                                                <ListItemAvatar>
-                                                    <Avatar className={cx('avatar')}>
-                                                        {msg?.userProfileResponse?.fullName.charAt(0)}
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                            </div>
-                                        ) : (
-                                            <div className={cx('message-left')}>
-                                                <ListItemAvatar>
-                                                    <Avatar className={cx('avatar')}>
-                                                        {msg?.userProfileResponse?.fullName.charAt(0)}
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={msg?.userProfileResponse?.fullName}
-                                                    secondary={
-                                                        <Typography className={cx('message')}>
-                                                            {msg?.content}
-                                                        </Typography>
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                                    </ListItem>
-                                ))}
+                                {messages?.map((msg, index) => {
+                                    const isFirstMessageFromUser =
+                                        index === 0 ||
+                                        msg?.userProfileResponse?.id !== messages[index - 1]?.userProfileResponse?.id;
+
+                                    return (
+                                        <ListItem key={index}>
+                                            {msg?.userProfileResponse?.id === user?.userProfileResponse?.id ? (
+                                                <div className={cx('message-right')}>
+                                                    <ListItemText
+                                                        secondary={
+                                                            <Typography className={cx('message')}>
+                                                                {msg?.content}
+                                                            </Typography>
+                                                        }
+                                                    />
+                                                    {isFirstMessageFromUser && (
+                                                        <ListItemAvatar>
+                                                            <Avatar className={cx('avatar')}>
+                                                                {msg?.userProfileResponse?.imageUrl ? (
+                                                                    <img
+                                                                        src={msg.userProfileResponse.imageUrl}
+                                                                        alt={msg.userProfileResponse.fullName}
+                                                                        className={cx('avatar-img')}
+                                                                    />
+                                                                ) : (
+                                                                    msg?.userProfileResponse?.fullName.charAt(0)
+                                                                )}
+                                                            </Avatar>
+                                                        </ListItemAvatar>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className={cx('message-left')}>
+                                                    {isFirstMessageFromUser && (
+                                                        <ListItemAvatar>
+                                                            <Avatar className={cx('avatar')}>
+                                                                {msg?.userProfileResponse?.imageUrl ? (
+                                                                    <img
+                                                                        src={msg.userProfileResponse.imageUrl}
+                                                                        alt={msg.userProfileResponse.fullName}
+                                                                        className={cx('avatar-img')}
+                                                                    />
+                                                                ) : (
+                                                                    msg?.userProfileResponse?.fullName.charAt(0)
+                                                                )}
+                                                            </Avatar>
+                                                        </ListItemAvatar>
+                                                    )}
+                                                    <ListItemText
+                                                        primary={
+                                                            isFirstMessageFromUser && msg?.userProfileResponse?.fullName
+                                                        }
+                                                        secondary={
+                                                            <Typography className={cx('message')}>
+                                                                {msg?.content}
+                                                            </Typography>
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                        </ListItem>
+                                    );
+                                })}
                             </List>
                         )}
                     </div>

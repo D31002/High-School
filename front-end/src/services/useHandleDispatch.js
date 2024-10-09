@@ -93,6 +93,8 @@ import {
     //news
     getAllNews,
     getNewsById,
+    deleteNews,
+    deleteSection,
 
     //outside
     getDiaGioiHanhChinhVN,
@@ -613,13 +615,12 @@ export const useHandleDispatch = () => {
 
     const getschedulesofteacherbySchoolYearId = async (token, teacherId, schoolYearId) => {
         try {
-            dispatch(teachSlice.actions.FETCH_TEACHS_REQUEST());
             const response = await getSchedulesOfTeacherBySchoolYearId(token, teacherId, schoolYearId);
             if (response.data.code === 1000) {
-                dispatch(teachSlice.actions.FETCH_TEACHS_SUCCESS(response.data.result));
+                return response.data;
             }
         } catch (error) {
-            dispatch(teachSlice.actions.FETCH_TEACHS_SUCCESS(error.response.data.message));
+            return error.response.data;
         }
     };
 
@@ -910,6 +911,26 @@ export const useHandleDispatch = () => {
             return error?.response?.data;
         }
     };
+    const deletenews = async (token, newsIds) => {
+        try {
+            const response = await deleteNews(token, newsIds);
+            if (response?.data?.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error?.response?.data;
+        }
+    };
+    const deletesection = async (token, sectionId) => {
+        try {
+            const response = await deleteSection(token, sectionId);
+            if (response?.data?.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error?.response?.data;
+        }
+    };
 
     //outside
     const getdiaGioiHanhChinhVN = async () => {
@@ -1011,6 +1032,8 @@ export const useHandleDispatch = () => {
         //news
         getallnews,
         getnewsById,
+        deletenews,
+        deletesection,
 
         //out
         getdiaGioiHanhChinhVN,

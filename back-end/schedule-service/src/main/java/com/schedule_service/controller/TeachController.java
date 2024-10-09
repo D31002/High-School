@@ -30,10 +30,11 @@ public class TeachController {
         return ApiResponse.<TeachResponse>builder().result(result).build();
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     @GetMapping("/teach/getSchedulesOfTeacherBySchoolYearId")
-    ApiResponse<List<TeachDetailsResponse>> getSchedulesOfTeacherBySchoolYearId(@RequestParam int teacherId,
-                                                                         @RequestParam int schoolYearId){
+    ApiResponse<List<TeachDetailsResponse>> getSchedulesOfTeacherBySchoolYearId(
+            @RequestParam int teacherId,
+            @RequestParam int schoolYearId){
         List<TeachDetailsResponse> result =
                 teachService.getSchedulesOfTeacherBySchoolYearId(teacherId,schoolYearId);
         return ApiResponse.<List<TeachDetailsResponse>>builder().result(result).build();

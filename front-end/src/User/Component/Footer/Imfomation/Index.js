@@ -16,25 +16,25 @@ function Index() {
                 <Button className={cx('btn-information-item')} to="/">
                     <div className={cx('item-content')}>
                         <FontAwesomeIcon icon={faMapMarkerAlt} className={cx('item-icon')} />
-                        <span>abc, Đ abc, P.abc, Q. abc, TP.abc</span>
+                        <span>04, Đ 3/2, P.xuân khánh, Q. Ninh kiều, TP.Cần Thơ</span>
                     </div>
                 </Button>
                 <Button className={cx('btn-information-item')} to="/">
                     <div className={cx('item-content')}>
                         <FontAwesomeIcon icon={faPhoneAlt} className={cx('item-icon')} />
-                        <span>ĐT: +00 0000 000</span>
+                        <span>ĐT: 09 4394 6242</span>
                     </div>
                 </Button>
                 <Button className={cx('btn-information-item')} to="/">
                     <div className={cx('item-content')}>
                         <FontAwesomeIcon icon={faFax} className={cx('item-icon')} />
-                        <span>Fax: +0000 000 000</span>
+                        <span>Fax: 09 4394 6242</span>
                     </div>
                 </Button>
                 <Button className={cx('btn-information-item')} to="/">
                     <div className={cx('item-content')}>
                         <FontAwesomeIcon icon={faAt} className={cx('item-icon')} />
-                        <span>abc@abc.edu.vn</span>
+                        <span>dai03102002@gmail.com</span>
                     </div>
                 </Button>
             </div>

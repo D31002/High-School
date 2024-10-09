@@ -600,6 +600,23 @@ export const getNewsById = (id) => {
     return axios.get(API_BASE_URL + `/news/pl/news/${id}`);
 };
 
+export const deleteNews = (token, newsIds) => {
+    return axios.delete(API_BASE_URL + `/news/pl/news/delete`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        data: { newsIds: newsIds },
+    });
+};
+
+export const deleteSection = (token, sectionId) => {
+    return axios.delete(API_BASE_URL + `/news/pl/contentSection/deleteById/${sectionId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
 //outside
 export const getDiaGioiHanhChinhVN = () => {
     return axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');

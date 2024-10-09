@@ -2,11 +2,14 @@ package com.news_service.service;
 
 import com.news_service.Exception.AppException;
 import com.news_service.Exception.ErrorCode;
+import com.news_service.dto.request.ListNewsIdRequest;
 import com.news_service.dto.response.ContentSectionResponse;
 import com.news_service.dto.response.NewsResponse;
 import com.news_service.dto.response.PageResponse;
 import com.news_service.mapper.NewsMapper;
+import com.news_service.modal.ContentSection;
 import com.news_service.modal.News;
+import com.news_service.repository.ContentSectionRepository;
 import com.news_service.repository.NewsRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ import java.util.List;
 public class NewsService {
 
     NewsRepository newsRepository;
+    ContentSectionRepository contentSectionRepository;
     NewsMapper newsMapper;
     FileUpload fileUpload;
     ContentSectionService contentSectionService;
@@ -91,4 +95,20 @@ public class NewsService {
         return newsMapper.toNewsResponse(newsRepository.save(news));
     }
 
+    public void deleteNews(ListNewsIdRequest request) {
+        for(String newsId : request.getNewsIds()){
+            News news = newsRepository.findById(newsId)
+                    .orElseThrow(() -> new AppException(ErrorCode.NEWS_NOT_EXISTED));
+
+            newsRepository.delete(news);
+
+            List<ContentSection> contentSectionList =
+                    contentSectionRepository.findByNewsId(newsId);
+
+            for(ContentSection contentSection : contentSectionList){
+                contentSectionService.deleteById(contentSection.getId());
+            }
+
+        }
+    }
 }

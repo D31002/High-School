@@ -47,4 +47,19 @@ public class ImageService {
         return imagesResponseList;
     }
 
+    public void editImages(String contentSectionId, List<MultipartFile> images) throws IOException {
+        List<Image> imageList = imageRepository.findByContentSectionId(contentSectionId);
+        imageRepository.deleteAll(imageList);
+
+        createImages(contentSectionId, images);
+    }
+
+
+    public void deleteImageOfSection(String sectionId){
+        List<Image> imageList = imageRepository.findByContentSectionId(sectionId);
+
+        imageRepository.deleteAll(imageList);
+    }
+
+
 }

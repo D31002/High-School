@@ -1,22 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHandleDispatch } from '../../../services/useHandleDispatch';
 import { useSelector } from 'react-redux';
-import { userToken, authUser, Teachs, TeachLoading, schoolYears } from '../../../redux/selectors';
+import { userToken, authUser, schoolYears } from '../../../redux/selectors';
 import MuiTable from '../../../Component/MuiTable/Index';
 import Loading from '../../../Component/Loading/Index';
 
 function Index() {
-    const { getschedulesofteacherbySchoolYearId } = useHandleDispatch();
+    const { getallschoolyear, getschedulesofteacherbySchoolYearId } = useHandleDispatch();
     const token = useSelector(userToken);
     const user = useSelector(authUser);
-    const teachs = useSelector(Teachs);
-    const teachLoading = useSelector(TeachLoading);
     const SchoolYears = useSelector(schoolYears);
+    const [teachsOfTeacher, setTeachsOfTeacher] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        getschedulesofteacherbySchoolYearId(token, user.id, SchoolYears[0]?.id);
+        getallschoolyear('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const getschedulesofteacher = async () => {
+        setLoading(true);
+        const response = await getschedulesofteacherbySchoolYearId(token, user.id, SchoolYears[0]?.id);
+        if (response.code === 1000) {
+            setTeachsOfTeacher(response.result);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        if (SchoolYears && SchoolYears[0]?.id) {
+            getschedulesofteacher();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [SchoolYears]);
 
     const headCells = [
         { id: 'dayOfWeek', label: 'Thứ' },
@@ -35,8 +51,8 @@ function Index() {
         SATURDAY: 'Thứ Bảy',
     };
 
-    const convertedTeachs = Array.isArray(teachs)
-        ? teachs.map((teach) => ({
+    const convertedTeachs = Array.isArray(teachsOfTeacher)
+        ? teachsOfTeacher.map((teach) => ({
               ...teach,
               dayOfWeek: dayMap[teach.dayOfWeek],
           }))
@@ -53,7 +69,7 @@ function Index() {
                 <MuiTable title="LỊCH GIẢNG DẠY TUẦN" headCells={headCells} data={convertedTeachs} />
             </div>
 
-            {teachLoading && <Loading />}
+            {loading && <Loading />}
         </div>
     );
 }

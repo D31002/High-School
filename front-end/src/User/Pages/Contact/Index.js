@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import Styles from './Contact.module.scss';
 import Button from '../../../Component/button/Button';
-import Img from '../../Component/Assets/Img/news-img1.png';
 
 const cx = classNames.bind(Styles);
 
@@ -18,23 +17,25 @@ function Index() {
                     ></iframe>
                 </div>
                 <div className={cx('item')}>
-                    <h1 className={cx('heading')}>TRƯỜNG .....</h1>
+                    <h1 className={cx('heading')}>TRƯỜNG THPT</h1>
                     <ul className={cx('list-address')}>
                         <li className={cx('item-address')}>
                             <span className={cx('item-address-title')}> Địa chỉ: </span>
-                            <span className={cx('item-address-description')}>abc, Đ abc, P.abc, Q. abc, TP.abc</span>
+                            <span className={cx('item-address-description')}>
+                                04, Đ 3/2, P.Xuân Khánh, Q.Ninh Kiều, TP.Cần Thơ
+                            </span>
                         </li>
                         <li className={cx('item-address')}>
                             <span className={cx('item-address-title')}> Hotline: </span>
-                            <span className={cx('item-address-description')}>0000.000.00 – 1111.111.111</span>
+                            <span className={cx('item-address-description')}>0943946242 – 0932323323</span>
                         </li>
                         <li className={cx('item-address')}>
                             <span className={cx('item-address-title')}> Email: </span>
-                            <span className={cx('item-address-description')}>abc@abc.edu.vn</span>
+                            <span className={cx('item-address-description')}>dai03102002@gmail.com</span>
                         </li>
                         <li className={cx('item-address')}>
                             <span className={cx('item-address-title')}> Website: </span>
-                            <span className={cx('item-address-description')}>www.abc.edu.vn</span>
+                            <span className={cx('item-address-description')}>www.highschool.com</span>
                         </li>
                         <li className={cx('item-address')}>
                             <span className={cx('item-address-title')}> Giờ mở cửa: </span>
@@ -66,7 +67,10 @@ function Index() {
                     </div>
                 </div>
                 <div className={cx('item')}>
-                    <img src={Img} alt="anh" />
+                    <img
+                        src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960169/imageStudentPageHome_kbh77m.png"
+                        alt="anh"
+                    />
                 </div>
             </div>
         </div>
