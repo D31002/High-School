@@ -8,12 +8,12 @@ const cx = classNames.bind(Styles);
 
 function Paginate({ totalPages, currentPage, setCurrentPage }) {
     const handleprev = () => {
-        if (currentPage > 0) {
+        if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
     };
     const handleNext = () => {
-        if (currentPage < totalPages - 1) {
+        if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
         }
     };
@@ -36,10 +36,10 @@ function Paginate({ totalPages, currentPage, setCurrentPage }) {
                     />
                 </div>
                 <div className={cx('pageoftotal')}>
-                    Page {currentPage} of {totalPages}
+                    Trang {currentPage} / {totalPages}
                 </div>
                 <div className={cx('gottopage')}>
-                    <span>Go to page: </span>
+                    <span> Đi đến trang: </span>
                     <input
                         type="number"
                         onChange={(e) => {

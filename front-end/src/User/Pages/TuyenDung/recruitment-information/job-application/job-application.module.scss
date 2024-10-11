@@ -5,6 +5,7 @@
     }
     .working-process {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         text-align: center;
 
@@ -20,6 +21,16 @@
                 + p {
                     margin-top: 10px;
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wrapper {
+        .working-process {
+            .item {
+                width: calc(100% / 1);
             }
         }
     }

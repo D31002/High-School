@@ -33,7 +33,7 @@ function Index() {
             <div className={cx('container')}>
                 <div className={cx('header')}>
                     <h1 className={cx('title')}>{newsById?.title}</h1>
-                    <div className={cx('createdAt')}>{newsById?.createdAt}</div>
+                    <div className={cx('createdAt')}>{newsById?.createdDate}</div>
                 </div>
                 <div className={cx('content')}>
                     <p>{newsById?.content}</p>
@@ -65,7 +65,7 @@ function Index() {
                                 <h5>{item.content}</h5>
                                 <div className={cx('createdAt')}>
                                     <DateRangeIcon />
-                                    {item.createdAt}
+                                    {item.createdDate}
                                 </div>
                             </div>
                         </Button>

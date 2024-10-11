@@ -29,6 +29,7 @@ public class ChatService {
     SimpMessagingTemplate messagingTemplate;
     ProfileClient profileClient;
     ChatMapper chatMapper;
+    DateTimeFormatter dateTimeFormatter;
 
     public void processAndSendMessage(ChatMessage chatMessage) {
         ChatMessageEntity chatMessageEntity = chatMessageRepository.save(ChatMessageEntity.builder()
@@ -40,7 +41,7 @@ public class ChatService {
 
         ChatMessageResponse chatMessageResponse = chatMapper.toChatMessageResponse(chatMessageEntity);
         chatMessageResponse.setUserProfileResponse(profileClient.getProfileById(chatMessageEntity.getUserProfileId()).getResult());
-
+        chatMessageResponse.setTime(dateTimeFormatter.format(chatMessageEntity.getTimestamp()));
         messagingTemplate.convertAndSend("/topic/messages/" + chatMessage.getClassRoomId(), chatMessageResponse);
     }
 
@@ -53,6 +54,7 @@ public class ChatService {
                 chatMessageEntityPage.stream().map(chatMessageEntity -> {
                     ChatMessageResponse chatMessageResponse = chatMapper.toChatMessageResponse(chatMessageEntity);
                     chatMessageResponse.setUserProfileResponse(profileClient.getProfileById(chatMessageEntity.getUserProfileId()).getResult());
+                    chatMessageResponse.setTime(dateTimeFormatter.format(chatMessageEntity.getTimestamp()));
                     return chatMessageResponse;
                 }).toList();
 

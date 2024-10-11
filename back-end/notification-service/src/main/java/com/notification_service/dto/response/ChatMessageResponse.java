@@ -14,6 +14,6 @@ public class ChatMessageResponse {
     String id;
     UserProfileResponse userProfileResponse;
     String content;
-    Date timestamp;
+    String time;
     int classRoomId;
 }

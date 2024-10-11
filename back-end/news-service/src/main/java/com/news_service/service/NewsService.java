@@ -35,6 +35,7 @@ public class NewsService {
     NewsMapper newsMapper;
     FileUpload fileUpload;
     ContentSectionService contentSectionService;
+    DateTimeFormatter dateTimeFormatter;
 
     public PageResponse<NewsResponse> getAllNews(int page, int pageSize) {
         Sort sort = Sort.by("createdAt").descending();
@@ -47,6 +48,7 @@ public class NewsService {
                     NewsResponse newsResponse = newsMapper.toNewsResponse(news);
                     List<ContentSectionResponse> contentSectionResponseList = contentSectionService.getAllContentSectionByNewsId(news.getId());
                     newsResponse.setContentSectionResponses(contentSectionResponseList);
+                    newsResponse.setCreatedDate(dateTimeFormatter.format(news.getCreatedAt()));
                     return newsResponse;
                 }).toList();
 
@@ -65,6 +67,7 @@ public class NewsService {
         NewsResponse newsResponse = newsMapper.toNewsResponse(news);
         List<ContentSectionResponse> contentSectionResponseList = contentSectionService.getAllContentSectionByNewsId(news.getId());
         newsResponse.setContentSectionResponses(contentSectionResponseList);
+        newsResponse.setCreatedDate(dateTimeFormatter.format(news.getCreatedAt()));
         return newsResponse;
 
     }

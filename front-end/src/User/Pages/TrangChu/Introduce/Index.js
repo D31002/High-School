@@ -1,6 +1,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Styles from './introduce.module.scss';
+import { motion } from 'framer-motion';
+import { rightAnimation, imageAnimation } from '../../../../Component/animation/Animation';
+import { useScroll } from '../../../../Component/UseScroll/Index';
 import Img2 from '../../../Component/Assets/Img/b.png';
 import Img3 from '../../../Component/Assets/Img/c.png';
 import Img4 from '../../../Component/Assets/Img/d.png';
@@ -36,13 +39,26 @@ function Index() {
             title: 'Đoàn kết Tinh thần giảng dạy',
         },
     ];
+    const [element, controls] = useScroll();
     return (
-        <div className={cx('wrapper')}>
-            <img
-                src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960169/imageStudentPageHome_kbh77m.png"
-                alt="anh"
-            />
-            <div className={cx('review')}>
+        <div className={cx('wrapper')} ref={element}>
+            <motion.div
+                className={cx('panner')}
+                variants={imageAnimation}
+                animate={controls}
+                transition={{ delay: 0.2, type: 'tween' }}
+            >
+                <img
+                    src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960169/imageStudentPageHome_kbh77m.png"
+                    alt="anh"
+                />
+            </motion.div>
+            <motion.div
+                className={cx('review')}
+                variants={rightAnimation}
+                animate={controls}
+                transition={{ type: 'tween' }}
+            >
                 <div className={cx('review-top')}>
                     <h3>VỀ CHÚNG TÔI</h3>
                     <h1>MỘT SỐ GIỚI THIỆU </h1>
@@ -62,7 +78,7 @@ function Index() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }

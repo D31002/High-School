@@ -44,7 +44,7 @@ function Index() {
     return (
         <Menu items={MenuItems} className={cx('menu-header')}>
             <div className={cx('menu-header-item')}>
-                <Button className={cx('primary')} to="/">
+                <Button className={cx('primary')}>
                     Công Khai
                     <FontAwesomeIcon icon={faChevronDown} className={cx('menu-icon')} />
                 </Button>

@@ -49,5 +49,54 @@
                 font-weight: 700;
             }
         }
+        .list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            .item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 25%;
+                margin: 40px 0;
+
+                .img-item {
+                    padding: 4px;
+                    background-color: var(--white-color);
+                    border-radius: 50%;
+                    margin-right: 12px;
+                    img {
+                        width: 50px;
+                    }
+                }
+                .container {
+                    text-align: start;
+                    color: var(--white-color);
+                    .number {
+                        font-size: 3.5rem;
+                        color: #fff400;
+                        margin-bottom: 4px;
+                    }
+                    .title {
+                        line-height: 2.2rem;
+                        margin-top: 4px;
+                        font-size: 1.8rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        .content {
+            .list {
+                .item {
+                    width: 50%;
+                }
+            }
+        }
     }
 }

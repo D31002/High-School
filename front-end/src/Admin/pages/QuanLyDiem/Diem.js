@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Styles from './Diem.module.scss';
 import Muitable from '../../../Component/MuiTable/Index';
+import SelectOption from '../../../Component/SelectOption/Index';
+import Modal from '../../../Component/Modal/Index';
+import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
+import { useHandleDispatch } from '../../../services/useHandleDispatch';
+import { useSelector } from 'react-redux';
+import { showErrorMessage, showSuccessMessage, showWarningMessage } from '../../../Component/Notification/Index';
 import {
     Classes,
     userToken,
@@ -12,12 +18,6 @@ import {
     Category,
     authUser,
 } from '../../../redux/selectors';
-import { useHandleDispatch } from '../../../services/useHandleDispatch';
-import { useSelector } from 'react-redux';
-import SelectOption from '../../../Component/SelectOption/Index';
-import Modal from '../../../Component/Modal/Index';
-import AddIcon from '@mui/icons-material/Add';
-import { showErrorMessage, showSuccessMessage, showWarningMessage } from '../../../Component/Notification/Index';
 
 const cx = classNames.bind(Styles);
 
@@ -34,7 +34,7 @@ function Diem() {
     const [showModal, setShowModal] = useState(false);
     const [showEditScores, setShowEditScores] = useState(false);
     const [currentPage, setCrrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(7);
+    const [pageSize, setPageSize] = useState(6);
     const [keyWord, setKeyWord] = useState('');
     const [subjectList, setSubjectList] = useState([]);
     const [subject, setSubject] = useState({});

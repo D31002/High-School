@@ -4,7 +4,6 @@ import Styles from './Chat.module.scss';
 import SendIcon from '@mui/icons-material/Send';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-import { TextField, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@mui/material';
 import { showErrorMessage } from '../../../../Component/Notification/Index';
 import { useSelector } from 'react-redux';
 import { authUser, userToken } from '../../../../redux/selectors';
@@ -100,7 +99,6 @@ function Index({ classRoom }) {
             disconnectWebSocket();
         }
 
-        // Clean up connection when the component unmounts
         return () => {
             disconnectWebSocket();
         };
@@ -183,80 +181,80 @@ function Index({ classRoom }) {
                                 <div className={cx('empty-text')}>Gửi một tin nhắn để bắt đầu hội thoại!</div>
                             </div>
                         ) : (
-                            <List>
+                            <>
                                 {messages?.map((msg, index) => {
                                     const isFirstMessageFromUser =
                                         index === 0 ||
                                         msg?.userProfileResponse?.id !== messages[index - 1]?.userProfileResponse?.id;
 
                                     return (
-                                        <ListItem key={index}>
+                                        <div className={cx('list-messages')}>
                                             {msg?.userProfileResponse?.id === user?.userProfileResponse?.id ? (
                                                 <div className={cx('message-right')}>
-                                                    <ListItemText
-                                                        secondary={
-                                                            <Typography className={cx('message')}>
-                                                                {msg?.content}
-                                                            </Typography>
-                                                        }
-                                                    />
-                                                    {isFirstMessageFromUser && (
-                                                        <ListItemAvatar>
-                                                            <Avatar className={cx('avatar')}>
-                                                                {msg?.userProfileResponse?.imageUrl ? (
-                                                                    <img
-                                                                        src={msg.userProfileResponse.imageUrl}
-                                                                        alt={msg.userProfileResponse.fullName}
-                                                                        className={cx('avatar-img')}
-                                                                    />
-                                                                ) : (
-                                                                    msg?.userProfileResponse?.fullName.charAt(0)
-                                                                )}
-                                                            </Avatar>
-                                                        </ListItemAvatar>
-                                                    )}
+                                                    <div className={cx('message')}>
+                                                        {msg?.content}
+                                                        <div className={cx('time')}>{msg.time}</div>
+                                                    </div>
+
+                                                    <div className={cx('avatar-container')}>
+                                                        {isFirstMessageFromUser && (
+                                                            <img
+                                                                className={cx('avatar')}
+                                                                src={
+                                                                    msg.userProfileResponse.imageUrl
+                                                                        ? msg.userProfileResponse.imageUrl
+                                                                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                                                              msg?.userProfileResponse?.fullName,
+                                                                          )}&background=007bff&color=fff&size=40`
+                                                                }
+                                                                alt={msg?.userProfileResponse?.fullName}
+                                                            />
+                                                        )}
+                                                    </div>
                                                 </div>
                                             ) : (
                                                 <div className={cx('message-left')}>
-                                                    {isFirstMessageFromUser && (
-                                                        <ListItemAvatar>
-                                                            <Avatar className={cx('avatar')}>
-                                                                {msg?.userProfileResponse?.imageUrl ? (
-                                                                    <img
-                                                                        src={msg.userProfileResponse.imageUrl}
-                                                                        alt={msg.userProfileResponse.fullName}
-                                                                        className={cx('avatar-img')}
-                                                                    />
-                                                                ) : (
-                                                                    msg?.userProfileResponse?.fullName.charAt(0)
-                                                                )}
-                                                            </Avatar>
-                                                        </ListItemAvatar>
-                                                    )}
-                                                    <ListItemText
-                                                        primary={
-                                                            isFirstMessageFromUser && msg?.userProfileResponse?.fullName
-                                                        }
-                                                        secondary={
-                                                            <Typography className={cx('message')}>
-                                                                {msg?.content}
-                                                            </Typography>
-                                                        }
-                                                    />
+                                                    <div className={cx('avatar-container')}>
+                                                        {isFirstMessageFromUser && (
+                                                            <img
+                                                                className={cx('avatar')}
+                                                                src={
+                                                                    msg.userProfileResponse.imageUrl
+                                                                        ? msg.userProfileResponse.imageUrl
+                                                                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                                                              msg?.userProfileResponse?.fullName,
+                                                                          )}&background=007bff&color=fff&size=40`
+                                                                }
+                                                                alt={msg?.userProfileResponse?.fullName}
+                                                            />
+                                                        )}
+                                                    </div>
+
+                                                    <div className={cx('message')}>
+                                                        {isFirstMessageFromUser && (
+                                                            <div className={cx('username')}>
+                                                                {msg?.userProfileResponse.fullName}
+                                                            </div>
+                                                        )}
+                                                        {msg?.content}
+                                                        <div className={cx('time')}>{msg.time}</div>
+                                                    </div>
                                                 </div>
                                             )}
-                                        </ListItem>
+                                        </div>
                                     );
                                 })}
-                            </List>
+                            </>
                         )}
                     </div>
                     <div className={cx('message-input')}>
-                        <TextField
+                        <input
+                            className={cx('input')}
+                            type="text"
                             placeholder="Nhập tin nhắn"
                             value={message}
                             onChange={handleMessageChange}
-                            fullWidth
+                            spellCheck={false}
                         />
                         <div className={cx('operation')}>
                             <div className={cx('emoji')}></div>

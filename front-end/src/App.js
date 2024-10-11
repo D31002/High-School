@@ -10,6 +10,7 @@ import Gototop from './Component/GoToTop/Index';
 import useTokenRefresh from './Scheduler/useTokenRefresh';
 import { showErrorMessage } from './Component/Notification/Index';
 import { useHandleDispatch } from './services/useHandleDispatch';
+import { motion } from 'framer-motion';
 
 function App() {
     const user = useSelector(authUser);
@@ -34,7 +35,7 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <motion.div initial="hidden" animate="show" className="App">
             <Routes>
                 {pageRoutes.map((item, index) => {
                     let Layout;
@@ -73,7 +74,7 @@ function App() {
                 })}
             </Routes>
             <Gototop />
-        </div>
+        </motion.div>
     );
 }
 

@@ -16,9 +16,9 @@ function Index() {
                 <div className={cx('map')}>
                     <Map />
                 </div>
-                <div className={cx('design')}>
-                    <p>Copyright © 2023 name company. Designed by Nguyễn Tấn Đại</p>
-                </div>
+            </div>
+            <div className={cx('design')}>
+                <p>Copyright © 2023 name company. Designed by Nguyễn Tấn Đại</p>
             </div>
         </div>
     );

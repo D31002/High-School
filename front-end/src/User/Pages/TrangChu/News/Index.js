@@ -15,11 +15,34 @@ function Index() {
     const totalPages = useSelector(NewsTotalPages);
     const { getallnews } = useHandleDispatch();
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(3);
 
     useEffect(() => {
-        getallnews(currentPage, 3);
+        const handleResize = () => {
+            if (window.innerWidth <= 768) {
+                setPageSize(1);
+            } else {
+                setPageSize(3);
+            }
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        getallnews(currentPage, pageSize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
+    }, [currentPage, pageSize]);
+
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(1);
+        }
+    }, [pageSize, totalPages, currentPage]);
 
     const handlePrev = () => {
         if (currentPage > 1) {
@@ -35,7 +58,7 @@ function Index() {
             setCurrentPage(1);
         }
     };
-
+    console.log(news);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -60,7 +83,7 @@ function Index() {
                                     <div className={cx('title')}>{item.title}</div>
                                     <div className={cx('date')}>
                                         <FontAwesomeIcon icon={faCalendarDays} className={cx('icon')} />
-                                        <span>{item.createdAt}</span>
+                                        <span>{item.createdDate}</span>
                                     </div>
                                     <div className={cx('description')}>{item.content}</div>
                                 </Button>

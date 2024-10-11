@@ -15,9 +15,10 @@ function Menu({ children, items = [], crud = false }) {
     };
     return (
         <Tippy
-            delay={[0, 200]}
+            // trigger="click"
+            delay={[0, 100]}
             interactive
-            placement="bottom-end"
+            placement="bottom"
             render={(attrs) => (
                 <div className={cx('menu-items', { crud })} tabIndex="-1" {...attrs}>
                     <PopperWrapper crud={crud}>{renderItems()}</PopperWrapper>

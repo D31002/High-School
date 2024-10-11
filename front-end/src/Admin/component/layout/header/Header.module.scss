@@ -30,6 +30,9 @@
     margin-right: 40px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
     cursor: pointer;
 
     img {
@@ -42,5 +45,16 @@
         font-weight: 600;
         font-size: 1.5rem;
         padding-left: 8px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        h2 {
+            display: none;
+        }
+        .header-left {
+            display: none;
+        }
     }
 }

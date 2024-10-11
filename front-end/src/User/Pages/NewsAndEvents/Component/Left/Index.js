@@ -9,8 +9,8 @@ const cx = classNames.bind(Styles);
 
 function Index({ data, currentPage, setCurrentPage, totalPages }) {
     return (
-        <>
-            <div className={cx('wrapper')}>
+        <div className={cx('wrapper')}>
+            <div className={cx('content')}>
                 {data.map((item, index) => (
                     <Button className={cx('item')} key={index} to={`/tin-tuc/${item.id}`}>
                         <div className={cx('content')}>
@@ -18,7 +18,7 @@ function Index({ data, currentPage, setCurrentPage, totalPages }) {
                             <div className={cx('description')}>
                                 <p>
                                     <DateRangeIcon />
-                                    {item.createdAt}
+                                    {item.createdDate}
                                 </p>
                                 <h1>{item.title}</h1>
                                 <p>{item.content}</p>
@@ -28,7 +28,7 @@ function Index({ data, currentPage, setCurrentPage, totalPages }) {
                 ))}
             </div>
             <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
-        </>
+        </div>
     );
 }
 

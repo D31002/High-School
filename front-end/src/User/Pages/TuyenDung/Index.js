@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Styles from './TuyenDung.module.scss';
-import Img from '../../Component/Assets/Img/news-img1.png';
 import Information from './recruitment-information/Index';
 
 const cx = classNames.bind(Styles);
@@ -25,7 +24,10 @@ function Index() {
                         Giáo dục Công dân, Mỹ thuật, và Âm nhạc với chi tiết như dưới đây.
                     </p>
                 </div>
-                <img src={Img} alt="anh" />
+                <img
+                    src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960169/imageStudentPageHome_kbh77m.png"
+                    alt="anh"
+                />
             </div>
             <div className={cx('recruitment-information')}>
                 <Information />

@@ -3,7 +3,6 @@ package com.news_service.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -16,6 +15,6 @@ public class NewsResponse {
     String title;
     String content;
     String imageMainUrl;
-    Date createdAt;
+    String createdDate;
     List<ContentSectionResponse> contentSectionResponses;
 }

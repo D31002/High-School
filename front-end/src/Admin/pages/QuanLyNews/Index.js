@@ -41,7 +41,7 @@ const Index = () => {
     const headCells = [
         { id: 'title', label: 'Tiêu đề' },
         { id: 'imageMainUrl', label: 'Ảnh chính' },
-        { id: 'createdAt', label: 'Ngày tạo' },
+        { id: 'createdDate', label: 'Ngày tạo' },
     ];
     const handleChangeLatestNews = (e) => {
         setLatestNews((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -166,17 +166,20 @@ const Index = () => {
         }
     };
 
-    const handleDelete = async (e, dataDel) => {
-        e.preventDefault();
-        e.stopPropagation();
+    const handleDelete = async (dataDel) => {
+        console.log(dataDel);
         showBeforeDelete(`Bạn chắc muốn xóa tin tức này chứ ?`).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await deletenews(token, dataDel);
-                if (response.code === 1000) {
-                    showSuccessMessage(response.result);
-                    getallnews(currentPage, pageSize);
+                if (dataDel?.length > 0) {
+                    const response = await deletenews(token, dataDel);
+                    if (response.code === 1000) {
+                        showSuccessMessage(response.result);
+                        getallnews(currentPage, pageSize);
+                    } else {
+                        showErrorMessage(response.message);
+                    }
                 } else {
-                    showErrorMessage(response.message);
+                    showErrorMessage('không có dữ liệu để xóa');
                 }
             } else {
                 showErrorMessage('Bạn đừng phân vân nữa:)');

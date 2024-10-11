@@ -53,7 +53,7 @@ function Header() {
                             }
                             alt="anh"
                         ></img>
-                        {user ? <h4>Họ và tên : {user?.userProfileResponse?.fullName}</h4> : <h4>{''}</h4>}
+                        {user ? <h4>ADMIN : {user?.userProfileResponse?.fullName}</h4> : <h4>{''}</h4>}
                     </div>
                 </Menu>
             </div>

@@ -61,3 +61,18 @@
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        .link {
+            flex-direction: column;
+            row-gap: 20px;
+            .fanpage {
+                width: 70%;
+            }
+            .inbox {
+                width: 70%;
+            }
+        }
+    }
+}

@@ -1,34 +1,35 @@
 .header-control {
-    width: 1200px;
-    max-width: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    align-items: center;
     width: 100%;
-    position: fixed;
+
     height: 80px;
     z-index: 100;
     background-color: var(--white-color);
-    // overflow: hidden;
 
-    .logo {
-        background-color: transparent;
-        text-align: center;
-        width: 15%;
-        overflow: hidden;
-        img {
-            width: 50%;
-            border-radius: 50%;
-        }
-    }
-    .link {
-        flex: 1;
+    .container {
+        width: 1200px;
+        max-width: 100%;
+        margin: 0 auto;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: space-evenly;
+        height: 100%;
+        overflow: hidden;
 
+        .logo {
+            width: 150px;
+            margin-right: 20px;
+            img {
+                width: 100%;
+            }
+        }
+        .link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px 30px;
+            flex-wrap: wrap;
+        }
         .btn-link {
             font-weight: 700;
             color: #108588;
@@ -37,6 +38,54 @@
             }
             &:hover {
                 color: #e91f57;
+            }
+        }
+        .menu-icon-toggle {
+            margin-right: 50px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+        .close {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .dropdown-menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 40%;
+            right: 0;
+            background-color: var(--white-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 1001;
+            animation: openToggle 0.2s linear;
+            border-radius: 10px;
+
+            .btn-link {
+                padding: 10px 20px;
+                &.active {
+                    color: #e91f57;
+                }
+                &:hover {
+                    color: #e91f57;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .container {
+            .link {
+                display: none;
+            }
+            .menu-icon-toggle {
+                display: block;
+                cursor: pointer;
             }
         }
     }
@@ -49,8 +98,27 @@
         top: 0;
     }
 }
+@keyframes openToggle {
+    from {
+        transform: translateX(100px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
 
 .header-control.visible {
+    position: fixed;
     animation-name: slideDown;
     animation-duration: 0.7s;
     animation-timing-function: ease;

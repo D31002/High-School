@@ -36,3 +36,17 @@
         margin: 60px 0;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        .header {
+            flex-direction: column;
+            .introduce {
+                width: 100%;
+            }
+            img {
+                width: 100%;
+            }
+        }
+    }
+}

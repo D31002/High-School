@@ -5,6 +5,7 @@
     }
     .working-process {
         display: flex;
+        flex-wrap: wrap;
         text-align: center;
         margin-left: -20px;
         margin-right: -20px;
@@ -29,6 +30,15 @@
                     line-height: 2.5rem;
                     text-align: start;
                 }
+            }
+        }
+    }
+}
+@media screen and (max-width: 480px) {
+    .wrapper {
+        .working-process {
+            .item {
+                width: calc(100% / 1);
             }
         }
     }

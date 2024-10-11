@@ -18,11 +18,6 @@ const MenuItems = [
         icon: <FontAwesomeIcon icon={faCaretRight} />,
         title: 'Hồ Sơ Xét Tuyển',
         to: '/',
-        // dataChildren: [
-        //     { title: 'Thi Vào Lớp 10', to: '/' },
-        //     { title: 'Định Hướng Nghề Nghiệp', to: '/tuvantuyensinh' },
-        //     { title: 'Tuổi 15 Con Cần gì', to: '/' },
-        // ],
     },
     {
         icon: <FontAwesomeIcon icon={faCaretRight} />,

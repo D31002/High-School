@@ -44,37 +44,37 @@ function Index() {
         <div className={cx('header-top')}>
             <div className={cx('socical')}>
                 <Tooltip content="Facebook">
-                    <div className={cx('link')}>
-                        <Button to="/">
+                    <>
+                        <Button to="/" className={cx('link')}>
                             <FontAwesomeIcon icon={faFacebook} className={cx('icon')} />
                         </Button>
-                    </div>
+                    </>
                 </Tooltip>
                 <Tooltip content="Instagram">
-                    <div className={cx('link')}>
-                        <Button to="/">
+                    <>
+                        <Button to="/" className={cx('link')}>
                             <FontAwesomeIcon icon={faInstagram} className={cx('icon')} />
                         </Button>
-                    </div>
+                    </>
                 </Tooltip>
                 <Tooltip content="Tiktok">
-                    <div className={cx('link')}>
-                        <Button to="/">
+                    <>
+                        <Button to="/" className={cx('link')}>
                             <FontAwesomeIcon icon={faTiktok} className={cx('icon')} />
                         </Button>
-                    </div>
+                    </>
                 </Tooltip>
                 <Tooltip content="Youtube">
-                    <div className={cx('link')}>
-                        <Button to="/">
+                    <>
+                        <Button to="/" className={cx('link')}>
                             <FontAwesomeIcon icon={faYoutube} className={cx('icon')} />
                         </Button>
-                    </div>
+                    </>
                 </Tooltip>
             </div>
             <div className={cx('contact')}>
                 <Tooltip content="Email liên hệ">
-                    <div>
+                    <div className={cx('email-contact')}>
                         <FontAwesomeIcon icon={faEnvelope} className={cx('icon')} />
                         <span className={cx('mail')}>ndai6618@gmail.com</span>
                     </div>
