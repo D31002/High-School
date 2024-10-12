@@ -11,6 +11,8 @@
             width: 33.333%;
             padding-left: 15px;
             padding-right: 15px;
+            display: flex;
+            align-items: stretch;
             &:nth-child(even) .content {
                 color: #fff;
                 background-image: linear-gradient(to right, #108588, #36b8c2);

@@ -18,6 +18,7 @@ import {
     Category,
     authUser,
 } from '../../../redux/selectors';
+import Button from '../../../Component/button/Button';
 
 const cx = classNames.bind(Styles);
 
@@ -230,6 +231,84 @@ function Diem() {
         }
     };
 
+    const handleRandom = async () => {
+        let valueRandom = [];
+        academicResults?.forEach((academicResult) => {
+            const academic = {
+                studentId: academicResult.studentId,
+                semesterId: semesterNow.id,
+                classRoomId: classRoomId,
+                scoresRequests: [
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 1,
+                        inputIndex: 0,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 2,
+                        inputIndex: 0,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 2,
+                        inputIndex: 1,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 2,
+                        inputIndex: 2,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 3,
+                        inputIndex: 0,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 3,
+                        inputIndex: 1,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 3,
+                        inputIndex: 2,
+                    },
+                    {
+                        score: (Math.random() * 10).toFixed(1),
+                        subjectId: subject.id,
+                        categoryId: 4,
+                        inputIndex: 0,
+                    },
+                ],
+            };
+
+            valueRandom.push(academic);
+        });
+
+        const response = await createscoresOfStudent(token, teacher?.id, valueRandom);
+        if (response.code === 1000) {
+            showSuccessMessage('dữ liệu đã random thành công');
+            getallAcademicOfStudentOfClassRoom(
+                token,
+                classRoomId,
+                semesterNow?.id,
+                subject?.id,
+                currentPage,
+                pageSize,
+                keyWord,
+            );
+        } else {
+            showErrorMessage(response.messge);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -331,6 +410,9 @@ function Diem() {
                                 </div>
                             </div>
                         ))}
+                        <Button btn onClick={handleRandom}>
+                            Giá trị ngẫu nhiên
+                        </Button>
                     </Modal>
                 )}
             </div>

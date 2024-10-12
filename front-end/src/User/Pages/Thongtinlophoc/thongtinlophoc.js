@@ -26,7 +26,7 @@ function Hocsinh() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('list-class')}>
-                {classes.map((data, index) => (
+                {classes?.map((data, index) => (
                     <Button key={index} to={`/thongtinlophoc/${data.id}`} className={cx('item')}>
                         <div className={cx('item-name')}>{data.name}</div>
                         <div className={cx('item-gvcv')}>
