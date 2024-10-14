@@ -242,8 +242,4 @@ public class ClassEntityService{
 		}
 		classEntityRepository.saveAll(newClassEntities);
 	}
-
-
-
-	//internal
 }

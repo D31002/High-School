@@ -549,7 +549,7 @@ export const useHandleDispatch = () => {
     const cpydata = async (token, schoolYearId) => {
         try {
             const response = await cpyData(token, schoolYearId);
-            if (response.data.code === 1000) {
+            if (response?.data?.code === 1000) {
                 return response.data;
             }
         } catch (error) {
@@ -594,6 +594,7 @@ export const useHandleDispatch = () => {
         try {
             dispatch(teachSlice.actions.FETCH_TEACHS_REQUEST());
             const response = await getSchedulesBySchoolYearId(token, schoolYearId);
+            console.log(response);
             if (response.data.code === 1000) {
                 dispatch(teachSlice.actions.FETCH_TEACHS_SUCCESS(response.data.result));
             }

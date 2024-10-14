@@ -76,7 +76,7 @@ function XepGiangDay() {
     }, [SchoolYears]);
 
     useEffect(() => {
-        if (YearId && YearId !== teachs?.schoolYearResponse?.id) {
+        if (YearId && teachs?.schoolYearResponse?.id !== YearId) {
             getschedulesbySchoolYearId(token, YearId);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,11 +105,11 @@ function XepGiangDay() {
     };
 
     const handleSaveTKB = async () => {
-        const newDataSave = dataGenerate.map((item) => ({
+        const newDataSave = dataGenerate?.teachDetails?.map((item) => ({
             lessonId: item.lesson?.id,
             teacherId: item.teacherResponse?.id,
             subjectId: item.subjectResponse?.id,
-            schoolYearId: item.schoolYearResponse?.id,
+            schoolYearId: dataGenerate?.schoolYearResponse?.id,
             classRoomId: item.classEntityResponse?.id,
             dayOfWeek: item.dayOfWeek,
         }));
@@ -201,7 +201,9 @@ function XepGiangDay() {
         return Object.values(classSchedules).sort((a, b) => a.className.localeCompare(b.className));
     };
 
-    const scheduleData = processData(teachs?.teachDetails?.length > 0 ? teachs.teachDetails : dataGenerate || []);
+    const scheduleData = processData(
+        teachs?.teachDetails?.length > 0 ? teachs.teachDetails : dataGenerate?.teachDetails,
+    );
 
     const oncloseModal = () => {
         setShowModal(false);
@@ -212,7 +214,7 @@ function XepGiangDay() {
             setShowModal(true);
             let teach;
             if (teachs.teachDetails?.length <= 0) {
-                teach = dataGenerate.find((item) => item.id === id);
+                teach = dataGenerate.teachDetails.find((item) => item.id === id);
             } else {
                 teach = teachs.teachDetails.find((item) => item.id === id);
             }
@@ -230,12 +232,12 @@ function XepGiangDay() {
             if (response.code === 1000) {
                 let index;
                 if (teachs.teachDetails?.length <= 0) {
-                    index = dataGenerate.findIndex((item) => item.id === dataEdit.teachId);
+                    index = dataGenerate.teachDetails.findIndex((item) => item.id === dataEdit.teachId);
                     if (index !== -1) {
-                        const newData = dataGenerate.map((item) =>
+                        const newData = dataGenerate.teachDetails.map((item) =>
                             item.id === dataEdit.teachId ? { ...item, teacherResponse: response.result } : item,
                         );
-                        setDataGenerate(newData);
+                        setDataGenerate({ ...dataGenerate.schoolYearResponse, teachDetails: newData });
                         showSuccessMessage('Cập nhật thành công');
                     } else {
                         showErrorMessage('Không tìm thấy dữ liệu để cập nhật');
@@ -280,7 +282,7 @@ function XepGiangDay() {
                         </Button>
                     )}
 
-                    {dataGenerate.length > 0 && (
+                    {dataGenerate?.teachDetails?.length > 0 && (
                         <Button onClick={handleSaveTKB} btn>
                             Lưu
                         </Button>
