@@ -272,11 +272,13 @@ public class TeachService {
 
 
 
-	public TeachDetailsResponse EditSchedules(DataEditRequest request) {
+	public List<TeachDetailsResponse> EditSchedules(DataEditRequest request) {
 		Teach teach = teachRepository.findById(request.getTeachId())
 				.orElseThrow(() ->  new AppException(ErrorCode.TEACH_NOT_EXISTED));
-		teach.setTeacherId(request.getTeacherId());
-		return teachMapper.toTeachDetailsResponse(teachRepository.save(teach));
+		List<Teach> teachList = teachRepository.findBySubjectIdAndClassRoomId(
+				teach.getSubjectId(),teach.getClassRoomId());
+		teachList.forEach(t -> t.setTeacherId(request.getTeacherId()));
+		return teachRepository.saveAll(teachList).stream().map(this::mapToTeachDetailsResponse).toList();
 	}
 
 	public void deleteSchedulesBySchoolYearId(int schoolYearId) {

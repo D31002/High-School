@@ -19,6 +19,7 @@ import {
     authUser,
 } from '../../../redux/selectors';
 import Button from '../../../Component/button/Button';
+import Loading from '../../../Component/Loading/Index';
 
 const cx = classNames.bind(Styles);
 
@@ -34,6 +35,7 @@ function Diem() {
 
     const [showModal, setShowModal] = useState(false);
     const [showEditScores, setShowEditScores] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [currentPage, setCrrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(6);
     const [keyWord, setKeyWord] = useState('');
@@ -49,6 +51,7 @@ function Diem() {
         getsubjectByTeacherAndClassRoom,
         createscoresOfStudent,
         getsemesterNow,
+        getallstudentbyclassroomidnotpage,
     } = useHandleDispatch();
 
     const headCells = [
@@ -232,67 +235,77 @@ function Diem() {
     };
 
     const handleRandom = async () => {
+        setLoading(true);
+        const res = await getallstudentbyclassroomidnotpage(token, classRoomId);
+
         let valueRandom = [];
-        academicResults?.forEach((academicResult) => {
-            const academic = {
-                studentId: academicResult.studentId,
-                semesterId: semesterNow.id,
-                classRoomId: classRoomId,
-                scoresRequests: [
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 1,
-                        inputIndex: 0,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 2,
-                        inputIndex: 0,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 2,
-                        inputIndex: 1,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 2,
-                        inputIndex: 2,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 3,
-                        inputIndex: 0,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 3,
-                        inputIndex: 1,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 3,
-                        inputIndex: 2,
-                    },
-                    {
-                        score: (Math.random() * 10).toFixed(1),
-                        subjectId: subject.id,
-                        categoryId: 4,
-                        inputIndex: 0,
-                    },
-                ],
-            };
+        const randomScore = (subjectId) => {
+            if (subjectId === 10) {
+                return 'Đ';
+            }
+            return (Math.random() * 10).toFixed(1);
+        };
+        res?.result?.forEach(async (student) => {
+            if (student?.status === 'ENROLLED') {
+                const academic = {
+                    studentId: student.id,
+                    semesterId: semesterNow.id,
+                    classRoomId: classRoomId,
+                    scoresRequests: [
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 1,
+                            inputIndex: 0,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 2,
+                            inputIndex: 0,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 2,
+                            inputIndex: 1,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 2,
+                            inputIndex: 2,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 3,
+                            inputIndex: 0,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 3,
+                            inputIndex: 1,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 3,
+                            inputIndex: 2,
+                        },
+                        {
+                            score: randomScore(subject.id),
+                            subjectId: subject.id,
+                            categoryId: 4,
+                            inputIndex: 0,
+                        },
+                    ],
+                };
 
-            valueRandom.push(academic);
+                valueRandom.push(academic);
+            }
         });
-
         const response = await createscoresOfStudent(token, teacher?.id, valueRandom);
         if (response.code === 1000) {
             showSuccessMessage('dữ liệu đã random thành công');
@@ -308,6 +321,7 @@ function Diem() {
         } else {
             showErrorMessage(response.messge);
         }
+        setLoading(false);
     };
     return (
         <div className={cx('wrapper')}>
@@ -328,8 +342,13 @@ function Diem() {
                         selectedOption={semesterNow?.id}
                     />
                     {showEditScores && (
-                        <div className={cx('add')} onClick={showmodal}>
-                            <AddIcon /> Chỉnh sửa điểm
+                        <div className={cx('add')}>
+                            <Button btn onClick={showmodal}>
+                                <AddIcon /> Chỉnh sửa điểm
+                            </Button>
+                            <Button btn onClick={handleRandom}>
+                                Giá trị ngẫu nhiên (chỉ test 1 lần)
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -410,12 +429,10 @@ function Diem() {
                                 </div>
                             </div>
                         ))}
-                        <Button btn onClick={handleRandom}>
-                            Giá trị ngẫu nhiên
-                        </Button>
                     </Modal>
                 )}
             </div>
+            {loading && <Loading />}
         </div>
     );
 }

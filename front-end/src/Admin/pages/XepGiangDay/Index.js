@@ -109,7 +109,7 @@ function XepGiangDay() {
             lessonId: item.lesson?.id,
             teacherId: item.teacherResponse?.id,
             subjectId: item.subjectResponse?.id,
-            schoolYearId: dataGenerate?.schoolYearResponse?.id,
+            schoolYearId: YearId,
             classRoomId: item.classEntityResponse?.id,
             dayOfWeek: item.dayOfWeek,
         }));
@@ -234,10 +234,26 @@ function XepGiangDay() {
                 if (teachs.teachDetails?.length <= 0) {
                     index = dataGenerate.teachDetails.findIndex((item) => item.id === dataEdit.teachId);
                     if (index !== -1) {
-                        const newData = dataGenerate.teachDetails.map((item) =>
-                            item.id === dataEdit.teachId ? { ...item, teacherResponse: response.result } : item,
+                        const t = dataGenerate.teachDetails.find((item) => item.id === dataEdit.teachId);
+                        const list = dataGenerate.teachDetails.filter(
+                            (teach) =>
+                                teach.classEntityResponse.id === t.classEntityResponse.id &&
+                                teach.subjectResponse.id === t.subjectResponse.id,
                         );
-                        setDataGenerate({ ...dataGenerate.schoolYearResponse, teachDetails: newData });
+                        const updatedTeachDetails = [...dataGenerate.teachDetails];
+                        list?.forEach((teach) => {
+                            const index = updatedTeachDetails.findIndex((item) => item.id === teach.id);
+                            if (index !== -1) {
+                                updatedTeachDetails[index] = {
+                                    ...updatedTeachDetails[index],
+                                    teacherResponse: response.result,
+                                };
+                            }
+                        });
+                        setDataGenerate({
+                            ...dataGenerate,
+                            teachDetails: updatedTeachDetails,
+                        });
                         showSuccessMessage('Cập nhật thành công');
                     } else {
                         showErrorMessage('Không tìm thấy dữ liệu để cập nhật');

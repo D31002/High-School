@@ -176,10 +176,10 @@ function Index() {
                                             : 'chưa xét'}
                                     </TableCell>
                                 </TableRow>
-                                <TableRow>
+                                {/* <TableRow>
                                     <TableCell className={cx('datarow')}>Danh hiệu</TableCell>
                                     <TableCell className={cx('datarow')}>Chưa xét</TableCell>
-                                </TableRow>
+                                </TableRow> */}
                                 <TableRow>
                                     <TableCell className={cx('datarow')}>Hạnh kiểm</TableCell>
                                     <TableCell className={cx('datarow')}>

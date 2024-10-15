@@ -13,7 +13,7 @@ function Hocsinh() {
     const { getallByNow, getallschoolyear } = useHandleDispatch();
 
     useEffect(() => {
-        getallschoolyear();
+        getallschoolyear('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {

@@ -54,6 +54,16 @@ public class StudentController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @GetMapping("/getStudentByClassRoomNotPage")
+    ApiResponse<List<StudentResponse>> getStudentByClassRoomNotPage(
+            @RequestParam int classRoomId){
+        return ApiResponse.<List<StudentResponse>>builder()
+                .result(studentService.getStudentByClassRoomNotPage(classRoomId))
+                .build();
+    }
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getStudentNotClassRoom")
     ApiResponse<List<StudentResponse>> getStudentNotClassRoom(){

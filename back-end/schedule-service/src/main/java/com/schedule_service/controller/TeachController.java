@@ -63,9 +63,9 @@ public class TeachController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/teach/EditSchedules")
-    ApiResponse<TeachDetailsResponse> EditSchedules(@RequestBody DataEditRequest request){
-        TeachDetailsResponse result = teachService.EditSchedules(request);
-        return ApiResponse.<TeachDetailsResponse>builder().result(result).build();
+    ApiResponse<List<TeachDetailsResponse>> EditSchedules(@RequestBody DataEditRequest request){
+        List<TeachDetailsResponse> result = teachService.EditSchedules(request);
+        return ApiResponse.<List<TeachDetailsResponse>>builder().result(result).build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

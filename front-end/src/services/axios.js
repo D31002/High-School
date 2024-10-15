@@ -310,6 +310,13 @@ export const getAllStudentByClassRoomId = (token, classRoomId, currentPage, page
         },
     );
 };
+export const getAllStudentByClassRoomIdNotPage = (token, classRoomId) => {
+    return axios.get(API_BASE_URL + `/student/pl/getStudentByClassRoomNotPage?classRoomId=${classRoomId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
 export const getStudentNotClassRoom = (token) => {
     return axios.get(API_BASE_URL + `/student/pl/getStudentNotClassRoom`, {
         headers: {

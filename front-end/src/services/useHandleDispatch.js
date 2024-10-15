@@ -50,6 +50,7 @@ import {
     //Student
     getAllStatuses,
     getStudentNotClassRoom,
+    getAllStudentByClassRoomIdNotPage,
     editStudentInClassRoom,
     getAllStudentByClassRoomId,
     createStudentInClassRoom,
@@ -327,6 +328,16 @@ export const useHandleDispatch = () => {
             }
         } catch (error) {
             dispatch(studentSlice.actions.GET_STUDENTS_FAILURE(error.response.data.message));
+        }
+    };
+    const getallstudentbyclassroomidnotpage = async (token, classRoomId) => {
+        try {
+            const response = await getAllStudentByClassRoomIdNotPage(token, classRoomId);
+            if (response.data.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
         }
     };
 
@@ -957,6 +968,7 @@ export const useHandleDispatch = () => {
         editteacherinsubject,
         deleteteacherinsubject,
         getallstudentbyclassroomid,
+        getallstudentbyclassroomidnotpage,
         getstudentnotclassroom,
         createstudentinclassroom,
         createstudentfromexcel,

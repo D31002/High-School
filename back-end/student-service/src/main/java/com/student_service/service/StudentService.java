@@ -89,6 +89,12 @@ public class StudentService {
                 .build();
     }
 
+    public List<StudentResponse> getStudentByClassRoomNotPage(int classRoomId) {
+        Sort sort = Sort.by("studentCode").ascending();
+        List<Student> studentList = studentRepository.findAll(sort);
+        return studentList.stream().map(this::mapToStudentResponse).toList();
+    }
+
     public List<StudentResponse> getStudentNotClassRoom() {
         Set<Integer> studentClassRoomIds = studentClassRoomClient.getAllStudentId().getResult().stream()
                 .map(StudentClassRoomResponse::getStudentId)

@@ -17,4 +17,6 @@ public interface TeachRepository extends JpaRepository<Teach, Integer> {
 
 //    @Query("SELECT FROM Teach t WHERE t.teacherId = ?1 AND t.classRoomId = ?2")
     List<Teach> findByTeacherIdAndClassRoomId(int teacherId, int classRoomId);
+
+    List<Teach> findBySubjectIdAndClassRoomId(int subjectId, int classRoomId);
 }

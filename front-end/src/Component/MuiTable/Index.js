@@ -179,7 +179,7 @@ function Index({
                 </TableContainer>
                 {!noPagination && (
                     <TablePagination
-                        rowsPerPageOptions={[5, 7, 10]}
+                        rowsPerPageOptions={[5, 6, 7, 8, 9, 10, 20, 30]}
                         component="div"
                         count={TotalElements || 0}
                         rowsPerPage={pageSize || 5}

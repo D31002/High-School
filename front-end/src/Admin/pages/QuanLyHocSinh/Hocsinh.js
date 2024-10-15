@@ -75,7 +75,7 @@ function Hocsinh() {
         password: '',
     });
     const [currentPage, setCrrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(7);
+    const [pageSize, setPageSize] = useState(6);
     const TotalElements = useSelector(totalElementsStudent);
     const StudentLoading = useSelector(StudentsLoading);
     const headCells = [
@@ -381,13 +381,13 @@ function Hocsinh() {
                             <GetAppIcon />
                             export
                         </Button>
-                        <Button className={cx('add')} onClick={handleAddStudentNotClassRoom}>
+                        <Button btn onClick={handleAddStudentNotClassRoom}>
                             <AddIcon /> Add student đã tồn tại
                         </Button>
-                        <Button className={cx('add')} onClick={showmodal}>
+                        <Button btn onClick={showmodal}>
                             <AddIcon /> Add new
                         </Button>
-                        <Button className={cx('add')} onClick={showModalAssessment}>
+                        <Button btn onClick={showModalAssessment}>
                             Đánh giá kết quả học tập
                         </Button>
                     </div>
@@ -395,7 +395,11 @@ function Hocsinh() {
             </div>
             <div className={cx('table')}>
                 <Muitable
-                    title={`DANH SÁCH HỌC SINH : LỚP ${classRoom?.name}  - GVCN : ${classRoom?.classTeacher?.teacherCode}-${classRoom?.classTeacher?.userProfileResponse?.fullName}`}
+                    title={`DANH SÁCH HỌC SINH : LỚP ${classRoom?.name}  - GVCN : ${
+                        classRoom?.classTeacher?.teacherCode || ''
+                    }-${
+                        classRoom?.classTeacher?.userProfileResponse?.fullName || ' Chưa được sắp xếp'
+                    } - Sỉ số : ${TotalElements} học sinh`}
                     headCells={headCells}
                     data={students}
                     handleSearch={handleSearch}
