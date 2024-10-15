@@ -7,13 +7,18 @@ import com.student_service.dto.response.ApiResponse;
 import com.student_service.dto.response.PageResponse;
 import com.student_service.dto.response.StudentResponse;
 import com.student_service.models.Status;
+import com.student_service.service.ExcelService;
 import com.student_service.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,6 +28,7 @@ import java.util.List;
 public class StudentController {
 
     StudentService studentService;
+    ExcelService excelService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getAllStatuses")
@@ -93,9 +99,10 @@ public class StudentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createStudentFromExcel")
-    ApiResponse<String> createStudentFromExcel(@RequestParam int classRoomId,
-                                               @RequestBody List<StudentCreationRequest> request){
-        studentService.createStudentFromExcel(classRoomId,request);
+    ApiResponse<String> createStudentFromExcel(
+            @RequestParam int classRoomId,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        studentService.createStudentFromExcel(classRoomId,file);
         return ApiResponse.<String>builder()
                 .result("Thành công")
                 .build();
@@ -119,5 +126,11 @@ public class StudentController {
         return ApiResponse.<String>builder()
                 .result("Thành công")
                 .build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @GetMapping("/export")
+    ResponseEntity<Resource> exportStudentDataToExcel(@RequestParam int classRoomId){
+        return studentService.exportStudentDataToExcel(classRoomId);
     }
 }

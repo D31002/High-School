@@ -20,13 +20,21 @@ import com.student_service.repository.StudentRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,6 +48,7 @@ public class StudentService {
     StudentMapper studentMapper;
     ProfileClient profileClient;
     StudentClassRoomClient studentClassRoomClient;
+    ExcelService excelService;
 
     private StudentResponse mapToStudentResponse(Student student){
         UserProfileResponse userProfileResponse = profileClient.getProfileById(student.getProfileId()).getResult();
@@ -143,8 +152,9 @@ public class StudentService {
         studentClassRoomClient.addStudentIdInClassRoomId(studentId,classRoomId);
     }
 
-    public void createStudentFromExcel(int classRoomId, List<StudentCreationRequest> request) {
-        System.out.println(request);
+    public void createStudentFromExcel(int classRoomId, MultipartFile file) throws IOException {
+        List<StudentCreationRequest> request = excelService.getStudentsDataFromExcel(file.getInputStream());
+
         List<StudentClassRoomResponse> studentClassRoomResponseList =
                 studentClassRoomClient.getStudentIdByClassRoomId(classRoomId).getResult();
 
@@ -211,5 +221,15 @@ public class StudentService {
     }
 
 
+    public ResponseEntity<Resource> exportStudentDataToExcel(int classRoomId) {
+        List<StudentResponse> studentResponseList = getStudentByClassRoomNotPage(classRoomId);
 
+        ByteArrayInputStream byteArrayInputStream = excelService.DownDataExcel(studentResponseList);
+        InputStreamResource file =new InputStreamResource(byteArrayInputStream);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"hocSinh.xlsx\"")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(file);
+
+    }
 }
