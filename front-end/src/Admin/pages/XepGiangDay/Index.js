@@ -104,6 +104,30 @@ function XepGiangDay() {
         }
     };
 
+    const handleGenerateTKB1 = async () => {
+        if (YearId) {
+            setLoading(true);
+            const response = await fetch(
+                `http://localhost:8888/api/v1/schedule/pl/teach/generateSchedules1?schoolYearId=${YearId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            const data = await response.json();
+            if (data.code === 1000) {
+                setDataGenerate(data.result);
+            } else {
+                showErrorMessage(data.message);
+            }
+            setLoading(false);
+        } else {
+            showWarningMessage('Vui lòng chọn năm để tạo lịch ngẫu nhiên');
+        }
+    };
+
     const handleSaveTKB = async () => {
         const newDataSave = dataGenerate?.teachDetails?.map((item) => ({
             lessonId: item.lesson?.id,
@@ -293,9 +317,14 @@ function XepGiangDay() {
                         </Button>
                     )}
                     {teachs.teachDetails?.length <= 0 && (
-                        <Button onClick={handleGenerateTKB} btn>
-                            Tạo thời khóa biểu
-                        </Button>
+                        <>
+                            <Button onClick={handleGenerateTKB} btn>
+                                Tạo thời khóa biểu
+                            </Button>
+                            <Button onClick={handleGenerateTKB1} btn>
+                                Tạo thời khóa biểu theo buổi
+                            </Button>
+                        </>
                     )}
 
                     {dataGenerate?.teachDetails?.length > 0 && (

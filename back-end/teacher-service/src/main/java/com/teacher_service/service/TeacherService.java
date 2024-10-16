@@ -16,13 +16,21 @@ import com.teacher_service.repository.TeacherRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +45,7 @@ public class TeacherService {
     ProfileClient profileClient;
     TeacherSubjectClient teacherSubjectClient;
     ClassRoomClient classRoomClient;
+    ExcelService excelService;
 
     private TeacherResponse mapToTeacherResponse(Teacher teacher) {
         UserProfileResponse userProfileResponse = profileClient.getProfileById(teacher.getProfileId()).getResult();
@@ -163,9 +172,12 @@ public class TeacherService {
         return getTeacherById(teacher.getId());
     }
 
-    public void createTeacherFromExcel(int subjectId, List<TeacherCreationRequest> request) {
+    public void createTeacherFromExcel(int subjectId, MultipartFile file) throws IOException {
+        List<TeacherCreationRequest> request = excelService.getTeachersDataFromExcel(file.getInputStream());
+
         List<TeacherSubjectResponse> teacherSubjectResponseList =
                 teacherSubjectClient.getTeacherIdBySubjectId(subjectId).getResult();
+
         if(!CollectionUtils.isEmpty(teacherSubjectResponseList))
             throw new AppException(ErrorCode.TEACHER_EXISTED);
 
@@ -194,6 +206,16 @@ public class TeacherService {
 
             teacherSubjectClient.addTeacherIdInSubjectId(teacher.getId(),subjectId);
         }
+    }
+    public ResponseEntity<Resource> exportTeachersDataToExcel(int subjectId) {
+        List<TeacherResponse> teacherResponseList = getAllTeacherBySubjectIdNotPagination(subjectId);
+
+        ByteArrayInputStream byteArrayInputStream = excelService.DownDataExcel(teacherResponseList);
+        InputStreamResource file =new InputStreamResource(byteArrayInputStream);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"GiaoVien.xlsx\"")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(file);
     }
 
     public void addTeacherExisted(int subjectId, int teacherId) {

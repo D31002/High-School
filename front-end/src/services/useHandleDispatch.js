@@ -605,7 +605,6 @@ export const useHandleDispatch = () => {
         try {
             dispatch(teachSlice.actions.FETCH_TEACHS_REQUEST());
             const response = await getSchedulesBySchoolYearId(token, schoolYearId);
-            console.log(response);
             if (response.data.code === 1000) {
                 dispatch(teachSlice.actions.FETCH_TEACHS_SUCCESS(response.data.result));
             }

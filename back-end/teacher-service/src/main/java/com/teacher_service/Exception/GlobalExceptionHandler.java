@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingException(Exception exception) {
-        ApiResponse apiResponse = new ApiResponse();
-
-        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
-
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    ResponseEntity<ApiResponse> handlingException(Exception exception) {
+//        ApiResponse apiResponse = new ApiResponse();
+//
+//        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+//        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+//
+//        return ResponseEntity.badRequest().body(apiResponse);
+//    }
 
     @ExceptionHandler(value = FeignException.class)
     ResponseEntity<ApiResponse> handlingFeignException(FeignException exception){
@@ -37,8 +37,10 @@ public class GlobalExceptionHandler {
             apiResponse.setMessage(message);
             return ResponseEntity.status(httpStatus).body(apiResponse);
         }catch (Exception e){
-            return handlingException(e);
+//            return handlingException(e);
+            return null;
         }
+
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)

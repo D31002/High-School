@@ -56,6 +56,12 @@ public class TeachController {
         return ApiResponse.<TeachResponse>builder().result(result).build();
     }
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/teach/generateSchedules1")
+    ApiResponse<TeachResponse> generateSchedules1(@RequestParam int schoolYearId){
+        TeachResponse result = teachService.generateSchedules1(schoolYearId);
+        return ApiResponse.<TeachResponse>builder().result(result).build();
+    }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/teach/saveSchedules")
     ApiResponse<List<TeachDetailsResponse>> saveSchedules(@RequestBody List<DataSaveSchedulesRequest> request){
         List<TeachDetailsResponse> result = teachService.saveSchedules(request);

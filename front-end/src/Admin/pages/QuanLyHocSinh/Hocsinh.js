@@ -21,7 +21,6 @@ import Modal from '../../../Component/Modal/Index';
 import Input from '../../../Component/Input/Index';
 import SelectOption from '../../../Component/SelectOption/Index';
 import Loading from '../../../Component/Loading/Index';
-import * as XLSX from 'xlsx';
 import {
     showBeforeDelete,
     showErrorMessage,
@@ -43,7 +42,6 @@ function Hocsinh() {
         deletestudent,
         getstudentnotclassroom,
         addstudentexistedinclassroom,
-        createstudentfromexcel,
     } = useHandleDispatch();
     const user = useSelector(authUser);
     const token = useSelector(userToken);

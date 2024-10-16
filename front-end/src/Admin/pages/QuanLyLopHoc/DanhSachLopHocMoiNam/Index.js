@@ -34,7 +34,7 @@ function Index() {
         { id: 'name', label: 'Tên lớp học' },
         { id: 'grade.grade', label: 'Khối' },
         { id: 'classTeacher.userProfileResponse.fullName', label: 'Giáo viên chủ nhiệm' },
-        { id: 'combination.name', label: 'Tổ hợp' },
+        { id: 'combination.name', label: 'Tổ hợp', hover: true, datahover: 'combination.subjects' },
     ];
     const token = useSelector(userToken);
     const [dataAdd, setDataAdd] = useState({
@@ -80,6 +80,7 @@ function Index() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyWord, currentPage, pageSize, yearId]);
+    console.log(classes);
 
     useEffect(() => {
         getallschoolyear(keyWordSchoolYear);

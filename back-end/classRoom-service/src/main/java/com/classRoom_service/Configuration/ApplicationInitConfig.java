@@ -32,39 +32,39 @@ public class ApplicationInitConfig {
                 Grade grade12 = gradeRepository.save(Grade.builder().grade(12).build());
 
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("10A00").schoolYearId(1).grade(grade10).combinationId(1).build());
+                        .name("10A1").schoolYearId(1).grade(grade10).combinationId(1).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("10A01").schoolYearId(1).grade(grade10).combinationId(2).build());
+                        .name("10A2").schoolYearId(1).grade(grade10).combinationId(2).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("10B00").schoolYearId(1).grade(grade10).combinationId(3).build());
+                        .name("10B3").schoolYearId(1).grade(grade10).combinationId(3).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("10C00").schoolYearId(1).grade(grade10).combinationId(4).build());
+                        .name("10C4").schoolYearId(1).grade(grade10).combinationId(4).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("10D01").schoolYearId(1).grade(grade10).combinationId(5).build());
+                        .name("10D5").schoolYearId(1).grade(grade10).combinationId(5).build());
 
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("11A00").schoolYearId(1).grade(grade11).combinationId(1).build());
+                        .name("11A1").schoolYearId(1).grade(grade11).combinationId(1).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("11A01").schoolYearId(1).grade(grade11).combinationId(2).build());
+                        .name("11A2").schoolYearId(1).grade(grade11).combinationId(2).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("11B00").schoolYearId(1).grade(grade11).combinationId(3).build());
+                        .name("11B3").schoolYearId(1).grade(grade11).combinationId(3).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("11C00").schoolYearId(1).grade(grade11).combinationId(4).build());
+                        .name("11C4").schoolYearId(1).grade(grade11).combinationId(4).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("11D01").schoolYearId(1).grade(grade11).combinationId(5).build());
+                        .name("11D5").schoolYearId(1).grade(grade11).combinationId(5).build());
 
 
 
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("12A00").schoolYearId(1).grade(grade12).combinationId(1).build());
+                        .name("12A1").schoolYearId(1).grade(grade12).combinationId(1).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("12A01").schoolYearId(1).grade(grade12).combinationId(2).build());
+                        .name("12A2").schoolYearId(1).grade(grade12).combinationId(2).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("12B00").schoolYearId(1).grade(grade12).combinationId(3).build());
+                        .name("12B3").schoolYearId(1).grade(grade12).combinationId(3).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("12C00").schoolYearId(1).grade(grade12).combinationId(4).build());
+                        .name("12C4").schoolYearId(1).grade(grade12).combinationId(4).build());
                 classEntityRepository.save(ClassEntity.builder()
-                        .name("12D01").schoolYearId(1).grade(grade12).combinationId(5).build());
+                        .name("12D5").schoolYearId(1).grade(grade12).combinationId(5).build());
 
 
             }

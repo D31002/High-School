@@ -9,9 +9,13 @@ import com.teacher_service.service.TeacherService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -81,11 +85,19 @@ public class TeacherController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createTeacherFromExcel")
-    ApiResponse<String> createTeacherFromExcel(@RequestParam int subjectId,@RequestBody List<TeacherCreationRequest> request){
-        teacherService.createTeacherFromExcel(subjectId,request);
+    ApiResponse<String> createTeacherFromExcel(
+            @RequestParam int subjectId,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        teacherService.createTeacherFromExcel(subjectId,file);
         return ApiResponse.<String>builder()
                 .result("Thành công")
                 .build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/export")
+    ResponseEntity<Resource> exportTeachersDataToExcel(@RequestParam int subjectId){
+        return teacherService.exportTeachersDataToExcel(subjectId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

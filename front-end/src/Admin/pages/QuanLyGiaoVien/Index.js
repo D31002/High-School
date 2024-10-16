@@ -292,8 +292,7 @@ function Index() {
             showWarningMessage('Lỗi dữ liệu');
         }
     };
-
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const fileTypes = [
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -302,50 +301,30 @@ function Index() {
         let selectedFile = e.target.files[0];
         if (selectedFile) {
             if (fileTypes.includes(selectedFile.type)) {
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(selectedFile);
-                reader.onload = async (e) => {
-                    const workbook = XLSX.read(e.target.result, { type: 'buffer' });
-                    const workSheetName = workbook.SheetNames[0];
-                    const workSheet = workbook.Sheets[workSheetName];
-                    const data = XLSX.utils.sheet_to_json(workSheet, { raw: false });
-                    const formatData = data.map((item) => {
-                        const date = new Date(item['Ngày Sinh']);
-                        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-                            2,
-                            '0',
-                        )}-${String(date.getDate()).padStart(2, '0')}`;
-                        const gender = item['Giới Tính'].toLowerCase() === 'nam' ? 0 : 1;
-                        const addressParts = item['Địa chỉ'].split('-');
-
-                        return {
-                            teacherCode: item['Mã Cán Bộ'],
-                            fullName: item['Họ Tên'],
-                            birthday: formattedDate,
-                            phoneNumber: item['Số điện thoại'],
-                            gender: gender,
-                            email: item['Email'],
-                            ethnicity: item['Dân tộc'],
-                            nationality: item['Quốc tịch'],
-                            houseNumber: addressParts[0],
-                            street: addressParts[1],
-                            ward: addressParts[2] || '',
-                            district: addressParts[3] || '',
-                            city: addressParts[4] || '',
-                            username: item['Mã Cán Bộ'],
-                            password: item['password'],
-                        };
+                setLoading(true);
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('subjectId', subjectId);
+                try {
+                    const response = await fetch('http://localhost:8888/api/v1/teacher/pl/createTeacherFromExcel', {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: formData,
                     });
-                    setLoading(true);
-                    const response = await createteacherinsubjectfromexcel(token, subjectId, formatData);
-                    if (response.code === 1000) {
+                    const result = await response.json();
+                    if (response.ok) {
+                        showSuccessMessage(result.result);
                         getallteacherbysubjectid(token, subjectId, currentPage, pageSize, keyWord);
-                        showSuccessMessage(response.result);
                     } else {
-                        showErrorMessage(response.message);
+                        showErrorMessage(result.message);
                     }
+                } catch (error) {
+                    showErrorMessage('Đã xảy ra lỗi khi tải lên file.');
+                } finally {
                     setLoading(false);
-                };
+                }
             } else {
                 showErrorMessage('vui lòng chọn file excel');
             }
@@ -353,36 +332,22 @@ function Index() {
             showWarningMessage('Chưa chọn file');
         }
     };
-    const formatDate = (dateStr) => {
-        if (!dateStr) return '';
 
-        const date = new Date(dateStr);
-        if (!isNaN(date.getTime())) {
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear().toString().slice(-2);
-            return `${day}/${month}/${year}`;
+    const handleExport = async () => {
+        const response = await fetch(`http://localhost:8888/api/v1/teacher/pl/export?subjectId=${subjectId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            window.location.href = url;
+        } else {
+            const errorMessage = await response.text();
+            showErrorMessage(errorMessage);
         }
-        return '';
-    };
-
-    const handleExport = () => {
-        const formattedTeachers = teachers.map((teacher, index) => ({
-            STT: index + 1,
-            'Mã Cán Bộ': teacher.teacherCode,
-            'Họ Tên': teacher.userProfileResponse.fullName,
-            'Ngày sinh': formatDate(teacher.userProfileResponse.birthday),
-            'Giới Tính': teacher.userProfileResponse.gender === 0 ? 'Nam' : 'Nữ',
-            'Địa chỉ': `${teacher.userProfileResponse.address.houseNumber}-${teacher.userProfileResponse.address.hamlet}-${teacher.userProfileResponse.address.street}-${teacher.userProfileResponse.address.ward}-${teacher.userProfileResponse.address.district}-${teacher.userProfileResponse.address.city}`,
-            'Số điện thoại': teacher.userProfileResponse.phoneNumber,
-            Email: teacher.userProfileResponse.email,
-            'Dân tộc': teacher.userProfileResponse.ethnicity,
-            'Quốc tịch': teacher.userProfileResponse.nationality,
-        }));
-        const ws = XLSX.utils.json_to_sheet(formattedTeachers);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Teachers');
-        XLSX.writeFile(wb, `teachers-${subjectId}.xlsx`);
     };
 
     return (

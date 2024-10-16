@@ -29,14 +29,14 @@ public class ApplicationInitConfig {
         return args -> {
             if (!subjectRepository.existsById(1)) {
 
-                Subject toan = subjectRepository.save(Subject.builder().name("Toán").numberOfLessons(6).build());
-                Subject vatLy = subjectRepository.save(Subject.builder().name("Vật lý").numberOfLessons(6).build());
-                Subject hoaHoc = subjectRepository.save(Subject.builder().name("Hóa học").numberOfLessons(6).build());
-                Subject sinhHoc = subjectRepository.save(Subject.builder().name("Sinh học").numberOfLessons(6).build());
-                Subject nguVan = subjectRepository.save(Subject.builder().name("Ngữ văn").numberOfLessons(6).build());
-                Subject lichSu = subjectRepository.save(Subject.builder().name("Lịch sử").numberOfLessons(6).build());
-                Subject diaLy = subjectRepository.save(Subject.builder().name("Địa lí").numberOfLessons(6).build());
-                Subject tiengAnh = subjectRepository.save(Subject.builder().name("Tiếng Anh").numberOfLessons(6).build());
+                Subject toan = subjectRepository.save(Subject.builder().name("Toán").numberOfLessons(4).build());
+                Subject vatLy = subjectRepository.save(Subject.builder().name("Vật lý").numberOfLessons(4).build());
+                Subject hoaHoc = subjectRepository.save(Subject.builder().name("Hóa học").numberOfLessons(4).build());
+                Subject sinhHoc = subjectRepository.save(Subject.builder().name("Sinh học").numberOfLessons(4).build());
+                Subject nguVan = subjectRepository.save(Subject.builder().name("Ngữ văn").numberOfLessons(4).build());
+                Subject lichSu = subjectRepository.save(Subject.builder().name("Lịch sử").numberOfLessons(4).build());
+                Subject diaLy = subjectRepository.save(Subject.builder().name("Địa lí").numberOfLessons(4).build());
+                Subject tiengAnh = subjectRepository.save(Subject.builder().name("Tiếng Anh").numberOfLessons(4).build());
                 Subject gdcd = subjectRepository.save(Subject.builder().name("GDCD").numberOfLessons(2).build());
                 Subject theDuc = subjectRepository.save(Subject.builder().name("TD").numberOfLessons(2).build());
                 Subject qpan = subjectRepository.save(Subject.builder().name("GDQP&AN").numberOfLessons(1).build());
@@ -44,23 +44,23 @@ public class ApplicationInitConfig {
 
                 combinationRepository.save(Combination.builder()
                         .name("A00")
-                        .subjects(Stream.of(toan, vatLy, hoaHoc, nguVan, tiengAnh, theDuc, qpan, gdcd).collect(Collectors.toSet()))
+                        .subjects(Stream.of(toan, vatLy, hoaHoc, nguVan, tiengAnh, qpan, gdcd).collect(Collectors.toSet()))
                         .build());
                 combinationRepository.save(Combination.builder()
                         .name("A01")
-                        .subjects(Stream.of(toan, vatLy, tiengAnh, nguVan, lichSu, theDuc, qpan, gdcd).collect(Collectors.toSet()))
+                        .subjects(Stream.of(toan, vatLy, tiengAnh, nguVan, lichSu, qpan, gdcd).collect(Collectors.toSet()))
                         .build());
                 combinationRepository.save(Combination.builder()
                         .name("B00")
-                        .subjects(Stream.of(toan, hoaHoc, sinhHoc, nguVan, diaLy, theDuc, qpan, gdcd).collect(Collectors.toSet()))
+                        .subjects(Stream.of(toan, hoaHoc, sinhHoc, nguVan, diaLy, qpan, gdcd).collect(Collectors.toSet()))
                         .build());
                 combinationRepository.save(Combination.builder()
                         .name("C00")
-                        .subjects(Stream.of(nguVan, lichSu, diaLy, toan, tiengAnh, theDuc, qpan, gdcd).collect(Collectors.toSet()))
+                        .subjects(Stream.of(nguVan, lichSu, diaLy, toan, tiengAnh, qpan, gdcd).collect(Collectors.toSet()))
                         .build());
                 combinationRepository.save(Combination.builder()
                         .name("D01")
-                        .subjects(Stream.of(toan, nguVan, tiengAnh, vatLy, gdcd, theDuc, qpan).collect(Collectors.toSet()))
+                        .subjects(Stream.of(toan, nguVan, tiengAnh, vatLy, gdcd, qpan).collect(Collectors.toSet()))
                         .build());
             }
         };

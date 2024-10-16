@@ -16,6 +16,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import Nodata from '../../NoData/Index';
+import ToolTip from '../../Tooltip/Index';
 
 const cx = classNames.bind(Styles);
 
@@ -45,7 +46,13 @@ function Index({
         if (typeof value === 'string' && value.match(/\.(jpeg|jpg|gif|png)$/)) {
             return <img src={value} alt="Chưa cập nhật" style={{ maxWidth: '100px', height: 'auto' }} />;
         }
-
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => {
+                    return item.name ? item.name : item;
+                })
+                .join(' - ');
+        }
         if (typeof value === 'object' && value !== null) {
             let result = '';
             const keys = Object.keys(value);
@@ -57,6 +64,7 @@ function Index({
             }
             return result.trim();
         }
+
         return value;
     };
     const handleExpandClick = (rowId) => {
@@ -103,11 +111,19 @@ function Index({
                                       </TableCell>
                                   )}
 
-                                  {headCells.map((cell) => (
-                                      <TableCell key={cell.id} className={cx('datarow')}>
-                                          {getNestedValue(row, cell.id) || 'không có dữ liệu'}
-                                      </TableCell>
-                                  ))}
+                                  {headCells.map((cell) =>
+                                      cell.hover ? (
+                                          <ToolTip content={getNestedValue(row, cell.datahover)} key={cell.id}>
+                                              <TableCell className={cx('datarow')}>
+                                                  {getNestedValue(row, cell.id) || 'không có dữ liệu'}
+                                              </TableCell>
+                                          </ToolTip>
+                                      ) : (
+                                          <TableCell key={cell.id} className={cx('datarow')}>
+                                              {getNestedValue(row, cell.id) || 'không có dữ liệu'}
+                                          </TableCell>
+                                      ),
+                                  )}
                                   {action && (
                                       <TableCell className={cx('datarow')}>
                                           <div className={cx('actions')}>

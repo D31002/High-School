@@ -136,14 +136,124 @@ public class TeachService {
 			}
 		}
 
-		List<TeachDetailsResponse> teachDetailsResponseList = new ArrayList<>();
-		for (int i = 0; i < assignedLessons.size(); i++) {
-			AssignedLesson entry = assignedLessons.get(i);
-			teachDetailsResponseList.add(createTeachResponse(entry, schoolYearId, i));
+		List<TeachDetailsResponse> teachDetailsResponseList = assignedLessons.stream()
+				.map(entry -> createTeachResponse(entry, schoolYearId, assignedLessons.indexOf(entry)))
+				.collect(Collectors.toList());
+
+		return TeachResponse.builder()
+				.schoolYearResponse(schoolYearSemesterClient.getSchoolYearBySchoolYearId(schoolYearId).getResult())
+				.teachDetails(teachDetailsResponseList)
+				.build();
+	}
+	public TeachResponse generateSchedules1(int schoolYearId) {
+
+		// Lấy danh sách lớp học
+		List<ClassEntityResponse> classRoomList =
+				classRoomClient.getAllBySchoolYearNotPagination(schoolYearId)
+						.getResult();
+
+		classRoomList.sort(Comparator.comparing(ClassEntityResponse::getName));
+
+		if(CollectionUtils.isEmpty(classRoomList)){
+			throw new AppException(ErrorCode.CLASS_NOT_EXISTED);
 		}
-		return TeachResponse.builder().schoolYearResponse(
-				schoolYearSemesterClient.getSchoolYearBySchoolYearId(schoolYearId).getResult())
-				.teachDetails(teachDetailsResponseList).build();
+
+		// Lấy danh sách tiết học
+		List<Lesson> lessons = lessonRepository.findAll();
+
+		// Xác định các ngày trong tuần, loại bỏ chủ nhật
+		List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values())
+				.filter(day -> day != DayOfWeek.SUNDAY)
+				.toList();
+
+		List<AssignedLesson> assignedLessons = new ArrayList<>();
+		// Duyệt từng lớp học
+		for (ClassEntityResponse classEntity : classRoomList) {
+			// Lấy danh sách môn học của lớp
+			Set<SubjectResponse> subjects = classEntity.getCombination().getSubjects();
+
+			for (SubjectResponse subject : subjects) {
+				List<TeacherSubjectResponse> teacherIdList = teacherSubjectClient.getTeacherIdBySubjectId(subject.getId()).getResult();
+				if (teacherIdList.isEmpty()) {
+					throw new AppException(ErrorCode.NO_TEACHER_FOUND);
+				}
+				// Lấy số tiết học tối đa trong tuần cho môn học
+				int numberOfLessons = subject.getNumberOfLessons();
+
+				// Lọc các tiết học có sẵn
+				List<Lesson> availableLessons = new ArrayList<>(lessons);
+				if (classEntity.getGrade().getId() == 1 || classEntity.getGrade().getId() == 3) {
+					availableLessons.removeIf(lesson -> lesson.getLesson() >= 6 && lesson.getLesson() <= 9);
+				} else if (classEntity.getGrade().getId() == 2) {
+					availableLessons.removeIf(lesson -> lesson.getLesson() >= 1 && lesson.getLesson() <= 5);
+				}
+
+				// Chọn ngẫu nhiên giáo viên
+				int teacherId = teacherIdList.get(new Random().nextInt(teacherIdList.size())).getTeacherId();
+
+				// Số tiết đã phân bổ
+				int allocatedLessons = 0;
+
+				if (numberOfLessons >= 2) {
+					// Xử lý cho trường hợp số tiết học > 2
+					while (allocatedLessons < numberOfLessons && !availableLessons.isEmpty()) {
+						//Kiểm tra điều kiện thứ 2 tiết 1, thứ 7 tiết 5
+						LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+						Lesson startLesson = lessonPair.getLesson();
+						DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
+						int finalTeacherId = lessonPair.getTeacherId();
+
+						// Kiểm tra nếu số tiết còn lại >= 2
+						if (numberOfLessons - allocatedLessons >= 2) {
+							//lesson tiếp theo của startLesson
+							Lesson nextLesson = getNextLesson(availableLessons, startLesson.getLesson() + 1);
+
+							// Nếu tiết kế tiếp hợp lệ, thêm cả hai tiết vào danh sách
+							if (nextLesson != null) {
+								boolean isNextLessonValid = !((nextLesson.getLesson() == 5 && dayOfWeek == DayOfWeek.SATURDAY) ||
+										(nextLesson.getLesson() == 1 && dayOfWeek == DayOfWeek.MONDAY)) &&
+										assignedLessons.stream().noneMatch(al -> al.getLesson().equals(nextLesson)
+												&& al.getDayOfWeek().equals(dayOfWeek) && al.getClassRoomId() == classEntity.getId())
+										&& isTeacherAvailableForLesson(finalTeacherId, nextLesson, dayOfWeek, assignedLessons);
+								if(isNextLessonValid){
+									assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId, subject.getId(), classEntity.getId(), dayOfWeek));
+									assignedLessons.add(new AssignedLesson(nextLesson, finalTeacherId,subject.getId(),classEntity.getId(), dayOfWeek));
+									allocatedLessons += 2;
+								}else{
+									assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId,subject.getId(),classEntity.getId(), dayOfWeek));
+									allocatedLessons++;
+								}
+							}
+							else {
+								assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId, subject.getId(), classEntity.getId(), dayOfWeek));
+								allocatedLessons++;
+							}
+
+						} else {
+							// Nếu số tiết còn lại < 2, chỉ cần thêm tiết ngẫu nhiên
+							assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId,subject.getId(), classEntity.getId(), dayOfWeek));
+							allocatedLessons++;
+						}
+					}
+				} else {
+					// Xử lý cho trường hợp số tiết học < 2
+					LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+					Lesson lesson = lessonPair.getLesson();
+					DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
+					int finalTeacherId = lessonPair.getTeacherId();
+					assignedLessons.add(new AssignedLesson(lesson, finalTeacherId,subject.getId(), classEntity.getId(), dayOfWeek));
+				}
+			}
+		}
+
+		List<TeachDetailsResponse> teachDetailsResponseList = assignedLessons.stream()
+				.map(entry -> createTeachResponse(entry, schoolYearId, assignedLessons.indexOf(entry)))
+				.collect(Collectors.toList());
+
+		return TeachResponse.builder()
+				.schoolYearResponse(schoolYearSemesterClient.getSchoolYearBySchoolYearId(schoolYearId).getResult())
+				.teachDetails(teachDetailsResponseList)
+				.build();
 	}
 
 	private Lesson getNextLesson(List<Lesson> availableLessons, int nextLessonNumber) {
@@ -319,4 +429,6 @@ public class TeachService {
 				.distinct()
 				.toList();
 	}
+
+
 }

@@ -14,7 +14,9 @@ public enum ErrorCode {
     TEACHER_NOT_EXISTED(1500, "Teacher không tồn tại", HttpStatus.NOT_FOUND),
     TEACHER_CODE_EXISTED(1501,"Mã số đã tồn tại",HttpStatus.BAD_REQUEST),
     INVALID_REQUEST(1502,"Request không có dữ liệu",HttpStatus.BAD_REQUEST),
-    TEACHER_EXISTED(1503,"Đã tồn tại giáo viên",HttpStatus.BAD_REQUEST);
+    TEACHER_EXISTED(1503,"Đã tồn tại giáo viên",HttpStatus.BAD_REQUEST),
+    SHEET_NOT_EXISTED(1803,"Không có bảng đó trong tệp excel",HttpStatus.BAD_REQUEST);
+
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
