@@ -6,14 +6,12 @@ import com.student_service.dto.request.ArrayIdRequest;
 import com.student_service.dto.request.StudentCreationRequest;
 import com.student_service.dto.request.StudentEditRequest;
 import com.student_service.dto.request.UserProfileCreationRequest;
-import com.student_service.dto.response.PageResponse;
-import com.student_service.dto.response.StudentClassRoomResponse;
-import com.student_service.dto.response.StudentResponse;
-import com.student_service.dto.response.UserProfileResponse;
+import com.student_service.dto.response.*;
 import com.student_service.mapper.StudentMapper;
 import com.student_service.models.Status;
 import com.student_service.models.Student;
 import com.student_service.models.UserType;
+import com.student_service.repository.HttpClient.AcademicResultClient;
 import com.student_service.repository.HttpClient.ProfileClient;
 import com.student_service.repository.HttpClient.StudentClassRoomClient;
 import com.student_service.repository.StudentRepository;
@@ -49,6 +47,7 @@ public class StudentService {
     ProfileClient profileClient;
     StudentClassRoomClient studentClassRoomClient;
     ExcelService excelService;
+    AcademicResultClient academicResultClient;
 
     private StudentResponse mapToStudentResponse(Student student){
         UserProfileResponse userProfileResponse = profileClient.getProfileById(student.getProfileId()).getResult();
@@ -231,5 +230,26 @@ public class StudentService {
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(file);
 
+    }
+
+    public List<StudentResponse> AddStudentsHasAcademicResultAboveAverageFromOldYear(
+            int classRoomIdOld,int classRoomIdNew) {
+
+        List<StudentClassRoomResponse> studentClassRoomResponseList =
+                studentClassRoomClient.getStudentIdByClassRoomId(classRoomIdNew).getResult();
+
+        if(!CollectionUtils.isEmpty(studentClassRoomResponseList))
+            throw new AppException(ErrorCode.STUDENT_EXISTED);
+
+        List<AcademicResultResponse> academicResults =
+                academicResultClient.getAcademicResultsOfClassRoomAboveAverage(classRoomIdOld).getResult();
+
+        if (CollectionUtils.isEmpty(academicResults)) {
+            throw new AppException(ErrorCode.STUDENT_ABOVE_AVERAGE_NOT_EXISTED);
+        }
+        return academicResults.stream()
+                .peek(result -> studentClassRoomClient.addStudentIdInClassRoomId(result.getStudentId(), classRoomIdNew))
+                .map(result -> getStudentById(result.getStudentId()))
+                .toList();
     }
 }

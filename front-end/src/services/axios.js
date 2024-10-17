@@ -343,6 +343,18 @@ export const addStudentExistedInClassRoom = (token, studentId, classRoomId) => {
         },
     );
 };
+export const AddStudentsHasAcademicResultAboveAverageFromOldYear = (token, classRoomIdOld, classRoomIdNew) => {
+    return axios.post(
+        API_BASE_URL +
+            `/student/pl/AddStudentsHasAcademicResultAboveAverageFromOldYear?classRoomIdOld=${classRoomIdOld}&classRoomIdNew=${classRoomIdNew}`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+};
 
 export const createStudentFromExcel = (token, classRoomId, data) => {
     return axios.post(API_BASE_URL + `/student/pl/createStudentFromExcel?classRoomId=${classRoomId}`, data, {

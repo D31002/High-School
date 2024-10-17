@@ -348,4 +348,11 @@ public class AcademicResultService {
     }
 
 
+    public List<AcademicResultResponse> getAcademicResultsOfClassRoomAboveAverage(int classRoomId) {
+        List<AcademicResult> academicResultList =
+                academicResultRepository.findByClassRoomAndAboveAverage(classRoomId);
+
+        return academicResultList.stream()
+                .map(academicResultMapper::toAcademicResultResponse).toList();
+    }
 }

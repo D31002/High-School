@@ -133,4 +133,16 @@ public class StudentController {
     ResponseEntity<Resource> exportStudentDataToExcel(@RequestParam int classRoomId){
         return studentService.exportStudentDataToExcel(classRoomId);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/AddStudentsHasAcademicResultAboveAverageFromOldYear")
+    ApiResponse<List<StudentResponse>> AddStudentsHasAcademicResultAboveAverageFromOldYear(
+            @RequestParam int classRoomIdOld,
+            @RequestParam int classRoomIdNew){
+        List<StudentResponse> result =
+                studentService.AddStudentsHasAcademicResultAboveAverageFromOldYear(classRoomIdOld,classRoomIdNew);
+        return ApiResponse.<List<StudentResponse>>builder()
+                .result(result)
+                .build();
+    }
 }

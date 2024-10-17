@@ -41,7 +41,7 @@ function Index() {
         setYearId(SchoolYears[0]?.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [SchoolYears]);
-
+    console.log(classRoomClassTeacher);
     useEffect(() => {
         if (YearId && YearId !== -1) {
             const getclassroom = async () => {
@@ -52,6 +52,8 @@ function Index() {
                     const response = await getclassRoomByClassTeacher(token, user?.id, YearId);
                     if (response.code === 1000) {
                         setClassRoomClassTeacher(response.result);
+                    } else {
+                        setClassRoomClassTeacher(null);
                     }
                 }
             };

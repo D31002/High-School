@@ -15,7 +15,8 @@ public enum ErrorCode {
     STUDENT_CODE_EXISTED(1801,"Mã số đã tồn tại",HttpStatus.BAD_REQUEST),
     INVALID_REQUEST(1802,"Request không có dữ liệu",HttpStatus.BAD_REQUEST),
     STUDENT_EXISTED(1803,"Đã tồn tại học sinh",HttpStatus.BAD_REQUEST),
-    SHEET_NOT_EXISTED(1803,"Không có bảng đó trong tệp excel",HttpStatus.BAD_REQUEST);
+    SHEET_NOT_EXISTED(1804,"Không có bảng đó trong tệp excel",HttpStatus.BAD_REQUEST),
+    STUDENT_ABOVE_AVERAGE_NOT_EXISTED(1805,"Không có học sinh nào trên trung bình",HttpStatus.NOT_FOUND);
 
 
 

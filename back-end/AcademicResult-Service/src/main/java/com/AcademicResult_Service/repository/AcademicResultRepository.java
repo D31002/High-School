@@ -13,4 +13,7 @@ public interface AcademicResultRepository extends JpaRepository<AcademicResult,I
             "(?1 IS NULL OR a.classRoomId = ?1) AND" +
             "(?2 IS NULL OR a.semesterId = ?2)")
     List<AcademicResult> findByClassRoomIdAndSemesterId(Integer classRoomId, Integer semesterId);
+
+    @Query(value = "SELECT a FROM AcademicResult a WHERE a.classRoomId = ?1 AND a.academicPerformance.id <= 3")
+    List<AcademicResult> findByClassRoomAndAboveAverage(int classRoomId);
 }

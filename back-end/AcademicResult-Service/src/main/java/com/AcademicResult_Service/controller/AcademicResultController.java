@@ -91,4 +91,12 @@ public class AcademicResultController {
         return ApiResponse.<String>builder().result("Thành công").build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAcademicResultsOfClassRoomAboveAverage")
+    ApiResponse<List<AcademicResultResponse>> getAcademicResultsOfClassRoomAboveAverage(@RequestParam int classRoomId){
+        List<AcademicResultResponse> result =
+                academicResultService.getAcademicResultsOfClassRoomAboveAverage(classRoomId);
+        return ApiResponse.<List<AcademicResultResponse>>builder().result(result).build();
+    }
+
 }

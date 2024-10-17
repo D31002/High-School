@@ -56,6 +56,7 @@ import {
     createStudentInClassRoom,
     createStudentFromExcel,
     addStudentExistedInClassRoom,
+    AddStudentsHasAcademicResultAboveAverageFromOldYear,
     deleteStudentInClassRoom,
 
     //schedule
@@ -372,6 +373,20 @@ export const useHandleDispatch = () => {
             return error.response.data;
         }
     };
+    const addStudentsHasAcademicResultAboveAverageFromOldYear = async (token, classRoomIdOld, classRoomIdNew) => {
+        try {
+            const response = await AddStudentsHasAcademicResultAboveAverageFromOldYear(
+                token,
+                classRoomIdOld,
+                classRoomIdNew,
+            );
+            if (response.data.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
+        }
+    };
     const createstudentfromexcel = async (token, classRoomId, data) => {
         try {
             const response = await createStudentFromExcel(token, classRoomId, data);
@@ -511,6 +526,17 @@ export const useHandleDispatch = () => {
             }
         } catch (error) {
             dispatch(classesSlice.actions.FETCH_ALL_CLASSES_FAILURE(error.response.data.message));
+        }
+    };
+
+    const getallclassesbyyearandgradeSaveState = async (token, yearid, gradeId, keyWord) => {
+        try {
+            const response = await getAllClassesByYearAndGrade(token, yearid, gradeId, keyWord);
+            if (response.data.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
         }
     };
 
@@ -972,6 +998,7 @@ export const useHandleDispatch = () => {
         createstudentinclassroom,
         createstudentfromexcel,
         addstudentexistedinclassroom,
+        addStudentsHasAcademicResultAboveAverageFromOldYear,
         getallstatus,
         editstudentinclassroom,
         deletestudent,
@@ -998,6 +1025,7 @@ export const useHandleDispatch = () => {
         editclass,
         cpydata,
         getclassRoomByClassTeacher,
+        getallclassesbyyearandgradeSaveState,
 
         //subject
         getallcombination,

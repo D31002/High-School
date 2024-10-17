@@ -13,6 +13,8 @@ import {
     totalElementsStudent,
     StudentsLoading,
     authUser,
+    schoolYears,
+    Grades,
 } from '../../../redux/selectors';
 import AddIcon from '@mui/icons-material/Add';
 import PublishIcon from '@mui/icons-material/Publish';
@@ -42,15 +44,23 @@ function Hocsinh() {
         deletestudent,
         getstudentnotclassroom,
         addstudentexistedinclassroom,
+        addStudentsHasAcademicResultAboveAverageFromOldYear,
+        getallclassesbyyearandgradeSaveState,
+        getallschoolyear,
+        getallgrade,
     } = useHandleDispatch();
     const user = useSelector(authUser);
     const token = useSelector(userToken);
     const classRoom = useSelector(Classes);
     const students = useSelector(Students);
     const statuses = useSelector(Statuses);
+    const SchoolYears = useSelector(schoolYears);
+    const grades = useSelector(Grades);
     const [keyWord, setKeyWord] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalAssessment, setModalAssessment] = useState(false);
+    const [modalOldYear, setModalOldYear] = useState(false);
+    const [classRoomIdOldYear, setClassRoomIdOldYear] = useState();
     const [isEditMode, setIsEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
     const { classRoomId } = useParams();
@@ -62,6 +72,7 @@ function Hocsinh() {
     const refpassword = useRef();
     const [studentId, setStudentId] = useState();
     const [studentNotClassRoom, setStudentNotClassRoom] = useState([]);
+    const [classRooms, setClassRooms] = useState([]);
     const [valueStudent, setValueStudent] = useState({
         studentCode: '',
         fullName: '',
@@ -100,9 +111,15 @@ function Hocsinh() {
         id: student.id,
         nameOption: `${student.studentCode} - ${student.userProfileResponse.fullName}`,
     }));
+    const dataformatOptionOfClass = classRooms.map((cr) => ({
+        id: cr.id,
+        nameOption: `${cr.name}`,
+    }));
 
     useEffect(() => {
         getclassroombyid(token, classRoomId);
+        getallschoolyear('');
+        getallgrade(token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -343,7 +360,69 @@ function Hocsinh() {
     const oncloseModalAssessment = () => {
         setModalAssessment(false);
     };
+    const oncloseModalOldYear = () => {
+        setModalOldYear(false);
+    };
 
+    const handleAddStudentFromOldYear = async () => {
+        setModalOldYear(true);
+        try {
+            if (SchoolYears.length > 0 && grades.length > 0) {
+                const yearId = SchoolYears.find(
+                    (schoolYear) => schoolYear.schoolYear === classRoom?.schoolYear?.schoolYear - 1,
+                )?.id;
+
+                if (yearId) {
+                    let gradeId;
+
+                    if (classRoom?.grade?.grade === 11) {
+                        gradeId = grades.find((grade) => grade?.grade === 10)?.id;
+                    } else if (classRoom?.grade?.grade === 12) {
+                        gradeId = grades.find((grade) => grade?.grade === 11)?.id;
+                    }
+
+                    if (gradeId) {
+                        const response = await getallclassesbyyearandgradeSaveState(token, yearId, gradeId, '');
+
+                        if (response.code === 1000) {
+                            setClassRooms(response.result);
+                        } else {
+                            showErrorMessage('Lỗi');
+                        }
+                    } else {
+                        showErrorMessage('Không tìm thấy Khối phù hợp');
+                    }
+                } else {
+                    showErrorMessage('Không tìm thấy khối phù hợp');
+                }
+            } else {
+                showErrorMessage('Lỗi lấy dữ liệu năm học hoặc khối');
+            }
+        } catch (error) {
+            showErrorMessage('Đã xảy ra lỗi');
+        }
+    };
+    const handleChangeOptionClassRoom = (id) => {
+        setClassRoomIdOldYear(id);
+    };
+    const handleSubmitStudentsFromClassRoomOldYear = async () => {
+        if (classRoomIdOldYear) {
+            const response = await addStudentsHasAcademicResultAboveAverageFromOldYear(
+                token,
+                classRoomIdOldYear,
+                classRoomId,
+            );
+            if (response.code === 1000) {
+                setModalOldYear(false);
+                showSuccessMessage('Thành công');
+                getallstudentbyclassroomid(token, classRoomId, currentPage, pageSize, keyWord);
+            } else {
+                showErrorMessage(response.message);
+            }
+        } else {
+            showWarningMessage('vui lòng chọn lớp');
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -361,11 +440,16 @@ function Hocsinh() {
                             export
                         </Button>
                         <Button btn onClick={handleAddStudentNotClassRoom}>
-                            <AddIcon /> Add student đã tồn tại
+                            <AddIcon /> Add học sinh đã tồn tại
                         </Button>
                         <Button btn onClick={showmodal}>
                             <AddIcon /> Add new
                         </Button>
+                        {classRoom?.grade?.grade !== 10 && (
+                            <Button btn onClick={handleAddStudentFromOldYear}>
+                                <AddIcon /> Add học sinh từ lớp năm rồi
+                            </Button>
+                        )}
                         <Button btn onClick={showModalAssessment}>
                             Đánh giá kết quả học tập
                         </Button>
@@ -520,6 +604,23 @@ function Hocsinh() {
                         // handleSearchChange={handleSearchChangeTeacherNotBySubjectId}
                         onclick={(id) => handleChangeOptionStudentNotClassRoom(id)}
                         selectedOption={studentId}
+                    />
+                </Modal>
+            )}
+            {console.log(classRoom)}
+            {modalOldYear && (
+                <Modal
+                    save
+                    onClose={oncloseModalOldYear}
+                    handleSubmitAdd={handleSubmitStudentsFromClassRoomOldYear}
+                    oneItem
+                >
+                    <SelectOption
+                        title="Chọn lớp học năm rồi"
+                        dataOptions={dataformatOptionOfClass}
+                        // handleSearchChange={handleSearchChangeTeacherNotBySubjectId}
+                        onclick={(id) => handleChangeOptionClassRoom(id)}
+                        selectedOption={classRoomIdOldYear}
                     />
                 </Modal>
             )}
