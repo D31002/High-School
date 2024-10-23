@@ -26,6 +26,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SelectOption from '../../../../Component/SelectOption/Index';
 import Loading from '../../../../Component/Loading/Index';
+import Button from '../../../../Component/button/Button';
 
 const cx = classNames.bind(Styles);
 
@@ -237,13 +238,13 @@ function Index() {
                 </div>
                 {yearId && (
                     <div className={cx('action')}>
-                        <div className={cx('coppy')} onClick={handleCoppy}>
+                        <Button btn onClick={handleCoppy}>
                             <ContentCopyIcon />
                             Coppy data
-                        </div>
-                        <div className={cx('add')} onClick={showmodal}>
+                        </Button>
+                        <Button btn onClick={showmodal}>
                             <AddIcon /> Add
-                        </div>
+                        </Button>
                     </div>
                 )}
             </div>

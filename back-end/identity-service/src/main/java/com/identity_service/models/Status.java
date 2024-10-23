@@ -1,4 +1,4 @@
-package com.student_service.models;
+package com.identity_service.models;
 
 import lombok.Getter;
 
@@ -15,13 +15,6 @@ public enum Status {
 
     Status(String vietnamese){
         this.vietnameseName = vietnamese;
-    }
-
-    public static List<String> getAllStatuses() {
-        return Arrays.asList(
-                ENROLLED.getVietnameseName(),
-                ON_LEAVE.getVietnameseName(),
-                GRADUATED.getVietnameseName());
     }
 
     public static Status mapVietnameseStatusToEnum(String vietnameseStatus) {

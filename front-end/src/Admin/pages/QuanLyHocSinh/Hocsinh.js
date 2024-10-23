@@ -83,6 +83,7 @@ function Hocsinh() {
         username: '',
         password: '',
     });
+    console.log(valueStudent);
     const [currentPage, setCrrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(6);
     const TotalElements = useSelector(totalElementsStudent);
@@ -607,7 +608,6 @@ function Hocsinh() {
                     />
                 </Modal>
             )}
-            {console.log(classRoom)}
             {modalOldYear && (
                 <Modal
                     save

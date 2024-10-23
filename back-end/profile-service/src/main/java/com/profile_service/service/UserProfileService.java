@@ -26,8 +26,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -147,7 +145,6 @@ public class UserProfileService {
 
 
     public UserProfileResponse editProfile(int profileId, UserProfileCreationRequest request) {
-
         UserProfile userProfile = userProfileRepository.findById(profileId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_EXISTED));
 
@@ -214,4 +211,5 @@ public class UserProfileService {
 
         return userProfileMapper.toUserProfileResponse(userProfile);
     }
+
 }

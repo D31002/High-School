@@ -154,20 +154,17 @@ export const useHandleDispatch = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
             if (error.response.data) {
                 dispatch(authSlice.actions.LOGIN_FAILURE(error.response.data.message));
-                showErrorMessage(`${error.response.data.message}<br>Lý do: Mã số hoặc Password không đúng`).then(
-                    (result) => {
-                        if (result.isConfirmed) {
-                            setDatalogin({
-                                userCode: '',
-                                password: '',
-                            });
-                            usernameInputRef.current.focus();
-                        }
-                    },
-                );
+                showErrorMessage(`${error.response.data.message}`).then((result) => {
+                    if (result.isConfirmed) {
+                        setDatalogin({
+                            userCode: '',
+                            password: '',
+                        });
+                        usernameInputRef.current.focus();
+                    }
+                });
             }
         }
     };

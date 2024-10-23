@@ -53,6 +53,8 @@ public class StudentService {
         UserProfileResponse userProfileResponse = profileClient.getProfileById(student.getProfileId()).getResult();
         StudentResponse studentResponse = studentMapper.toStudentResponse(student);
         studentResponse.setUserProfileResponse(userProfileResponse);
+        String vietnameseStatus = student.getStatus().getVietnameseName();
+        studentResponse.setStatus(vietnameseStatus);
         return studentResponse;
     }
 
@@ -191,7 +193,8 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_EXISTED));
 
-        student.setStatus(Status.valueOf(request.getStatus()));
+        Status status = Status.mapVietnameseStatusToEnum(request.getStatus());
+        student.setStatus(status);
 
         UserProfileCreationRequest userProfileCreationRequest =
                 studentMapper.toUserProfileCreationRequest(request);

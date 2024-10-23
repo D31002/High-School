@@ -13,7 +13,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(1002, "Không được xác thực",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1003,"không có quyền truy cập",HttpStatus.FORBIDDEN),
 
-    USERNAME_EXISTED(1006,"Username đã tồn tại",HttpStatus.BAD_REQUEST);
+    USERNAME_EXISTED(1006,"Username đã tồn tại",HttpStatus.BAD_REQUEST),
+    USER_ENABLED(1007,"Tài khoản của bạn đã bị vô hiệu hóa",HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

@@ -18,7 +18,7 @@ import {
     showSuccessMessage,
     showWarningMessage,
 } from '../../../Component/Notification/Index';
-import * as XLSX from 'xlsx';
+import Button from '../../../Component/button/Button';
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,6 @@ function Index() {
         addteacherexisted,
         editteacherinsubject,
         deleteteacherinsubject,
-        createteacherinsubjectfromexcel,
     } = useHandleDispatch();
     const [valueTeacher, setValueTeacher] = useState({
         teacherCode: '',
@@ -375,12 +374,12 @@ function Index() {
                             <GetAppIcon />
                             export
                         </div>
-                        <div className={cx('add')} onClick={showmodalTeacherNotBySubjectId}>
+                        <Button btn onClick={showmodalTeacherNotBySubjectId}>
                             <AddIcon /> Add teacher đã tồn tại
-                        </div>
-                        <div className={cx('add')} onClick={showmodal}>
+                        </Button>
+                        <Button btn onClick={showmodal}>
                             <AddIcon /> Add new
-                        </div>
+                        </Button>
                     </div>
                 )}
             </div>

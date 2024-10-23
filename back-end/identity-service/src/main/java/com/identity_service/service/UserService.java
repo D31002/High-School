@@ -9,6 +9,7 @@ import com.identity_service.Exception.AppException;
 import com.identity_service.Exception.ErrorCode;
 import com.identity_service.Mapper.UserMapper;
 import com.identity_service.dto.request.UserCreationRequest;
+import com.identity_service.models.Status;
 import com.identity_service.models.UserType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -63,15 +64,23 @@ public class UserService{
 								.username(request.getUsername())
 								.password(passwordEncoder.encode(request.getPassword()))
 								.roles(roles)
+								.enable(true)
 						.build()));
 	}
 
 	public UserResponse editUser(int userId, UserCreationRequest request) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-		if(request.getPassword() == null){
+
+		if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+			request.setPassword(passwordEncoder.encode(request.getPassword()));
+		}else{
 			request.setPassword(user.getPassword());
 		}
+
+        user.setEnable(request.getStatus() == null ||
+                Status.mapVietnameseStatusToEnum(request.getStatus()) == Status.ENROLLED);
+
 		userMapper.updateUserFromRequest(user,request);
 
 		return userMapper.toUserResponse(userRepository.save(user));

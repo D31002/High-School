@@ -39,12 +39,14 @@ function Index({
             return value === 1 ? 'Nữ' : 'Nam';
         }
 
-        if (path.includes('status')) {
-            return value === 'ENROLLED' ? 'Đang học' : value === 'ON_LEAVE' ? 'Nghĩ học' : 'Tốt nghiệp';
-        }
-
-        if (typeof value === 'string' && value.match(/\.(jpeg|jpg|gif|png)$/)) {
-            return <img src={value} alt="Chưa cập nhật" style={{ maxWidth: '100px', height: 'auto' }} />;
+        if (typeof value === 'string' && value.match(/\.(jpeg|jpg|gif|png|webp)$/)) {
+            return (
+                <img
+                    src={value instanceof File ? URL.createObjectURL(value) : value}
+                    alt="Chưa cập nhật"
+                    style={{ maxWidth: '100px', height: 'auto' }}
+                />
+            );
         }
         if (Array.isArray(value)) {
             return value

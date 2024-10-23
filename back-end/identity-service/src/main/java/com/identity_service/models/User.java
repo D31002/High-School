@@ -25,5 +25,6 @@ public class User {
 	@ManyToMany
 	Set<Role> roles;
 
+	Boolean enable;
 
 }

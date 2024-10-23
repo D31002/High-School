@@ -51,6 +51,7 @@ public class ApplicationInitConfig {
                         .username(ADMIN_USER_CODE)
                         .password(passwordEncode.encode(ADMIN_PASSWORD))
                         .roles(adminRoles)
+                        .enable(true)
                         .build());
 
             }

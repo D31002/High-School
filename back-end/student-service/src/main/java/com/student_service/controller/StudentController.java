@@ -32,9 +32,9 @@ public class StudentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getAllStatuses")
-    ApiResponse<List<Status>> getAllStatuses(){
-        List<Status> statuses = Status.getAllStatuses();
-        return ApiResponse.<List<Status>>builder()
+    ApiResponse<List<String>> getAllStatuses(){
+        List<String> statuses = Status.getAllStatuses();
+        return ApiResponse.<List<String>>builder()
                 .result(statuses)
                 .build();
     }
