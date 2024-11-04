@@ -27,6 +27,14 @@ public class ApplicationInitConfig {
                         .teacherCode("AD000001")
                         .profileId(1)
                         .build());
+
+                for (int i =1; i<=50 ;i++){
+                    String teacherCode = String.format("CB%06d",i);
+                    teacherRepository.save(Teacher.builder()
+                            .teacherCode(teacherCode)
+                            .profileId(i+1)
+                            .build());
+                }
             }
         };
     }

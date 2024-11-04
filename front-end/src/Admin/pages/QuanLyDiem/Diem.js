@@ -245,6 +245,7 @@ function Diem() {
             }
             return (Math.random() * 10).toFixed(1);
         };
+        console.log(res);
         res?.result?.forEach(async (student) => {
             if (student?.status === 'ENROLLED') {
                 const academic = {
@@ -302,11 +303,12 @@ function Diem() {
                         },
                     ],
                 };
-
                 valueRandom.push(academic);
             }
         });
+        console.log(valueRandom);
         const response = await createscoresOfStudent(token, teacher?.id, valueRandom);
+        console.log(response);
         if (response.code === 1000) {
             showSuccessMessage('dữ liệu đã random thành công');
             getallAcademicOfStudentOfClassRoom(

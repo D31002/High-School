@@ -1,6 +1,9 @@
 package com.Relationship_Management_Service.configuration;
 
+import com.Relationship_Management_Service.models.StudentClassRoom;
 import com.Relationship_Management_Service.models.TeacherSubject;
+import com.Relationship_Management_Service.repository.StudentClassRoomRepository;
+import com.Relationship_Management_Service.repository.StudentParentRepository;
 import com.Relationship_Management_Service.repository.TeacherSubjectRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +23,29 @@ public class ApplicationInitConfig {
             prefix = "spring",
             value = "datasource.driverClassName",
             havingValue = "com.mysql.cj.jdbc.Driver")
-    ApplicationRunner applicationRunner(TeacherSubjectRepository teacherSubjectRepository) {
+    ApplicationRunner applicationRunner(TeacherSubjectRepository teacherSubjectRepository, StudentClassRoomRepository studentClassRoomRepository) {
         return args -> {
             if(!teacherSubjectRepository.existsById(1)){
+
+                int numberOfSubjects = 10;
+                int teachersPerSubject = 5;
+
+                for(int subjectId = 1;subjectId<=numberOfSubjects;subjectId++){
+                    for (int teacherId = (subjectId -1) * teachersPerSubject + 2;
+                         teacherId < subjectId*teachersPerSubject + 2;teacherId++){
+                        teacherSubjectRepository.save(TeacherSubject.builder()
+                                .teacherId(teacherId)
+                                .subjectId(subjectId)
+                                .build());
+                    }
+                }
+
+                for (int i =1;i<=40;i++){
+                    studentClassRoomRepository.save(StudentClassRoom.builder()
+                            .studentId(i)
+                            .classRoomId(1)
+                            .build());
+                }
             }
         };
     }

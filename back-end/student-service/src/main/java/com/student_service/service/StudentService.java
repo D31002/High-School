@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -100,9 +101,21 @@ public class StudentService {
     }
 
     public List<StudentResponse> getStudentByClassRoomNotPage(int classRoomId) {
-        Sort sort = Sort.by("studentCode").ascending();
-        List<Student> studentList = studentRepository.findAll(sort);
-        return studentList.stream().map(this::mapToStudentResponse).toList();
+        List<StudentClassRoomResponse> studentClassRoomResponseList =
+                studentClassRoomClient.getStudentIdByClassRoomId(classRoomId).getResult();
+
+        List<Student> studentList = studentClassRoomResponseList.stream()
+                .map(studentClassRoomResponse -> studentRepository.findById(studentClassRoomResponse.getStudentId())
+                        .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_EXISTED)))
+                .sorted(Comparator.comparing(Student::getStudentCode))
+                .toList();
+
+        return studentList.stream().map(student -> {
+            UserProfileResponse userProfileResponse = profileClient.getProfileById(student.getProfileId()).getResult();
+            StudentResponse studentResponse = studentMapper.toStudentResponse(student);
+            studentResponse.setUserProfileResponse(userProfileResponse);
+            return studentResponse;
+        }).toList();
     }
 
     public List<StudentResponse> getStudentNotClassRoom() {
@@ -175,17 +188,16 @@ public class StudentService {
             UserProfileCreationRequest userProfileCreationRequest =
                     studentMapper.toUserProfileCreationRequest(req);
 
-            userProfileCreationRequest.setUserType(UserType.student);
-            UserProfileResponse userProfileResponse =
-                    profileClient.createProfile(userProfileCreationRequest).getResult();
+                userProfileCreationRequest.setUserType(UserType.student);
+                UserProfileResponse userProfileResponse =
+                        profileClient.createProfile(userProfileCreationRequest).getResult();
+                Student student = studentRepository.save(Student.builder()
+                        .studentCode(req.getStudentCode())
+                        .profileId(userProfileResponse.getId())
+                        .status(Status.ENROLLED)
+                        .build());
 
-            Student student = studentRepository.save(Student.builder()
-                    .studentCode(req.getStudentCode())
-                    .profileId(userProfileResponse.getId())
-                    .status(Status.ENROLLED)
-                    .build());
-
-            studentClassRoomClient.addStudentIdInClassRoomId(student.getId(), classRoomId);
+                studentClassRoomClient.addStudentIdInClassRoomId(student.getId(), classRoomId);
         }
     }
 

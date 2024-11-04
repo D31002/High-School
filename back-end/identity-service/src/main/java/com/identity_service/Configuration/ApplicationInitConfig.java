@@ -39,13 +39,19 @@ public class ApplicationInitConfig {
 
                 Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
                 roleRepository.save(Role.builder().name("USER").build());
-                roleRepository.save(Role.builder().name("TEACHER").build());
+                Role teacherRole = roleRepository.save(Role.builder().name("TEACHER").build());
                 Role proctorRole = roleRepository.save(Role.builder().name("PROCTOR").build());
-                roleRepository.save(Role.builder().name("STUDENT").build());
+                Role studentRole = roleRepository.save(Role.builder().name("STUDENT").build());
 
                 Set<Role> adminRoles = new HashSet<>();
                 adminRoles.add(adminRole);
                 adminRoles.add(proctorRole);
+
+                Set<Role> teacherRoles = new HashSet<>();
+                teacherRoles.add(teacherRole);
+
+                Set<Role> studentRoles = new HashSet<>();
+                studentRoles.add(studentRole);
 
                 userRepository.save(User.builder()
                         .username(ADMIN_USER_CODE)
@@ -54,6 +60,25 @@ public class ApplicationInitConfig {
                         .enable(true)
                         .build());
 
+                for (int i = 1; i <= 50; i++) {
+                    String teacherCode = String.format("CB%06d", i);
+                    userRepository.save(User.builder()
+                            .username(teacherCode)
+                            .password(passwordEncode.encode(teacherCode))
+                            .roles(teacherRoles)
+                            .enable(true)
+                            .build());
+                }
+
+                for (int i = 1; i <= 40; i++) {
+                    String studentCode = String.format("HS%06d", i+40);
+                    userRepository.save(User.builder()
+                            .username(studentCode)
+                            .password(passwordEncode.encode(studentCode))
+                            .roles(studentRoles)
+                            .enable(true)
+                            .build());
+                }
             }
         };
     }

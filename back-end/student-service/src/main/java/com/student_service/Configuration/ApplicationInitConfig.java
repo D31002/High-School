@@ -1,5 +1,7 @@
 package com.student_service.Configuration;
 
+import com.student_service.models.Status;
+import com.student_service.models.Student;
 import com.student_service.repository.StudentRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,14 @@ public class ApplicationInitConfig {
     ApplicationRunner applicationRunner(StudentRepository studentRepository) {
         return args -> {
             if(!studentRepository.existsById(1)){
-
+                for (int i=1;i<=40;i++){
+                    String studentCode = String.format("HS%06d",i+40);
+                    studentRepository.save(Student.builder()
+                            .studentCode(studentCode)
+                            .status(Status.ENROLLED)
+                            .profileId(i+51)
+                            .build());
+                }
             }
         };
     }

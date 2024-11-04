@@ -240,10 +240,10 @@ function Index() {
                     <div className={cx('action')}>
                         <Button btn onClick={handleCoppy}>
                             <ContentCopyIcon />
-                            Coppy data
+                            Sao chép tất cả lớp học năm trước
                         </Button>
                         <Button btn onClick={showmodal}>
-                            <AddIcon /> Add
+                            <AddIcon /> Thêm lớp học
                         </Button>
                     </div>
                 )}

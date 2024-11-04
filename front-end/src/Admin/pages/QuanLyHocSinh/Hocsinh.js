@@ -83,7 +83,6 @@ function Hocsinh() {
         username: '',
         password: '',
     });
-    console.log(valueStudent);
     const [currentPage, setCrrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(6);
     const TotalElements = useSelector(totalElementsStudent);
@@ -350,8 +349,12 @@ function Hocsinh() {
     const handleChangeOptionStudentNotClassRoom = (id) => {
         setStudentId(id);
     };
+    console.log(user);
     const showModalAssessment = () => {
-        if (user?.id === classRoom?.classTeacher?.id) {
+        if (
+            user?.id === classRoom?.classTeacher?.id ||
+            user?.userProfileResponse?.userResponse?.roles?.map((role) => role.name).includes('ADMIN')
+        ) {
             setModalAssessment(true);
         } else {
             showErrorMessage('Bạn không có quyền truy cập');
@@ -482,7 +485,7 @@ function Hocsinh() {
             {showModal && (
                 <Modal
                     edit={isEditMode}
-                    title="Thông Tin Giáo viên"
+                    title="Thông Tin Học sinh"
                     onClose={oncloseModal}
                     save={!isEditMode}
                     handleSubmitAdd={handleSubmitAdd}

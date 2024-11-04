@@ -137,8 +137,10 @@ function XepGiangDay() {
             classRoomId: item.classEntityResponse?.id,
             dayOfWeek: item.dayOfWeek,
         }));
+        setLoading(true);
         const resposne = await saveschedules(token, newDataSave);
         if (resposne.code === 1000) {
+            setLoading(false);
             await getschedulesbySchoolYearId(token, YearId);
             setDataGenerate([]);
             showSuccessMessage('thành công');

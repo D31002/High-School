@@ -49,6 +49,87 @@ public class ApplicationInitConfig {
                                 .userType(UserType.teacher)
                                 .userId(1)
                         .build());
+
+                String[] fullNames = {
+                        "Nguyễn Văn An", "Trần Thị Bình", "Lê Hoàng Cường", "Phạm Thị Duyên", "Đỗ Minh Đức",
+                        "Hoàng Thị Hương", "Ngô Văn Khánh", "Vũ Thị Lan", "Bùi Minh Nhật", "Lý Thị Ngọc",
+                        "Trương Văn Quốc", "Đinh Thị Quyên", "Nguyễn Thị Hoa", "Trần Văn Minh", "Lê Văn Tài",
+                        "Phạm Thị Bích", "Đỗ Văn Toàn", "Hoàng Văn Phúc", "Ngô Thị Mai", "Vũ Văn Thành",
+                        "Bùi Thị Kim", "Lý Văn Hưng", "Trương Thị Thanh", "Đinh Văn Phúc", "Nguyễn Văn Hòa",
+                        "Trần Văn Vinh", "Lê Thị Xuân", "Phạm Văn Sơn", "Đỗ Thị Hiền", "Hoàng Văn Lâm",
+                        "Ngô Văn Tiến", "Vũ Thị Bích", "Bùi Văn Quang", "Lý Văn Tùng", "Trương Thị Thu",
+                        "Đinh Văn Hải", "Nguyễn Thị Phương", "Trần Văn Khoa", "Lê Văn Dũng", "Phạm Thị Liên",
+                        "Đỗ Văn Hưng", "Hoàng Thị Tuyết", "Ngô Văn Minh", "Vũ Văn Cường","Phan Thị Hương",
+                        "Lâm Văn Hải", "Nguyễn Thị Phương", "Trần Văn Nam", "Lê Thị Hoa","Đỗ Văn Tâm"
+
+                };
+
+                String[] wards = {
+                        "Phường Xuân Khánh", "Phường An Bình", "Phường Tân An", "Phường Cái Khế", "Phường Hưng Lợi"
+                };
+                String[] streets = {
+                        "Đường 3/2", "Đường Nguyễn Văn Cừ", "Đường Lê Hồng Phong", "Đường Trần Văn Khéo", "Đường Trần Quốc Toản"
+                };
+                String[] districts = {
+                        "Quận Ninh Kiều", "Quận Ô Môn", "Quận Bình Thủy", "Quận Cái Răng", "Quận Thốt Nốt"
+                };
+
+                for (int i = 0; i < fullNames.length; i++) {
+                    userProfileRepository.save(UserProfile.builder()
+                            .email("teacher" + (i + 2) + "@gmail.com")
+                            .address(addressProfileRepository
+                                    .save(AddressProfile.builder()
+                                            .city("Thành Phố Cần Thơ")
+                                            .district(districts[i % districts.length])
+                                            .ward(wards[i % wards.length])
+                                            .street(streets[i % streets.length])
+                                            .houseNumber(1 + (i % 50))
+                                            .build()))
+                            .birthday(LocalDate.of(1980 + (i % 20), 1 + (i % 12), 1 + (i % 28)))
+                            .fullName(fullNames[i])
+                            .gender(i % 2 == 0 ? 1 : 0)
+                            .ethnicity("Kinh")
+                            .nationality("Việt Nam")
+                            .phoneNumber("093" + (1000000 + i))
+                            .userType(UserType.teacher)
+                            .userId(i + 2)
+                            .build());
+                }
+
+
+
+                //student
+                String[] studentNames = {
+                        "Nguyễn Hoàng Anh", "Trần Minh Châu", "Lê Thanh Tâm", "Phạm Quốc Bảo", "Đỗ Huyền Trang",
+                        "Vũ Đăng Khoa", "Nguyễn Thị Mai", "Lê Văn Sơn", "Trần Ngọc Lan", "Đinh Thế Anh",
+                        "Nguyễn Thị Hương", "Phạm Minh Tuấn", "Lê Thị Bích", "Trần Xuân Hòa", "Nguyễn Tiến Dũng",
+                        "Bùi Thị Nhung", "Nguyễn Văn Hải", "Lê Đình Phong", "Trần Thị Ngọc", "Nguyễn Thành Đạt",
+                        "Đỗ Minh Hùng", "Lê Thị Hằng", "Vũ Văn An", "Nguyễn Văn Kiên", "Trần Văn Lộc",
+                        "Nguyễn Ngọc Thạch", "Phạm Thị Kim", "Lê Văn Hưng", "Trần Minh Quân", "Nguyễn Phương Linh",
+                        "Đinh Văn Duy", "Vũ Thị Ngọc", "Bùi Văn Tâm", "Nguyễn Thị Yến", "Trần Đình Nam",
+                        "Nguyễn Văn Cường", "Lê Thị Liên", "Phạm Văn Lâm", "Đỗ Minh Tâm", "Nguyễn Văn Tú"
+                };
+                for (int i = 0;i<studentNames.length;i++){
+                    userProfileRepository.save(UserProfile.builder()
+                            .email("student" + (i + 42) + "@gmail.com")
+                            .address(addressProfileRepository
+                                    .save(AddressProfile.builder()
+                                            .city("Thành Phố Cần Thơ")
+                                            .district(districts[i % districts.length])
+                                            .ward(wards[i % wards.length])
+                                            .street(streets[i % streets.length])
+                                            .houseNumber(1 + (i % 50))
+                                            .build()))
+                            .birthday(LocalDate.of(2007, 1 + (i % 12), 1 + (i % 28)))
+                            .fullName(studentNames[i])
+                            .gender(i % 2 == 0 ? 1 : 0)
+                            .ethnicity("Kinh")
+                            .nationality("Việt Nam")
+                            .phoneNumber("093" + (1000000 + i))
+                            .userType(UserType.student)
+                            .userId(i + 52)
+                            .build());
+                }
             }
         };
     }

@@ -62,6 +62,7 @@ function Index({ onclose, classRoom }) {
         getsemesternow();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    console.log(academicOfstudents);
     useEffect(() => {
         if (academicOfstudents.length > 0) {
             const updatedStudents = academicOfstudents.map(async (student) => {
@@ -69,7 +70,7 @@ function Index({ onclose, classRoom }) {
                 const subjectPromises = classRoom?.combination?.subjects?.map(async (subject) => {
                     let meanScore = null;
 
-                    if (student && student?.id !== 0) {
+                    if (student && student?.id !== 0 && student.scoresResponses !== null) {
                         meanScore = await calculateMeanScoreOfSubject(
                             token,
                             student?.studentId,
@@ -82,12 +83,12 @@ function Index({ onclose, classRoom }) {
                     if (subject?.id !== 10) {
                         scores.push({
                             subjectId: subject?.id,
-                            meanScore: meanScore?.result.meanScore,
+                            meanScore: meanScore?.result?.meanScore,
                         });
                     }
                 });
                 await Promise.all(subjectPromises);
-                if (student.meanScore != null && student.conduct) {
+                if (student?.meanScore != null && student?.conduct && student.scoresResponses !== null) {
                     let academicPerformance;
                     if (
                         student.meanScore >= 8 &&
@@ -173,6 +174,7 @@ function Index({ onclose, classRoom }) {
     };
 
     const calculateMeanScoreSemester = async () => {
+        setLoading(true);
         const isvalid = academicOfstudents.some((academicStudent) => academicStudent.id === 0);
         if (!isvalid) {
             const studentMeanScores = academicOfstudents.map(async (academicStudent) => {
@@ -205,6 +207,7 @@ function Index({ onclose, classRoom }) {
         } else {
             showErrorMessage('Chưa đủ điểm để tính');
         }
+        setLoading(false);
     };
 
     // const abc = () => {
