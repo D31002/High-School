@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { visuallyHidden } from '@mui/utils';
 import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '../../button/Button';
 
 const cx = classNames.bind(Styles);
 
@@ -23,6 +24,8 @@ function Index({
     isAllSelected,
     rowCount,
     handleDelete,
+    hanleGraduationAssessment,
+    showGraduationAssessment,
     selected,
     setSelected,
     action,
@@ -35,18 +38,36 @@ function Index({
                     <div className={cx('titleContainer')}>
                         {selected.length <= 0 ? <span>{title}</span> : `${selected.length} được chọn `}
                         {selected.length > 0 && (
-                            <span
-                                onClick={async () => {
-                                    try {
-                                        await handleDelete(selected);
-                                        setSelected([]);
-                                    } catch (error) {
-                                        console.error(error);
-                                    }
-                                }}
-                            >
-                                <DeleteIcon className={cx('icon')} />
-                            </span>
+                            <div className={cx('ac')}>
+                                {hanleGraduationAssessment && showGraduationAssessment && (
+                                    <Button
+                                        className={cx('hanleGraduationAssessment')}
+                                        onClick={async () => {
+                                            try {
+                                                await hanleGraduationAssessment(selected);
+                                                setSelected([]);
+                                            } catch (error) {
+                                                console.error(error);
+                                            }
+                                        }}
+                                    >
+                                        Xét tốt nghiệp
+                                    </Button>
+                                )}
+
+                                <span
+                                    onClick={async () => {
+                                        try {
+                                            await handleDelete(selected);
+                                            setSelected([]);
+                                        } catch (error) {
+                                            console.error(error);
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon className={cx('icon')} />
+                                </span>
+                            </div>
                         )}
                     </div>
                 </TableCell>

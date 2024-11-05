@@ -48,6 +48,7 @@ function Hocsinh() {
         getallclassesbyyearandgradeSaveState,
         getallschoolyear,
         getallgrade,
+        graduationassessment,
     } = useHandleDispatch();
     const user = useSelector(authUser);
     const token = useSelector(userToken);
@@ -60,6 +61,7 @@ function Hocsinh() {
     const [showModal, setShowModal] = useState(false);
     const [modalAssessment, setModalAssessment] = useState(false);
     const [modalOldYear, setModalOldYear] = useState(false);
+    const [showGraduationAssessment, setShowGraduationAssessment] = useState(false);
     const [classRoomIdOldYear, setClassRoomIdOldYear] = useState();
     const [isEditMode, setIsEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -122,6 +124,11 @@ function Hocsinh() {
         getallgrade(token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        if (classRoom?.grade && classRoom?.grade.grade === 12) {
+            setShowGraduationAssessment(true);
+        }
+    }, [classRoom]);
 
     useEffect(() => {
         if (classRoomId) {
@@ -349,7 +356,6 @@ function Hocsinh() {
     const handleChangeOptionStudentNotClassRoom = (id) => {
         setStudentId(id);
     };
-    console.log(user);
     const showModalAssessment = () => {
         if (
             user?.id === classRoom?.classTeacher?.id ||
@@ -427,6 +433,16 @@ function Hocsinh() {
             showWarningMessage('vui lòng chọn lớp');
         }
     };
+
+    const hanleGraduationAssessment = async (data) => {
+        const response = await graduationassessment(token, data);
+        if (response.code === 1000) {
+            showSuccessMessage(response.result);
+            getallstudentbyclassroomid(token, classRoomId, currentPage, pageSize, keyWord);
+        } else {
+            showErrorMessage(response.message);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -435,23 +451,23 @@ function Hocsinh() {
                         <div className={cx('import')}>
                             <label htmlFor="id-upload">
                                 <PublishIcon />
-                                <span>Import</span>
+                                <span>Thêm từ excel</span>
                             </label>
                             <input id="id-upload" className={cx('upload')} type="file" onChange={handleFileChange} />
                         </div>
                         <Button className={cx('export')} onClick={handleExport}>
                             <GetAppIcon />
-                            export
+                            Tạo excel
                         </Button>
                         <Button btn onClick={handleAddStudentNotClassRoom}>
-                            <AddIcon /> Add học sinh đã tồn tại
+                            <AddIcon /> Thêm học sinh đã tồn tại
                         </Button>
                         <Button btn onClick={showmodal}>
-                            <AddIcon /> Add new
+                            <AddIcon /> Thêm mới
                         </Button>
                         {classRoom?.grade?.grade !== 10 && (
                             <Button btn onClick={handleAddStudentFromOldYear}>
-                                <AddIcon /> Add học sinh từ lớp năm rồi
+                                <AddIcon /> Thêm học sinh từ lớp năm rồi
                             </Button>
                         )}
                         <Button btn onClick={showModalAssessment}>
@@ -472,6 +488,8 @@ function Hocsinh() {
                     handleSearch={handleSearch}
                     handleShowEdit={handleShowEdit}
                     handleDelete={handleDelete}
+                    hanleGraduationAssessment={hanleGraduationAssessment}
+                    showGraduationAssessment={showGraduationAssessment}
                     action
                     checkBox
                     details={details}

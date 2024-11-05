@@ -8,6 +8,7 @@ app:
     profile: http://localhost:8071/profile
     relationship: http://localhost:8075/relationship
     academicResult: http://localhost:8079/academicResult
+    identity: http://localhost:8070/identity
 
 spring:
   datasource:

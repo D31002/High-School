@@ -66,7 +66,7 @@ function Diemdanh() {
     const [keyWordStudent, setKeyWordStudent] = useState('');
     const [currentPage, setCrrentPage] = useState(1);
     const [semesterNow, setSemesterNow] = useState();
-    const [pageSize, setPageSize] = useState(7);
+    const [pageSize, setPageSize] = useState(6);
     useEffect(() => {
         getallAttendanceStatus(token);
         getallsemester(token);
@@ -324,13 +324,14 @@ function Diemdanh() {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[5, 7, 10]}
+                rowsPerPageOptions={[5, 6, 7, 10, 20, 30, 40, 50]}
                 component="div"
                 count={TotalElements || 0}
                 rowsPerPage={pageSize || 5}
                 page={currentPage - 1 || 0}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangepageSize}
+                labelRowsPerPage="Số lượng phần tử của trang : "
                 sx={{
                     '& .MuiTablePagination-toolbar': {
                         minHeight: '70px',

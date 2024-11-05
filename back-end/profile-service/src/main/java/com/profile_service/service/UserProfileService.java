@@ -211,5 +211,7 @@ public class UserProfileService {
 
         return userProfileMapper.toUserProfileResponse(userProfile);
     }
-
+    public Integer getUserID(Integer userprofileId) {
+        return userProfileRepository.findByUserId(userprofileId).getUserId();
+    }
 }

@@ -54,4 +54,11 @@ public class InternalController {
         userService.deleteUser(userId);
         return ApiResponse.<Void>builder().build();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/setEnableWhenGraduation/{userId}")
+    ApiResponse<Void> setEnableWhenGraduation(@PathVariable int userId){
+        userService.setEnableWhenGraduation(userId);
+        return ApiResponse.<Void>builder().build();
+    }
 }

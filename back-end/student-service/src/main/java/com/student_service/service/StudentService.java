@@ -12,6 +12,7 @@ import com.student_service.models.Status;
 import com.student_service.models.Student;
 import com.student_service.models.UserType;
 import com.student_service.repository.HttpClient.AcademicResultClient;
+import com.student_service.repository.HttpClient.IdentityClient;
 import com.student_service.repository.HttpClient.ProfileClient;
 import com.student_service.repository.HttpClient.StudentClassRoomClient;
 import com.student_service.repository.StudentRepository;
@@ -49,6 +50,7 @@ public class StudentService {
     StudentClassRoomClient studentClassRoomClient;
     ExcelService excelService;
     AcademicResultClient academicResultClient;
+    IdentityClient identityClient;
 
     private StudentResponse mapToStudentResponse(Student student){
         UserProfileResponse userProfileResponse = profileClient.getProfileById(student.getProfileId()).getResult();
@@ -266,5 +268,17 @@ public class StudentService {
                 .peek(result -> studentClassRoomClient.addStudentIdInClassRoomId(result.getStudentId(), classRoomIdNew))
                 .map(result -> getStudentById(result.getStudentId()))
                 .toList();
+    }
+
+    public void graduationAssessment(ArrayIdRequest request) {
+
+        for (Integer studentId : request.getArrId()){
+            Student student = studentRepository.findById(studentId)
+                            .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_EXISTED));
+            student.setStatus(Status.GRADUATED);
+            Integer userId = profileClient.getUserID(student.getProfileId()).getResult();
+            identityClient.setEnableWhenGraduation(userId);
+            studentRepository.save(student);
+        }
     }
 }

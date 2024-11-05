@@ -90,7 +90,7 @@ public class ApplicationInitConfig {
                             .gender(i % 2 == 0 ? 1 : 0)
                             .ethnicity("Kinh")
                             .nationality("Việt Nam")
-                            .phoneNumber("093" + (1000000 + i))
+                            .phoneNumber("0943946242")
                             .userType(UserType.teacher)
                             .userId(i + 2)
                             .build());
@@ -125,7 +125,7 @@ public class ApplicationInitConfig {
                             .gender(i % 2 == 0 ? 1 : 0)
                             .ethnicity("Kinh")
                             .nationality("Việt Nam")
-                            .phoneNumber("093" + (1000000 + i))
+                            .phoneNumber("0943946242")
                             .userType(UserType.student)
                             .userId(i + 52)
                             .build());

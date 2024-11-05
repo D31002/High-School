@@ -145,4 +145,13 @@ public class StudentController {
                 .result(result)
                 .build();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/graduationAssessment")
+    ApiResponse<String> graduationAssessment(@RequestBody ArrayIdRequest request){
+        studentService.graduationAssessment(request);
+        return ApiResponse.<String>builder()
+                .result("Thành công")
+                .build();
+    }
 }

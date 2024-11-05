@@ -10,7 +10,24 @@
             font-size: 2.6rem;
             font-weight: 600;
             line-height: 3.5rem;
+            .ac {
+                display: flex;
+                align-items: center;
+            }
+            .hanleGraduationAssessment {
+                font-size: 1.6rem;
+                padding: 0 8px;
+                background-color: #3498db;
+                color: var(--white-color);
+                border-radius: 10px;
+                font-weight: 700;
+                cursor: pointer;
+                &:hover {
+                    background-color: #128ad9;
+                }
+            }
             .icon {
+                margin-left: 10px;
                 font-size: 3rem;
                 color: rgb(252, 71, 71);
             }

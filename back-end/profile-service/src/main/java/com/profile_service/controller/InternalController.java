@@ -3,6 +3,7 @@ package com.profile_service.controller;
 import com.profile_service.dto.request.UserProfileCreationRequest;
 import com.profile_service.dto.response.ApiResponse;
 import com.profile_service.dto.response.UserProfileResponse;
+import com.profile_service.models.UserProfile;
 import com.profile_service.service.UserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,14 @@ public class InternalController {
     ApiResponse<UserProfileResponse> getProfileById(@PathVariable Integer id){
         UserProfileResponse result = userProfileService.getProfileById(id);
         return ApiResponse.<UserProfileResponse>builder()
+                .result(result)
+                .build();
+    }
+
+    @GetMapping("/getUserID/{userprofileId}")
+    ApiResponse<Integer> getUserID(@PathVariable Integer userprofileId){
+        Integer result = userProfileService.getUserID(userprofileId);
+        return ApiResponse.<Integer>builder()
                 .result(result)
                 .build();
     }
@@ -58,4 +67,6 @@ public class InternalController {
         userProfileService.deleteProfile(profileId);
         return ApiResponse.<Void>builder().build();
     }
+
+
 }

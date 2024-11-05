@@ -366,19 +366,19 @@ function Index() {
                         <div className={cx('import')}>
                             <label htmlFor="id-upload">
                                 <PublishIcon />
-                                <span>Import</span>
+                                <span>Thêm từ excel</span>
                             </label>
                             <input id="id-upload" className={cx('upload')} type="file" onChange={handleFileChange} />
                         </div>
                         <div className={cx('export')} onClick={handleExport}>
                             <GetAppIcon />
-                            export
+                            Tạo excel
                         </div>
                         <Button btn onClick={showmodalTeacherNotBySubjectId}>
-                            <AddIcon /> Add teacher đã tồn tại
+                            <AddIcon /> Thêm giáo viên đã tồn tại
                         </Button>
                         <Button btn onClick={showmodal}>
-                            <AddIcon /> Add new
+                            <AddIcon /> Thêm mới
                         </Button>
                     </div>
                 )}

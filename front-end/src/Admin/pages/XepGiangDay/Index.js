@@ -145,6 +145,7 @@ function XepGiangDay() {
             setDataGenerate([]);
             showSuccessMessage('thành công');
         } else {
+            setLoading(false);
             showErrorMessage(resposne.message);
         }
     };

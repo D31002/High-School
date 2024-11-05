@@ -356,17 +356,19 @@ function Diem() {
                 </div>
             </div>
             <div className={cx('table')}>
-                <Muitable
-                    title={`DANH SÁCH ĐIỂM : Môn ${subject?.name} - lớp ${classRoom?.name} - Hiện tại đang là : ${semesterNow?.name}`}
-                    headCells={headCells}
-                    handleSearch={handleSearch}
-                    data={preparedData}
-                    currentPage={currentPage}
-                    setCrrentPage={setCrrentPage}
-                    pageSize={pageSize}
-                    setPageSize={setPageSize}
-                    TotalElements={TotalElements}
-                />
+                <div className={cx('table-academicResult')}>
+                    <Muitable
+                        title={`DANH SÁCH ĐIỂM : Môn ${subject?.name} - lớp ${classRoom?.name} - Hiện tại đang là : ${semesterNow?.name}`}
+                        headCells={headCells}
+                        handleSearch={handleSearch}
+                        data={preparedData}
+                        currentPage={currentPage}
+                        setCrrentPage={setCrrentPage}
+                        pageSize={pageSize}
+                        setPageSize={setPageSize}
+                        TotalElements={TotalElements}
+                    />
+                </div>
             </div>
 
             <div className={cx('modal')}>

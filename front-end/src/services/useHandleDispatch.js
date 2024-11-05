@@ -58,6 +58,7 @@ import {
     addStudentExistedInClassRoom,
     AddStudentsHasAcademicResultAboveAverageFromOldYear,
     deleteStudentInClassRoom,
+    graduationAssessment,
 
     //schedule
     generateSchedules,
@@ -407,6 +408,18 @@ export const useHandleDispatch = () => {
     const deletestudent = async (token, classRoomId, dataDel) => {
         try {
             const response = await deleteStudentInClassRoom(token, classRoomId, dataDel);
+            if (response.data.code === 1000) {
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
+        }
+    };
+
+    const graduationassessment = async (token, data) => {
+        try {
+            const response = await graduationAssessment(token, data);
+            console.log(response);
             if (response.data.code === 1000) {
                 return response.data;
             }
@@ -1000,6 +1013,7 @@ export const useHandleDispatch = () => {
         editstudentinclassroom,
         deletestudent,
         getallteacherbysubjectInNotpagination,
+        graduationassessment,
 
         //profile
         editprofile,

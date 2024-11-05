@@ -92,4 +92,10 @@ public class UserService{
 		userRepository.delete(user);
     }
 
+	public void setEnableWhenGraduation(int userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() ->new AppException(ErrorCode.USER_NOT_EXISTED));
+		user.setEnable(false);
+		userRepository.save(user);
+	}
 }

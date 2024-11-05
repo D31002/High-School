@@ -19,6 +19,8 @@ function Index({
     loading,
     handleShowEdit,
     handleDelete,
+    hanleGraduationAssessment,
+    showGraduationAssessment,
     handleSearch = () => {},
     action = false,
     checkBox = false,
@@ -158,6 +160,8 @@ function Index({
                             isAllSelected={isAllSelected}
                             rowCount={TotalElements}
                             handleDelete={handleDelete}
+                            hanleGraduationAssessment={hanleGraduationAssessment}
+                            showGraduationAssessment={showGraduationAssessment}
                             selected={selected}
                             setSelected={setSelected}
                             action={action}
@@ -179,13 +183,14 @@ function Index({
                 </TableContainer>
                 {!noPagination && (
                     <TablePagination
-                        rowsPerPageOptions={[5, 6, 7, 8, 9, 10, 20, 30]}
+                        rowsPerPageOptions={[5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60]}
                         component="div"
                         count={TotalElements || 0}
                         rowsPerPage={pageSize || 5}
                         page={currentPage - 1 || 0}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangepageSize}
+                        labelRowsPerPage="Số lượng phần tử của trang"
                         sx={{
                             '& .MuiTablePagination-toolbar': {
                                 minHeight: '70px',

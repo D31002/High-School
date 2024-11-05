@@ -381,6 +381,18 @@ export const deleteStudentInClassRoom = (token, classRoomId, dataDel) => {
     });
 };
 
+export const graduationAssessment = (token, dataGraduation) => {
+    return axios.post(
+        API_BASE_URL + `/student/pl/graduationAssessment`,
+        { arrId: dataGraduation },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+};
+
 //SCHEDULE - SERVICE
 export const generateSchedules = (token, schoolYearId) => {
     return axios.get(API_BASE_URL + `/schedule/pl/teach/generateSchedules?schoolYearId=${schoolYearId}`, {

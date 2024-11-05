@@ -27,4 +27,7 @@ public interface ProfileClient {
 
     @DeleteMapping("/internal/deleteProfile/{profileId}")
     ApiResponse<Void> deleteProfile(@PathVariable int profileId);
+
+    @GetMapping("/internal/getUserID/{userprofileId}")
+    ApiResponse<Integer> getUserID(@PathVariable Integer userprofileId);
 }

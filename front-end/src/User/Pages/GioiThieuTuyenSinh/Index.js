@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import Styles from './GTTS.module.scss';
 import Button from '../../../Component/button/Button';
-import Img from '../../Component/Assets/Img/news-img1.png';
 import Tick from '../../Component/Assets/Img/tick.png';
 import QTLV1 from '../../Component/Assets/Img/QUY TRÌNH LÀM VIỆC - 1.png';
 import QTLV2 from '../../Component/Assets/Img/QUY TRÌNH LÀM VIỆC - 2.png';
@@ -33,7 +32,10 @@ function Index() {
 
             <div className={cx('center')}>
                 <div className={cx('container')}>
-                    <img src={Img} alt="anh" />
+                    <img
+                        src="https://res.cloudinary.com/danrswhe6/image/upload/v1721960169/imageStudentPageHome_kbh77m.png"
+                        alt="anh"
+                    />
                     <div className={cx('vision')}>
                         <h1>TẦM NHÌN PHÁT TRIỂN & SỨ MỆNH GIÁO DỤC</h1>
                         <div className={cx('vision-introduce')}>
