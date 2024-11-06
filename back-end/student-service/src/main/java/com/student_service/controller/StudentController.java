@@ -59,6 +59,17 @@ public class StudentController {
                 .result(studentService.getStudentByClassRoom(classRoomId,page,pageSize,keyword))
                 .build();
     }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('PROCTOR')")
+    @GetMapping("/getStudentENROLLEDByClassRoom")
+    ApiResponse<PageResponse<StudentResponse>> getStudentENROLLEDByClassRoom(
+            @RequestParam int classRoomId,
+            @RequestParam(required = false,defaultValue = "1") int page,
+            @RequestParam(required = false,defaultValue = "7") int pageSize,
+            @RequestParam(required = false) String keyword){
+        return ApiResponse.<PageResponse<StudentResponse>>builder()
+                .result(studentService.getStudentENROLLEDByClassRoom(classRoomId,page,pageSize,keyword))
+                .build();
+    }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     @GetMapping("/getStudentByClassRoomNotPage")

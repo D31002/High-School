@@ -156,13 +156,13 @@ public class AcademicResultService {
             return new PageResponse<>();
         }
         PageResponse<StudentResponse> response =
-                studentClient.getStudentByClassRoom(classRoomId,page,pageSize,keyword).getResult();
+                studentClient.getStudentENROLLEDByClassRoom(classRoomId,page,pageSize,keyword).getResult();
 
         List<StudentResponse> studentResponseList = response.getData();
 
         List<AcademicResultResponse> academicResultResponseList =
-                studentResponseList.stream().map(student ->
-                    mapToAcademicResultResponse(student,semesterId,subjectId,classRoomId)
+                studentResponseList.stream()
+                        .map(student -> mapToAcademicResultResponse(student,semesterId,subjectId,classRoomId)
                 ).toList();
 
         return PageResponse.<AcademicResultResponse>builder()

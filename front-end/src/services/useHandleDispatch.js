@@ -59,6 +59,7 @@ import {
     AddStudentsHasAcademicResultAboveAverageFromOldYear,
     deleteStudentInClassRoom,
     graduationAssessment,
+    getAllStudentENROLLEDByClassRoomId,
 
     //schedule
     generateSchedules,
@@ -329,6 +330,24 @@ export const useHandleDispatch = () => {
             dispatch(studentSlice.actions.GET_STUDENTS_FAILURE(error.response.data.message));
         }
     };
+    const getallstudentENROLLEDbyclassroomid = async (token, classRoomId, currentPage, pageSize, keyword) => {
+        try {
+            dispatch(studentSlice.actions.GET_STUDENTS_LOADING());
+            const response = await getAllStudentENROLLEDByClassRoomId(
+                token,
+                classRoomId,
+                currentPage,
+                pageSize,
+                keyword,
+            );
+            if (response.data.code === 1000) {
+                dispatch(studentSlice.actions.GET_STUDENTS_SUCCESS(response.data.result));
+            }
+        } catch (error) {
+            dispatch(studentSlice.actions.GET_STUDENTS_FAILURE(error.response.data.message));
+        }
+    };
+
     const getallstudentbyclassroomidnotpage = async (token, classRoomId) => {
         try {
             const response = await getAllStudentByClassRoomIdNotPage(token, classRoomId);
@@ -1014,6 +1033,7 @@ export const useHandleDispatch = () => {
         deletestudent,
         getallteacherbysubjectInNotpagination,
         graduationassessment,
+        getallstudentENROLLEDbyclassroomid,
 
         //profile
         editprofile,

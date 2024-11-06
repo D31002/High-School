@@ -28,7 +28,7 @@ public class ApplicationInitConfig {
                         .profileId(1)
                         .build());
 
-                for (int i =1; i<=50 ;i++){
+                for (int i =1; i<=30 ;i++){
                     String teacherCode = String.format("CB%06d",i);
                     teacherRepository.save(Teacher.builder()
                             .teacherCode(teacherCode)

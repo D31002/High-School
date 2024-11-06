@@ -77,6 +77,7 @@ public class TeacherController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createTeacher")
     ApiResponse<TeacherResponse> createTeacher(@RequestParam int subjectId,@RequestBody TeacherCreationRequest request){
+        System.out.println(request);
         TeacherResponse result = teacherService.createTeacher(subjectId,request);
         return ApiResponse.<TeacherResponse>builder()
                 .result(result)

@@ -16,8 +16,8 @@ public interface StudentClient {
     @GetMapping("/pl/getStudentById/{studentId}")
     ApiResponse<StudentResponse> getStudentById(@PathVariable int studentId);
 
-    @GetMapping("/pl/getStudentByClassRoom")
-    ApiResponse<PageResponse<StudentResponse>> getStudentByClassRoom(
+    @GetMapping("/pl/getStudentENROLLEDByClassRoom")
+    ApiResponse<PageResponse<StudentResponse>> getStudentENROLLEDByClassRoom(
             @RequestParam int classRoomId,
             @RequestParam(required = false,defaultValue = "1") int page,
             @RequestParam(required = false,defaultValue = "7") int pageSize,

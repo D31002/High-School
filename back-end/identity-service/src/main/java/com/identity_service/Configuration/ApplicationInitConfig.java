@@ -60,7 +60,7 @@ public class ApplicationInitConfig {
                         .enable(true)
                         .build());
 
-                for (int i = 1; i <= 50; i++) {
+                for (int i = 1; i <= 30; i++) {
                     String teacherCode = String.format("CB%06d", i);
                     userRepository.save(User.builder()
                             .username(teacherCode)

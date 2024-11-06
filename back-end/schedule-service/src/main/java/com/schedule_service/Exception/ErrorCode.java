@@ -13,8 +13,11 @@ public enum ErrorCode {
 
     //1700
     NO_TEACHER_FOUND(1700,"Môn học không có giáo viên giảng dạy",HttpStatus.BAD_REQUEST),
-    CLASS_NOT_EXISTED(1700,"Năm học không có lớp học",HttpStatus.NOT_FOUND),
-    TEACH_NOT_EXISTED(1700,"không tồn tại lịch",HttpStatus.NOT_FOUND);
+    CLASS_NOT_EXISTED(1701,"Năm học không có lớp học",HttpStatus.NOT_FOUND),
+    TEACH_NOT_EXISTED(1702,"không tồn tại lịch",HttpStatus.NOT_FOUND),
+
+    TIMEOUT(1703, "Quá thời gian quy định, Hãy thử lại tạo mới", HttpStatus.REQUEST_TIMEOUT);
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

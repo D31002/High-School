@@ -59,9 +59,10 @@ public class AcademicResultController {
         return ApiResponse.<AcademicResultResponse>builder().result(result).build();
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     @PostMapping("/createScoresOfStudent")
-    ApiResponse<String> createScoresOfStudent(@RequestParam int teacherId,@RequestBody List<AcademicCreationRequest> requests){
+    ApiResponse<String> createScoresOfStudent(@RequestParam int teacherId,
+                                              @RequestBody List<AcademicCreationRequest> requests){
         academicResultService.createScoresOfStudent(teacherId,requests);
         return ApiResponse.<String>builder().result("Thành công").build();
     }

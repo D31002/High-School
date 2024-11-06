@@ -57,10 +57,10 @@ public class ApplicationInitConfig {
                         "Phạm Thị Bích", "Đỗ Văn Toàn", "Hoàng Văn Phúc", "Ngô Thị Mai", "Vũ Văn Thành",
                         "Bùi Thị Kim", "Lý Văn Hưng", "Trương Thị Thanh", "Đinh Văn Phúc", "Nguyễn Văn Hòa",
                         "Trần Văn Vinh", "Lê Thị Xuân", "Phạm Văn Sơn", "Đỗ Thị Hiền", "Hoàng Văn Lâm",
-                        "Ngô Văn Tiến", "Vũ Thị Bích", "Bùi Văn Quang", "Lý Văn Tùng", "Trương Thị Thu",
-                        "Đinh Văn Hải", "Nguyễn Thị Phương", "Trần Văn Khoa", "Lê Văn Dũng", "Phạm Thị Liên",
-                        "Đỗ Văn Hưng", "Hoàng Thị Tuyết", "Ngô Văn Minh", "Vũ Văn Cường","Phan Thị Hương",
-                        "Lâm Văn Hải", "Nguyễn Thị Phương", "Trần Văn Nam", "Lê Thị Hoa","Đỗ Văn Tâm"
+//                        "Ngô Văn Tiến", "Vũ Thị Bích", "Bùi Văn Quang", "Lý Văn Tùng", "Trương Thị Thu",
+//                        "Đinh Văn Hải", "Nguyễn Thị Phương", "Trần Văn Khoa", "Lê Văn Dũng", "Phạm Thị Liên",
+//                        "Đỗ Văn Hưng", "Hoàng Thị Tuyết", "Ngô Văn Minh", "Vũ Văn Cường","Phan Thị Hương",
+//                        "Lâm Văn Hải", "Nguyễn Thị Phương", "Trần Văn Nam", "Lê Thị Hoa","Đỗ Văn Tâm"
 
                 };
 
@@ -111,7 +111,7 @@ public class ApplicationInitConfig {
                 };
                 for (int i = 0;i<studentNames.length;i++){
                     userProfileRepository.save(UserProfile.builder()
-                            .email("student" + (i + 42) + "@gmail.com")
+                            .email("student" + (i + 41) + "@gmail.com")
                             .address(addressProfileRepository
                                     .save(AddressProfile.builder()
                                             .city("Thành Phố Cần Thơ")
@@ -127,7 +127,7 @@ public class ApplicationInitConfig {
                             .nationality("Việt Nam")
                             .phoneNumber("0943946242")
                             .userType(UserType.student)
-                            .userId(i + 52)
+                            .userId(i + 32)
                             .build());
                 }
             }

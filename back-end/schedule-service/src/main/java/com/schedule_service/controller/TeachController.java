@@ -40,10 +40,11 @@ public class TeachController {
         return ApiResponse.<List<TeachDetailsResponse>>builder().result(result).build();
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     @GetMapping("/teach/getSubjectByTeacherAndClassRoom")
-    ApiResponse<List<SubjectResponse>> getSubjectByTeacherAndClassRoom(@RequestParam int teacherId,
-                                                                       @RequestParam int classRoomId){
+    ApiResponse<List<SubjectResponse>> getSubjectByTeacherAndClassRoom(
+            @RequestParam int teacherId,
+            @RequestParam int classRoomId){
         List<SubjectResponse> result =
                 teachService.getSubjectByTeacherAndClassRoom(teacherId,classRoomId);
         return ApiResponse.<List<SubjectResponse>>builder().result(result).build();

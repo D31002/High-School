@@ -28,7 +28,7 @@ public class ApplicationInitConfig {
             if(!teacherSubjectRepository.existsById(1)){
 
                 int numberOfSubjects = 10;
-                int teachersPerSubject = 5;
+                int teachersPerSubject = 3;
 
                 for(int subjectId = 1;subjectId<=numberOfSubjects;subjectId++){
                     for (int teacherId = (subjectId -1) * teachersPerSubject + 2;

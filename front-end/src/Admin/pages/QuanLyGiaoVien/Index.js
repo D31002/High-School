@@ -61,7 +61,7 @@ function Index() {
     const refemail = useRef();
     const refpassword = useRef();
     const [currentPage, setCrrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(7);
+    const [pageSize, setPageSize] = useState(6);
     const TotalElements = useSelector(totalElementsTeacher);
     const TeacherLoading = useSelector(TeachersLoading);
     const headCells = [
@@ -385,7 +385,13 @@ function Index() {
             </div>
             <div className={cx('table')}>
                 <MuiTable
-                    title="DANH SÁCH GIÁO VIÊN"
+                    title={`DANH SÁCH GIÁO VIÊN ${
+                        subjectId
+                            ? `- Hiện tại có ${TotalElements} giáo viên dạy môn ${
+                                  subjects?.find((subject) => subject.id === subjectId)?.name
+                              }`
+                            : ''
+                    }`}
                     headCells={headCells}
                     details={details}
                     data={teachers}

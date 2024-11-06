@@ -62,7 +62,6 @@ function Index({ onclose, classRoom }) {
         getsemesternow();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(academicOfstudents);
     useEffect(() => {
         if (academicOfstudents.length > 0) {
             const updatedStudents = academicOfstudents.map(async (student) => {
@@ -136,7 +135,6 @@ function Index({ onclose, classRoom }) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [academicOfstudents]);
-
     useEffect(() => {
         if (academicOfstudents.length <= 0 && semesterNow) {
             const fetchStudents = async () => {
@@ -172,7 +170,6 @@ function Index({ onclose, classRoom }) {
         }));
         setAcademicOfstudents(updateAcademic);
     };
-
     const calculateMeanScoreSemester = async () => {
         setLoading(true);
         const isvalid = academicOfstudents.some((academicStudent) => academicStudent.id === 0);

@@ -81,7 +81,6 @@ function Index() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyWord, currentPage, pageSize, yearId]);
-    console.log(classes);
 
     useEffect(() => {
         getallschoolyear(keyWordSchoolYear);
@@ -249,7 +248,7 @@ function Index() {
                 )}
             </div>
             <MuiTable
-                title="DANH SÁCH LỚP HỌC"
+                title={`DANH SÁCH LỚP HỌC - Hiện tại có ${TotalElements || 0} lớp học`}
                 headCells={headCells}
                 data={classes}
                 loading={ClassLoading}

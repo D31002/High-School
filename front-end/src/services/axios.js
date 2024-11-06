@@ -310,6 +310,18 @@ export const getAllStudentByClassRoomId = (token, classRoomId, currentPage, page
         },
     );
 };
+export const getAllStudentENROLLEDByClassRoomId = (token, classRoomId, currentPage, pageSize, keyword) => {
+    return axios.get(
+        API_BASE_URL +
+            `/student/pl/getStudentENROLLEDByClassRoom?classRoomId=${classRoomId}&page=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+};
+
 export const getAllStudentByClassRoomIdNotPage = (token, classRoomId) => {
     return axios.get(API_BASE_URL + `/student/pl/getStudentByClassRoomNotPage?classRoomId=${classRoomId}`, {
         headers: {

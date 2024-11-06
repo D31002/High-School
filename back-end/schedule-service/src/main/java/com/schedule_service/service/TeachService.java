@@ -39,32 +39,55 @@ public class TeachService {
 	SubjectClient subjectClient;
 	SchoolYearSemesterClient schoolYearSemesterClient;
 
+	private Map<Integer,Integer> countClassesForEachSubject(List<ClassEntityResponse> classRoomList){
+		Map<Integer, Integer> subjectClassCountMap = new HashMap<>();
+
+		for (ClassEntityResponse classEntity : classRoomList){
+			Set<SubjectResponse> subjects = classEntity.getCombination().getSubjects();
+
+			for (SubjectResponse subject : subjects){
+				Integer subjectId = subject.getId();
+
+				if(subjectClassCountMap.containsKey(subjectId)){
+					subjectClassCountMap.put(subjectId,subjectClassCountMap.get(subjectId) + 1);
+				}else{
+					subjectClassCountMap.put(subjectId,1);
+				}
+			}
+		}
+		return subjectClassCountMap;
+	}
 
 	public TeachResponse generateSchedules(int schoolYearId) {
-
-		// Lấy danh sách lớp học
+		System.out.println("start");
+		//Lấy danh sách lớp học
 		List<ClassEntityResponse> classRoomList =
 				classRoomClient.getAllBySchoolYearNotPagination(schoolYearId)
 						.getResult();
 
 		classRoomList.sort(Comparator.comparing(ClassEntityResponse::getName));
 
+		Map<Integer, Integer> subjectClassCountMap = countClassesForEachSubject(classRoomList);
+		System.out.println(subjectClassCountMap);
+
+		Map<Integer, Integer> TeacherClassCountMap = new HashMap<>();
+
 		if(CollectionUtils.isEmpty(classRoomList)){
 			throw new AppException(ErrorCode.CLASS_NOT_EXISTED);
 		}
 
-		// Lấy danh sách tiết học
+		//Lấy danh sách tiết học
 		List<Lesson> lessons = lessonRepository.findAll();
 
-		// Xác định các ngày trong tuần, loại bỏ chủ nhật
+		//Xác định các ngày trong tuần, loại bỏ chủ nhật
 		List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values())
 				.filter(day -> day != DayOfWeek.SUNDAY)
 				.toList();
 
 		List<AssignedLesson> assignedLessons = new ArrayList<>();
-		// Duyệt từng lớp học
+		//Duyệt từng lớp học
 		for (ClassEntityResponse classEntity : classRoomList) {
-			// Lấy danh sách môn học của lớp
+			//Lấy danh sách môn học của lớp
 			Set<SubjectResponse> subjects = classEntity.getCombination().getSubjects();
 
 			for (SubjectResponse subject : subjects) {
@@ -72,33 +95,37 @@ public class TeachService {
 				if (teacherIdList.isEmpty()) {
 					throw new AppException(ErrorCode.NO_TEACHER_FOUND);
 				}
-				// Lấy số tiết học tối đa trong tuần cho môn học
+				//Lấy số tiết học tối đa trong tuần cho môn học
 				int numberOfLessons = subject.getNumberOfLessons();
 
-				// Lọc các tiết học có sẵn
+				//Lọc các tiết học có sẵn
 				List<Lesson> availableLessons = new ArrayList<>(lessons);
 
-				// Chọn ngẫu nhiên giáo viên
-				int teacherId = teacherIdList.get(new Random().nextInt(teacherIdList.size())).getTeacherId();
+				//Chọn ngẫu nhiên giáo viên
+				int numberClassRoomOfSubject = subjectClassCountMap.get(subject.getId());
+				int numberTeacherOfSubject = teacherIdList.size();
+				int numberClassRoomOfTeacher = numberClassRoomOfSubject / numberTeacherOfSubject;
+				int remainder = numberClassRoomOfSubject % numberTeacherOfSubject;
+				int teacherId = selectTeacher(TeacherClassCountMap,teacherIdList,numberClassRoomOfTeacher,remainder);
 
-				// Số tiết đã phân bổ
+				//Số tiết đã phân bổ
 				int allocatedLessons = 0;
 
 				if (numberOfLessons >= 2) {
-					// Xử lý cho trường hợp số tiết học > 2
+					//Xử lý cho trường hợp số tiết học > 2
 					while (allocatedLessons < numberOfLessons && !availableLessons.isEmpty()) {
 						//Kiểm tra điều kiện thứ 2 tiết 1, thứ 7 tiết 5
-						LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+						LessonPair lessonPair = filterLessonAndTeacher(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId);
 						Lesson startLesson = lessonPair.getLesson();
 						DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
 						int finalTeacherId = lessonPair.getTeacherId();
 
-						// Kiểm tra nếu số tiết còn lại >= 2
+						//Kiểm tra nếu số tiết còn lại >= 2
 						if (numberOfLessons - allocatedLessons >= 2) {
 							//lesson tiếp theo của startLesson
 							Lesson nextLesson = getNextLesson(availableLessons, startLesson.getLesson() + 1);
 
-							// Nếu tiết kế tiếp hợp lệ, thêm cả hai tiết vào danh sách
+							//Nếu tiết kế tiếp hợp lệ, thêm cả hai tiết vào danh sách
 							if (nextLesson != null) {
 								boolean isNextLessonValid = !((nextLesson.getLesson() == 5 && dayOfWeek == DayOfWeek.SATURDAY) ||
 										(nextLesson.getLesson() == 1 && dayOfWeek == DayOfWeek.MONDAY)) &&
@@ -120,14 +147,14 @@ public class TeachService {
 							}
 
 						} else {
-							// Nếu số tiết còn lại < 2, chỉ cần thêm tiết ngẫu nhiên
+							//Nếu số tiết còn lại < 2, chỉ cần thêm tiết ngẫu nhiên
 							assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId,subject.getId(), classEntity.getId(), dayOfWeek));
 							allocatedLessons++;
 						}
 					}
 				} else {
-					// Xử lý cho trường hợp số tiết học < 2
-					LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+					//Xử lý cho trường hợp số tiết học < 2
+					LessonPair lessonPair = filterLessonAndTeacher(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId);
 					Lesson lesson = lessonPair.getLesson();
 					DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
 					int finalTeacherId = lessonPair.getTeacherId();
@@ -135,7 +162,7 @@ public class TeachService {
 				}
 			}
 		}
-
+		System.out.println(TeacherClassCountMap);
 		List<TeachDetailsResponse> teachDetailsResponseList = assignedLessons.stream()
 				.map(entry -> createTeachResponse(entry, schoolYearId, assignedLessons.indexOf(entry)))
 				.collect(Collectors.toList());
@@ -145,31 +172,33 @@ public class TeachService {
 				.teachDetails(teachDetailsResponseList)
 				.build();
 	}
+
 	public TeachResponse generateSchedules1(int schoolYearId) {
-
-		// Lấy danh sách lớp học
-		List<ClassEntityResponse> classRoomList =
-				classRoomClient.getAllBySchoolYearNotPagination(schoolYearId)
-						.getResult();
-
+		System.out.println("start");
+		//Lấy danh sách lớp học
+		List<ClassEntityResponse> classRoomList = classRoomClient.getAllBySchoolYearNotPagination(schoolYearId).getResult();
 		classRoomList.sort(Comparator.comparing(ClassEntityResponse::getName));
 
-		if(CollectionUtils.isEmpty(classRoomList)){
+		Map<Integer, Integer> subjectClassCountMap = countClassesForEachSubject(classRoomList);
+		System.out.println(subjectClassCountMap);
+
+		Map<Integer, Integer> TeacherClassCountMap = new HashMap<>();
+
+		if (classRoomList.isEmpty()){
 			throw new AppException(ErrorCode.CLASS_NOT_EXISTED);
 		}
-
-		// Lấy danh sách tiết học
+		//Lấy danh sách tiết học
 		List<Lesson> lessons = lessonRepository.findAll();
 
-		// Xác định các ngày trong tuần, loại bỏ chủ nhật
-		List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values())
-				.filter(day -> day != DayOfWeek.SUNDAY)
-				.toList();
+		//Xác định các ngày trong tuần, loại bỏ chủ nhật
+		List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values()).filter(day -> day != DayOfWeek.SUNDAY).toList();
 
+		//danh sách đã được được sắp xếp
 		List<AssignedLesson> assignedLessons = new ArrayList<>();
-		// Duyệt từng lớp học
+
+		//Duyệt từng lớp học
 		for (ClassEntityResponse classEntity : classRoomList) {
-			// Lấy danh sách môn học của lớp
+			//Lấy danh sách môn học của lớp
 			Set<SubjectResponse> subjects = classEntity.getCombination().getSubjects();
 
 			for (SubjectResponse subject : subjects) {
@@ -177,38 +206,40 @@ public class TeachService {
 				if (teacherIdList.isEmpty()) {
 					throw new AppException(ErrorCode.NO_TEACHER_FOUND);
 				}
-				// Lấy số tiết học tối đa trong tuần cho môn học
+				//Lấy số tiết học tối đa trong tuần cho môn học
 				int numberOfLessons = subject.getNumberOfLessons();
 
-				// Lọc các tiết học có sẵn
+				//Lọc 10, 12: 1 - 5, 11: 6 - 9
 				List<Lesson> availableLessons = new ArrayList<>(lessons);
 				if (classEntity.getGrade().getId() == 1 || classEntity.getGrade().getId() == 3) {
 					availableLessons.removeIf(lesson -> lesson.getLesson() >= 6 && lesson.getLesson() <= 9);
 				} else if (classEntity.getGrade().getId() == 2) {
 					availableLessons.removeIf(lesson -> lesson.getLesson() >= 1 && lesson.getLesson() <= 5);
 				}
-
-				// Chọn ngẫu nhiên giáo viên
-				int teacherId = teacherIdList.get(new Random().nextInt(teacherIdList.size())).getTeacherId();
-
-				// Số tiết đã phân bổ
+				//Chọn ngẫu nhiên giáo viên
+				int numberClassRoomOfSubject = subjectClassCountMap.get(subject.getId());
+				int numberTeacherOfSubject = teacherIdList.size();
+				int numberClassRoomOfTeacher = numberClassRoomOfSubject / numberTeacherOfSubject;
+				int remainder = numberClassRoomOfSubject % numberTeacherOfSubject;
+				int teacherId = selectTeacher(TeacherClassCountMap,teacherIdList,numberClassRoomOfTeacher,remainder);
+				//Số tiết đã phân bổ
 				int allocatedLessons = 0;
 
 				if (numberOfLessons >= 2) {
-					// Xử lý cho trường hợp số tiết học > 2
+					//trong khi số tiết học > 2
 					while (allocatedLessons < numberOfLessons && !availableLessons.isEmpty()) {
 						//Kiểm tra điều kiện thứ 2 tiết 1, thứ 7 tiết 5
-						LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+						LessonPair lessonPair = filterLessonAndTeacher(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId);
 						Lesson startLesson = lessonPair.getLesson();
 						DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
 						int finalTeacherId = lessonPair.getTeacherId();
 
-						// Kiểm tra nếu số tiết còn lại >= 2
+						//Kiểm tra nếu số tiết còn lại >= 2
 						if (numberOfLessons - allocatedLessons >= 2) {
 							//lesson tiếp theo của startLesson
 							Lesson nextLesson = getNextLesson(availableLessons, startLesson.getLesson() + 1);
 
-							// Nếu tiết kế tiếp hợp lệ, thêm cả hai tiết vào danh sách
+							//Nếu tiết kế tiếp hợp lệ thêm cả hai tiết vào danh sách
 							if (nextLesson != null) {
 								boolean isNextLessonValid = !((nextLesson.getLesson() == 5 && dayOfWeek == DayOfWeek.SATURDAY) ||
 										(nextLesson.getLesson() == 1 && dayOfWeek == DayOfWeek.MONDAY)) &&
@@ -230,14 +261,14 @@ public class TeachService {
 							}
 
 						} else {
-							// Nếu số tiết còn lại < 2, chỉ cần thêm tiết ngẫu nhiên
+							//Nếu tiết còn lại < 2, thêm ngẫu nhiên
 							assignedLessons.add(new AssignedLesson(startLesson, finalTeacherId,subject.getId(), classEntity.getId(), dayOfWeek));
 							allocatedLessons++;
 						}
 					}
 				} else {
-					// Xử lý cho trường hợp số tiết học < 2
-					LessonPair lessonPair = getValidLessonPair(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId, teacherIdList);
+					//tiết học < 2
+					LessonPair lessonPair = filterLessonAndTeacher(daysOfWeek, availableLessons, assignedLessons, classEntity, teacherId);
 					Lesson lesson = lessonPair.getLesson();
 					DayOfWeek dayOfWeek = lessonPair.getDayOfWeek();
 					int finalTeacherId = lessonPair.getTeacherId();
@@ -245,7 +276,7 @@ public class TeachService {
 				}
 			}
 		}
-
+		System.out.println(TeacherClassCountMap);
 		List<TeachDetailsResponse> teachDetailsResponseList = assignedLessons.stream()
 				.map(entry -> createTeachResponse(entry, schoolYearId, assignedLessons.indexOf(entry)))
 				.collect(Collectors.toList());
@@ -255,6 +286,26 @@ public class TeachService {
 				.teachDetails(teachDetailsResponseList)
 				.build();
 	}
+	private Integer selectTeacher(Map<Integer, Integer> TeacherClassCountMap, List<TeacherSubjectResponse> teacherIdList,
+								  int numberClassRoomOfTeacher, int remainder){
+		do{
+			int teacherId = teacherIdList.get(new Random().nextInt(teacherIdList.size())).getTeacherId();
+
+			int currentClassCount = TeacherClassCountMap.getOrDefault(teacherId,0);
+
+			int maxClassForTeacher = numberClassRoomOfTeacher + (remainder > 0 ? 1 : 0);
+
+			if (currentClassCount >= maxClassForTeacher) {
+				continue;
+			}
+			TeacherClassCountMap.put(teacherId,currentClassCount + 1);
+
+			if (currentClassCount >= numberClassRoomOfTeacher) {
+				remainder--;
+			}
+			return teacherId;
+		}while (true);
+	}
 
 	private Lesson getNextLesson(List<Lesson> availableLessons, int nextLessonNumber) {
 		return availableLessons.stream()
@@ -262,15 +313,13 @@ public class TeachService {
 				.findFirst().orElse(null);
 	}
 
-	private LessonPair getValidLessonPair(List<DayOfWeek> daysOfWeek,
-										  List<Lesson> availableLessons,
-										  List<AssignedLesson> assignedLessons,
-										  ClassEntityResponse classEntity, int teacherId,
-										  List<TeacherSubjectResponse> teacherIdList) {
+	private LessonPair filterLessonAndTeacher(
+			List<DayOfWeek> daysOfWeek, List<Lesson> availableLessons, List<AssignedLesson> assignedLessons, ClassEntityResponse classEntity, int teacherId) {
 		Lesson startLesson;
 		DayOfWeek dOfW;
-		int teacherIdNew = teacherId;
 		boolean isValid = false;
+		long maxTimeInMillis = 3000;
+		long startTime = System.currentTimeMillis();
 		do {
 			startLesson = availableLessons.get(new Random().nextInt(availableLessons.size()));
 			dOfW = daysOfWeek.get(new Random().nextInt(daysOfWeek.size()));
@@ -285,32 +334,67 @@ public class TeachService {
 							al.getDayOfWeek().equals(finalDOfW) &&
 							al.getClassRoomId() == classEntity.getId()
 			);
-
 			boolean isValidLesson = !isInvalidLesson && !isLessonAlreadyAssigned;
-			boolean isValidTeacher = isTeacherAvailableForLesson(teacherIdNew, startLesson, dOfW, assignedLessons);
+			boolean isValidTeacher = isTeacherAvailableForLesson(teacherId, startLesson, dOfW, assignedLessons);
 
-			if (!isValidTeacher) {
-				Lesson finalStartLesson1 = startLesson;
-				DayOfWeek finalDOfW1 = dOfW;
-				int finalTeacherIdNew = teacherIdNew;
-				List<TeacherSubjectResponse> filterTeacher = teacherIdList.stream()
-						.filter(t -> t.getTeacherId() != finalTeacherIdNew)
-						.filter(t -> isTeacherAvailableForLesson(t.getTeacherId(), finalStartLesson1, finalDOfW1, assignedLessons))
-						.toList();
-
-				if (!CollectionUtils.isEmpty(filterTeacher)) {
-					teacherIdNew = filterTeacher.get(new Random().nextInt(filterTeacher.size())).getTeacherId();
-					isValidTeacher = isTeacherAvailableForLesson(teacherIdNew, startLesson, dOfW, assignedLessons);
-				} else {
-					continue;
-				}
-			}
 			isValid = isValidLesson && isValidTeacher;
 
+			if (System.currentTimeMillis() - startTime > maxTimeInMillis) {
+				break;
+			}
 		} while (!isValid);
-
-		return new LessonPair(startLesson, dOfW, teacherIdNew);
+		return new LessonPair(startLesson, dOfW, teacherId);
 	}
+
+//	private LessonPair getValidLessonPair(List<DayOfWeek> daysOfWeek,
+//										  List<Lesson> availableLessons,
+//										  List<AssignedLesson> assignedLessons,
+//										  ClassEntityResponse classEntity, int teacherId,
+//										  List<TeacherSubjectResponse> teacherIdList) {
+//		Lesson startLesson;
+//		DayOfWeek dOfW;
+//		int teacherIdNew = teacherId;
+//		boolean isValid = false;
+//		do {
+//			startLesson = availableLessons.get(new Random().nextInt(availableLessons.size()));
+//			dOfW = daysOfWeek.get(new Random().nextInt(daysOfWeek.size()));
+//
+//			boolean isInvalidLesson = (startLesson.getLesson() == 5 && dOfW == DayOfWeek.SATURDAY) ||
+//					(startLesson.getLesson() == 1 && dOfW == DayOfWeek.MONDAY);
+//
+//			Lesson finalStartLesson = startLesson;
+//			DayOfWeek finalDOfW = dOfW;
+//			boolean isLessonAlreadyAssigned = assignedLessons.stream().anyMatch(al ->
+//					al.getLesson().equals(finalStartLesson) &&
+//							al.getDayOfWeek().equals(finalDOfW) &&
+//							al.getClassRoomId() == classEntity.getId()
+//			);
+//
+//			boolean isValidLesson = !isInvalidLesson && !isLessonAlreadyAssigned;
+//			boolean isValidTeacher = isTeacherAvailableForLesson(teacherIdNew, startLesson, dOfW, assignedLessons);
+//
+//			if (!isValidTeacher) {
+//				Lesson finalStartLesson1 = startLesson;
+//				DayOfWeek finalDOfW1 = dOfW;
+//				int finalTeacherIdNew = teacherIdNew;
+//				List<TeacherSubjectResponse> filterTeacher = teacherIdList.stream()
+//						.filter(t -> t.getTeacherId() != finalTeacherIdNew)
+//						.filter(t -> isTeacherAvailableForLesson(t.getTeacherId(), finalStartLesson1, finalDOfW1, assignedLessons))
+//						.toList();
+//
+//				if (!CollectionUtils.isEmpty(filterTeacher)) {
+//					teacherIdNew = filterTeacher.get(new Random().nextInt(filterTeacher.size())).getTeacherId();
+//					isValidTeacher = isTeacherAvailableForLesson(teacherIdNew, startLesson, dOfW, assignedLessons);
+//				} else {
+//					continue;
+//				}
+//			}
+//			isValid = isValidLesson && isValidTeacher;
+//
+//		} while (!isValid);
+//
+//		return new LessonPair(startLesson, dOfW, teacherIdNew);
+//	}
 
 
 	boolean isTeacherAvailableForLesson(int teacherId, Lesson lesson, DayOfWeek dayOfWeek, List<AssignedLesson> assignedLessons) {

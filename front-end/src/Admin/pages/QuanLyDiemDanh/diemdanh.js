@@ -52,7 +52,7 @@ function Diemdanh() {
         getallschoolyear,
         getallclassesbyyearandgrade,
         getallAttendanceStatus,
-        getallstudentbyclassroomid,
+        getallstudentENROLLEDbyclassroomid,
         getallsemester,
         createattendance,
         getallSession,
@@ -85,7 +85,11 @@ function Diemdanh() {
     }, [SchoolYears]);
 
     useEffect(() => {
-        setClassRoomId(classRooms[0]?.id);
+        if (classRooms && classRooms[0]?.id) {
+            setClassRoomId(classRooms[0]?.id);
+        } else {
+            setClassRoomId('');
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRooms]);
 
@@ -95,10 +99,9 @@ function Diemdanh() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [yearId, keywordClass]);
-
     useEffect(() => {
-        if (yearId && classRoomId) {
-            getallstudentbyclassroomid(token, classRoomId, currentPage, pageSize, keyWordStudent);
+        if (yearId) {
+            getallstudentENROLLEDbyclassroomid(token, classRoomId, currentPage, pageSize, keyWordStudent);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomId, yearId, currentPage, pageSize, keywordClass, keyWordStudent]);

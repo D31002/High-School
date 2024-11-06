@@ -29,7 +29,7 @@ public class ApplicationInitConfig {
                     studentRepository.save(Student.builder()
                             .studentCode(studentCode)
                             .status(Status.ENROLLED)
-                            .profileId(i+51)
+                            .profileId(i+31)
                             .build());
                 }
             }

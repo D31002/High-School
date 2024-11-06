@@ -102,6 +102,43 @@ public class StudentService {
                 .build();
     }
 
+    public PageResponse<StudentResponse> getStudentENROLLEDByClassRoom(
+            int classRoomId, int page, int pageSize, String keyword) {
+        List<StudentClassRoomResponse> studentClassRoomResponseList =
+                studentClassRoomClient.getStudentIdByClassRoomId(classRoomId).getResult();
+
+        List<UserProfileResponse> userProfileList =
+                profileClient.searchUserProfilesByFullName(keyword).getResult();
+
+        Set<Integer> userProfileStudentIds = userProfileList.stream()
+                .map(UserProfileResponse::getId)
+                .collect(Collectors.toSet());
+
+        List<Student> studentList = studentClassRoomResponseList.stream()
+                .map(studentClassRoomResponse -> studentRepository.findById(studentClassRoomResponse.getStudentId())
+                        .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_EXISTED)))
+                .filter(student -> userProfileStudentIds.contains(student.getProfileId()) && student.getStatus() == Status.ENROLLED)
+                .toList();
+
+        Sort sort = Sort.by("studentCode").ascending();
+        Pageable pageable = PageRequest.of(page-1,pageSize,sort);
+
+        Page<Student> studentPage = studentRepository.findByStudents(studentList,pageable);
+
+        List<StudentResponse> studentResponseList =
+                studentPage.stream()
+                        .map(this::mapToStudentResponse)
+                        .toList();
+
+        return PageResponse.<StudentResponse>builder()
+                .currentPage(page)
+                .pageSize(studentPage.getSize())
+                .totalPages(studentPage.getTotalPages())
+                .totalElements(studentPage.getTotalElements())
+                .data(studentResponseList)
+                .build();
+    }
+
     public List<StudentResponse> getStudentByClassRoomNotPage(int classRoomId) {
         List<StudentClassRoomResponse> studentClassRoomResponseList =
                 studentClassRoomClient.getStudentIdByClassRoomId(classRoomId).getResult();
@@ -281,4 +318,6 @@ public class StudentService {
             studentRepository.save(student);
         }
     }
+
+
 }
